@@ -332,7 +332,7 @@ INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, Account
 VALUES ('2003-07-24 18:01:13', 'Debit', 'Amazon', '250.00', 'Online Shopping', '100002');
 
 INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
-VALUES ('2003-08-12 18:01:13', 'Debit', 'YESSTYLE', '150.00', 'Online Shopping', '100002');
+VALUES ('2003-08-12 18:01:13', 'Debit', 'YESSTYLE', '132.00', 'Online Shopping', '100002');
 
 
 INSERT INTO Payee (IBAN, BIC, Name, AccountID)
