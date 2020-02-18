@@ -25,14 +25,14 @@ getCustomerData = (customer_id) => {
 //Extract all customer bank accounts
 //This creates an array of each account the customer has 
 getCustomerAccounts = (data) => {
-  let a = [];
+  let accounts = [];
   //for every  object in data.accountTransactions
   //push only necessary bank account information to the array
   for (let i in data.accountTransactions) {
-    a.push({ "AccountID": data.accountTransactions[i].accountID, "IBAN": data.accountTransactions[i].IBAN, "OpeningBalance": data.accountTransactions[i].OpeningBalance, "CurrentBalance": data.accountTransactions[i].CurrentBalance });
+    accounts.push({ "AccountID": data.accountTransactions[i].accountID, "IBAN": data.accountTransactions[i].IBAN, "OpeningBalance": data.accountTransactions[i].OpeningBalance, "CurrentBalance": data.accountTransactions[i].CurrentBalance });
   }
   //extract single unique accounts from accounts array (check account number)
-  return _.uniq(a, (x) => { return parseInt(x.AccountID) });
+  return _.uniq(accounts, (x) => { return parseInt(x.AccountID) });
 
 }
 
