@@ -13,7 +13,7 @@ $("document").ready(() => {
 //4. Append all bank account transaction information to associated collapse element in main
 getCustomerData = (customer_id) => {
   $.getJSON(`php/getAccountsTransactions.php?customer_id=${customer_id}`, (data) => {
-    //console.log(data);
+    console.log(data);
     let customerAccounts = getCustomerAccounts(data);
     console.log(customerAccounts);
     let accountTransactions = getCustomerAccountTransactions(customerAccounts, data);
@@ -61,6 +61,7 @@ getCustomerAccountTransactions = (customerAccounts, data) => {
       }
     }
   }
+  console.log(t);
   return t;
 }
 
