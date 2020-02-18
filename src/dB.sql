@@ -105,17 +105,11 @@ CREATE TABLE Loan
 
 ALTER TABLE Account AUTO_INCREMENT=100000;
 
-
-
-
-
-
-
 -- db test lines - NOTE: Boolean values inserted as true or false appear as 
 -- either 1 or 0 in the database. They can be inserted as true or false or 
 -- as numbers, 0 is false, all other values are true
 -- the following query formats can be used: 
--- select * from Account where locked = trues
+-- select * from Account where locked = true
 -- select * from Account where locked IS TRUE/IS FALSE/IS NOT TRUE
 -- select * from Account where locked = 0/1
 
