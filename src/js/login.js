@@ -1,11 +1,11 @@
 $("document").ready(function(){
     insertRandomField();
-    // handleLogin();
+    handleLogin();
 })
 
 function insertRandomField(){
     var randomNumber = Math.round(Math.random());
-    console.log('Random Number:', randomNumber);
+    //console.log(randomNumber);
 
     if(randomNumber == 0){
         //Insert DOB field
@@ -24,25 +24,31 @@ function insertRandomField(){
             <input type="text" class="form-control" id="inputPhone" placeholder="Phone No.">
         </div>
     </div>`)
-
     }
 
 }
 
-// function handleLogin(){
-//     $('#loginBtn').click(function(){
-//         var username = $('#inputID').val();
-//         // var password = $('#password').val();
-//         $.getJSON(`php/getLoginDetails.php`, function(data) {
-//             for(var i=0; i < data.users.length; i++){
-//                 if(username === data.users[i].email && password === data.users[i].password){
-//                     $('#loginFailed').empty();
-//                     document.cookie = `username=${data.users[i].email}; path=/`;
-//                     window.location.href = "venues.html";
-//                 }else{
-//                     $('#loginFailed').html("Failed to log in");
-//                 }
-//             }
-//         });
-//     })
-//}
+function handleLogin(){
+    $("#btnLogin").click(function (){
+        this.disabled=true;
+        var customerID = $('#inputID').val();
+        console.log(customerID);
+        var dobVisible;
+        var correctLoginDetails = false;
+        if($('#inputDOB').length){
+            var dob = $('#inputDOB').val();
+            dobVisible = true;
+        }else{
+            var phoneNum = $('#inputPhone').val();
+            dobVisible = false;
+        }  
+        getCustomerDetails(customerID);
+
+    })  
+
+    getCustomerDetails = (customer_id) => {
+        $.getJSON(`php/getLoginDetails.php?customer_id=${customer_id}`, (data) => {
+          console.log(data);
+        });
+      }
+}//close handleLogin

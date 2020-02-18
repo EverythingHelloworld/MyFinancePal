@@ -1,0 +1,19 @@
+<?php
+    $customer_id = $_GET["customerID"];
+    print($customer_id);
+    $connection = mysqli_connect("localhost","root","");
+    mysqli_select_db($connection,"MyFinancePal");
+
+    
+    $result = mysqli_query($connection, "select * from CustomerDetails where CustomerID = $customer_id ");
+    
+    $rs = array();
+    $i=0;
+    while($rs[] = mysqli_fetch_assoc($result)) {
+    // do nothing ;-)
+    }
+    mysqli_close($connection);
+
+    unset($rs[count($rs)-1]);  //removes a null value
+    print("{ \"CustomerDetails\":" . json_encode($rs) . "}");
+?>
