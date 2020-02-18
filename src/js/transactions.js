@@ -13,11 +13,11 @@ $("document").ready(() => {
 //4. Append all bank account transaction information to associated collapse element in main
 getCustomerData = (customer_id) => {
   $.getJSON(`php/getAccountsTransactions.php?customer_id=${customer_id}`, (data) => {
+    //console.log(data);
     let customerAccounts = getCustomerAccounts(data);
+    console.log(customerAccounts);
     let accountTransactions = getCustomerAccountTransactions(customerAccounts, data);
     sortCustomerAccountTransactions(accountTransactions);
-    console.log("Customer Accounts: " + JSON.stringify(customerAccounts));
-    console.log(accountTransactions);
     appendAccountTransactions(accountTransactions);
   });
 }
@@ -29,21 +29,21 @@ getCustomerAccounts = (data) => {
   //for every  object in data.accountTransactions
   //push only necessary bank account information to the array
   for (let i in data.accountTransactions) {
-    a.push({ "Account": i, "No": data.accountTransactions[i].accountID, "IBAN": data.accountTransactions[i].IBAN, "OpeningBalance": data.accountTransactions[i].OpeningBalance, "CurrentBalance": data.accountTransactions[i].CurrentBalance });
+    a.push({ "AccountID": data.accountTransactions[i].accountID, "IBAN": data.accountTransactions[i].IBAN, "OpeningBalance": data.accountTransactions[i].OpeningBalance, "CurrentBalance": data.accountTransactions[i].CurrentBalance });
   }
   //extract single unique accounts from accounts array (check account number)
-  return _.uniq(a, () => a.No);
+  return _.uniq(a, (x) => { return parseInt(x.AccountID) });
 
 }
 
 //Extract all customer transactions and associate them with the correct bank account
 //Creates a nested array of JSON objects for accounts and their associated transactions
 getCustomerAccountTransactions = (customerAccounts, data) => {
-  console.log(data);
+  //console.log(data);
   let t = [];
 
   for (let i in customerAccounts) {
-    t.push({ "AccountID": customerAccounts[i].No, "openingBalance": customerAccounts[i].OpeningBalance, "Transactions": [] });
+    t.push({ "AccountID": customerAccounts[i].AccountID, "openingBalance": customerAccounts[i].OpeningBalance, "Transactions": [] });
   }
 
   for (let i in t) {
