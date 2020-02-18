@@ -137,6 +137,9 @@ VALUES ('Current', 'IE12BOFI100004646355', 'BOFIIE333', '2', '2001-11-01', '2000
 INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance, Locked)
 VALUES ('Student', 'IE12BOFI100002563463', 'BOFIIE122', '3', '2003-05-01', '8000.00', '400.00', false);
 
+INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance, Locked)
+VALUES ('Current', 'IE12BOFI100001784459', 'BOFIIE333', '1', '2002-09-05', '1524.00', '226.00', false);
+
 INSERT INTO CustomerDetails (CustomerID, Password)
 VALUES ('1', 'password');
 

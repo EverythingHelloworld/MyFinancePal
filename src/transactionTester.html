@@ -1,0 +1,48 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="underscore.js"></script>
+  <script type="text/javascript" src="d3.min.js"></script>
+  <script type="text/javascript" src="js/headerandfooter.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/transactions.js"></script>
+</head>
+<style>
+</style>
+
+<body>
+  <!-- <div id='header'></div> -->
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">My Finance Pal</h1>
+      <p class="lead">Transaction Tester</p>
+    </div>
+  </div>
+  <div style="width:75%; float:right; margin-right: 20 " class="accordion" id="accordionExample">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+            aria-expanded="true" aria-controls="collapseOne">
+            Account 1
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="account-transactions" class="card-body">
+          Account Info Here.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
