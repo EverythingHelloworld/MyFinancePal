@@ -12,7 +12,7 @@ $("document").ready(() => {
 //3. Append bank account collapse element to main.html
 //4. Append all bank account transaction information to associated collapse element in main
 getCustomerData = (customer_id) => {
-  $.getJSON(`php/getAccountsTransactions.php?customer_id=${customer_id}`, (data) => {
+  $.getJSON(`../php/getAccountsTransactions.php?customer_id=${customer_id}`, (data) => {
     //console.log(data);
     let customerAccounts = [];
     let accountTransactions = [];
@@ -97,7 +97,7 @@ appendCustomerAccounts = (accounts) => {
       <div class="card-header" id="account-${i}-heading">
         <h5 class="mb-0">
           <button class="btn btn-link" data-toggle="collapse" data-target="#account-${i}-collapse" aria-label="glyphicon glyphicon-plus" aria-expanded="false" aria-controls="account-${i}-collapse">
-          Account ${accounts[i].IBAN}
+          <span>Account ${accounts[i].IBAN}</span>
           </button>
         </h5>
       </div>
