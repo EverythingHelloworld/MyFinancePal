@@ -13,11 +13,13 @@ $("document").ready(() => {
 //4. Append all bank account transaction information to associated collapse element in main
 getCustomerData = (customer_id) => {
   $.getJSON(`php/getAccountsTransactions.php?customer_id=${customer_id}`, (data) => {
-    console.log(data);
-    let customerAccounts = getCustomerAccounts(data);
-    console.log(customerAccounts);
-    let accountTransactions = getCustomerAccountTransactions(customerAccounts, data);
+    //console.log(data);
+    let customerAccounts = [];
+    let accountTransactions = [];
+    customerAccounts = getCustomerAccounts(data);
+    accountTransactions = getCustomerAccountTransactions(customerAccounts, data);
     sortCustomerAccountTransactions(accountTransactions);
+    appendCustomerAccounts(customerAccounts);
     appendAccountTransactions(accountTransactions);
   });
 }
@@ -84,12 +86,35 @@ sortCustomerAccountTransactions = (accountTransactions) => {
 
 }
 
+//Append the customer accounts information
+//to collapse bootsrap elements
+//These are cointainer elements to display account transaction data
+appendCustomerAccounts = (accounts) => {
+  $('#accounts-collapse-container').append(`<div id="accordion">   </div>`);
+  for (i in accounts) {
+    $('#accounts-collapse-container').append(`
+    <div class="card">
+      <div class="card-header" id="account-${i}-heading">
+        <h5 class="mb-0">
+          <button class="btn btn-link" data-toggle="collapse" data-target="#account-${i}-collapse" aria-label="glyphicon glyphicon-plus" aria-expanded="false" aria-controls="account-${i}-collapse">
+          Account ${accounts[i].IBAN}
+          </button>
+        </h5>
+      </div>
+  
+      <div id="account-${i}-collapse" class="collapse hide" aria-labelledby="account-${i}-heading" data-parent="#accordion">
+        <div id="account-${i}-body" class="card-body">
+        </div>
+      </div>`);
+  }
+}
+
 appendAccountTransactions = (accountTransactions) => {
-  $("#account-transactions").append(`<table width=80% id="table" border=1 padding=1><th style=text-align:center>Date</th><th th style=text-align:center>Description</th><th th style=text-align:center>Amount</th><th th style=text-align:center>Balance</th></table>`);
   for (i in accountTransactions) {
+    $("#account-" + i + "-body").append(`<table width=80% id="table${i}" border=1 padding=1><th style=text-align:center>Date</th><th th style=text-align:center>Description</th><th th style=text-align:center>Amount</th><th th style=text-align:center>Balance</th></table>`);
     for (j in accountTransactions[i].Transactions) {
       //console.log("test:" + accountTransactions[i].Transactions[j].Date);
-      $('#table').append(`<tr><td>${accountTransactions[i].Transactions[j].Date}</td><td>${accountTransactions[i].Transactions[j].Description}</td><td>${accountTransactions[i].Transactions[j].Amount}</td><td>${accountTransactions[i].Transactions[j].ClosingBalance}</td></tr>`);
+      $('#table' + i).append(`<tr><td>${accountTransactions[i].Transactions[j].Date}</td><td>${accountTransactions[i].Transactions[j].Description}</td><td>${accountTransactions[i].Transactions[j].Amount}</td><td>${accountTransactions[i].Transactions[j].ClosingBalance}</td></tr>`);
     }
   }
 
