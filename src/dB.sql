@@ -332,6 +332,22 @@ VALUES ('2003-07-24 18:01:13', 'Debit', 'Amazon', '250.00', 'Online Shopping', '
 INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
 VALUES ('2003-08-12 18:01:13', 'Debit', 'YESSTYLE', '132.00', 'Online Shopping', '100002');
 
+--Customer 1, 2nd Account Transactions
+
+INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance, Locked)
+VALUES ('Current', 'IE12BOFI100001784459', 'BOFIIE333', '1', '2002-09-05', '1750.00', '226.00', false);
+
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2003-07-11 10:30:19', 'Credit', 'Wages', '800', 'Income', '100003');
+
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2003-07-15 11:40:12', 'Debit', 'CarpetRight', '98.00', 'Household', '100003');
+
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2003-07-20 12:30:11', 'Credit', 'Wages', '822.00', 'Wages', '100003');
+
+
+
 
 INSERT INTO Payee (IBAN, BIC, Name, AccountID)
 VALUES('IE12BOFI1245002423554','BOFIIE123', 'Jemma Simmons', 100000);
