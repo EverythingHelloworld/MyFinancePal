@@ -41,6 +41,7 @@ CREATE TABLE CustomerDetails
 (
     `CustomerID` int(20) NOT NULL,
     `Password` VARCHAR(20) NOT NULL,
+    `LoginAttempts` int(1) NOT NULL,
     PRIMARY KEY(`CustomerID`),
     CONSTRAINT customer_Details_id_constraint
     FOREIGN KEY (CustomerID)
