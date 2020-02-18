@@ -1,3 +1,7 @@
+var dobVisible;
+var dob;
+var phoneNum;
+var correctLoginDetails = false;
 $("document").ready(function(){
     insertRandomField();
     handleLogin();
@@ -32,23 +36,33 @@ function handleLogin(){
     $("#btnLogin").click(function (){
         this.disabled=true;
         var customerID = $('#inputID').val();
-        console.log(customerID);
-        var dobVisible;
-        var correctLoginDetails = false;
-        if($('#inputDOB').length){
-            var dob = $('#inputDOB').val();
+        var dobDivExists = $('#inputDOB').length;
+        if(dobDivExists){
+            dob = $('#inputDOB').val();
             dobVisible = true;
         }else{
-            var phoneNum = $('#inputPhone').val();
+            phoneNum = $('#inputPhone').val();
             dobVisible = false;
         }  
         getCustomerDetails(customerID);
-
     })  
 
-    getCustomerDetails = (customer_id) => {
-        $.getJSON(`php/getLoginDetails.php?customer_id=${customer_id}`, (data) => {
-          console.log(data);
-        });
-      }
+    function getCustomerDetails(id){
+        $.getJSON(`php/getLoginDetails.php?customerID=${id}`, function(data) {
+            var customer = data.CustomerDetails[0];
+            if(dobVisible){
+                if(dob === customer.DOB)
+                    correctLoginDetails = true;
+            }else {
+                if(phoneNum === customer.PhoneNumber)
+                    correctLoginDetails = true;
+            }
+            if(correctLoginDetails){
+                document.cookie = `CustomerID=${customer.CustomerID}; path=/`;
+                window.location.href = "loginPIN.html";
+            }else{
+                //Add error message to div
+            }
+        });        
+    }
 }//close handleLogin

@@ -1,11 +1,9 @@
 <?php
-    $customer_id = $_GET["customerID"];
-    print($customer_id);
+    $customer_id = $_GET['customerID'];
     $connection = mysqli_connect("localhost","root","");
     mysqli_select_db($connection,"MyFinancePal");
 
-    
-    $result = mysqli_query($connection, "select * from CustomerDetails where CustomerID = $customer_id ");
+    $result = mysqli_query($connection, "select * from Customer c, CustomerDetails cd where c.CustomerID = cd.CustomerID and c.CustomerID=$customer_id");
     
     $rs = array();
     $i=0;
