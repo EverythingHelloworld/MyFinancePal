@@ -7,6 +7,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
   integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
   crossorigin="anonymous"></script>
+  y
 <script type="text/javascript" src="../libraries/underscore.js"></script>
 <script type="text/javascript" src="../libraries/d3.min.js"></script>
   <script type="text/javascript" src="../js/registration.js"></script>
@@ -26,18 +27,58 @@
           <div class="col-sm">
           </div>
           <div class="col-sm">
-            <form id="frmLogin">
+            <form id="frmRegister">
                 <div class="form-group row">
-                    <label for="inputIDLabel" class="col-sm-5 col-form-label">Customer ID:   </label>
-                    <div class="col-sm-7">
-                        <input type="text" class="form-control" value="" id="inputID" placeholder="Customer ID">
+                    <label for="nameLabel" class="col-sm-4 col-form-label">Name:   </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" value="" id="inputName" placeholder="">
                     </div>
                 </div>
-                <div class="form-group row" id="signInDiv">
-                    <div class="col-sm-10 offset-sm-2">
-                        <button type="submit" class="btn btn-primary" id="btnLogin">Sign in</button>
+
+                <div class="form-group row">
+                    <label for="dobLabel" class="col-sm-4 col-form-label">D.O.B:   </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" value="" id="inputDOB" placeholder="">
                     </div>
                 </div>
+
+                <div class="form-group row">
+                    <label for="streetLabel" class="col-sm-4 col-form-label">Street:   </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" value="" id="inputStreet" placeholder="">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="twnCtyLabel" class="col-sm-4 col-form-label">Town/City:   </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" value="" id="inputTwnCty" placeholder="">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="county" class="col-sm-4 col-form-label">County:   </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" value="" id="inputCounty" placeholder="">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="country" class="col-sm-4 col-form-label">Country:   </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" value="" id="input Country" placeholder="">
+                    </div>
+                </div>
+
+                <div class="form-group row" id="registerDiv">
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-primary btn-block" id="btnRegister">Register</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-primary btn-block" id="btnCancel">Cancel</button>
+                    </div>
+                </div>
+                
             </form>
           </div>
           <div class="col-sm">
