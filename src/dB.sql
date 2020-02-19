@@ -332,7 +332,7 @@ VALUES ('2003-07-24 18:01:13', 'Debit', 'Amazon', '250.00', 'Online Shopping', '
 INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
 VALUES ('2003-08-12 18:01:13', 'Debit', 'YESSTYLE', '132.00', 'Online Shopping', '100002');
 
---Customer 1, 2nd Account Transactions
+-- Customer 1, 2nd Account Transactions
 
 INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance, Locked)
 VALUES ('Current', 'IE12BOFI100001784459', 'BOFIIE333', '1', '2002-09-05', '1750.00', '226.00', false);
