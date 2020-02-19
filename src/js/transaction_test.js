@@ -17,11 +17,11 @@ getCustomerData = (customer_id) => {
   $.getJSON(`../php/getAccountsTransactions.php?customer_id=${customer_id}`, (data) => {
     //console.log(data);
     let customerAccounts = []; //array to store account objects
-    customerAccounts = getCustomerAccounts(data);
-    // console.log(customerAccounts);
-    sortCustomerAccountTransactions(customerAccounts);
-    appendCustomerAccounts(customerAccounts);
-    appendCustomerAccountsTransactions(customerAccounts);
+    customerAccounts = getCustomerAccounts(data); //1.
+    console.log(customerAccounts);
+    sortCustomerAccountTransactions(customerAccounts); //3.
+    appendCustomerAccounts(customerAccounts); //4.
+    appendCustomerAccountsTransactions(customerAccounts);//5.
   });
 }
 
@@ -81,7 +81,7 @@ appendCustomerAccounts = (accounts) => {
     <div class="card">
       <div class="card-header" id="account-${i}-heading">
         <h5 class="mb-0">
-          <button class="btn btn-link" data-toggle="collapse" data-target="#account-${i}-collapse" aria-expanded="false" aria-controls="account-${i}-collapse">
+          <button class="btn btn-link" data-toggle="collapse" data-target="#account-${i}-collapse" aria-label="glyphicon glyphicon-plus" aria-expanded="false" aria-controls="account-${i}-collapse">
           <span>Account ${accounts[i].IBAN}</span>
           </button>
         </h5>
@@ -95,20 +95,15 @@ appendCustomerAccounts = (accounts) => {
 }
 
 appendCustomerAccountsTransactions = (accounts) => {
+  console.log(accounts);
   for (i in accounts) {
     accounts[i].Transactions.reverse();
   }
   for (i in accounts) {
-    for (j in accounts[i].Transactions) {
-      let date = (accounts[i].Transactions[j].Date.slice(0, 10)).split("-").reverse();
-      console.log(date);
-    }
-  }
-  for (i in accounts) {
-    $("#account-" + i + "-body").append(`<table class="table table-striped" width=80% id="table${i}" padding=1><thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>`);
+    $("#account-" + i + "-body").append(`<table width=80% id="table${i}" border=1 padding=1><th style=text-align:center>Date</th><th th style=text-align:center>Description</th><th th style=text-align:center>Amount</th><th th style=text-align:center>Balance</th></table>`);
     for (j in accounts[i].Transactions) {
       //console.log("test:" + accountTransactions[i].Transactions[j].Date);
-      $('#table' + i + "-body").append(`<tr scope="row"><td>${accounts[i].Transactions[j].Date}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(accounts[i].Transactions[j].Amount).toFixed(2) : parseFloat(accounts[i].Transactions[j].Amount).toFixed(2)}</td><td>${accounts[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr>`);
+      $('#table' + i).append(`<tr><td>${accounts[i].Transactions[j].Date}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Amount}</td><td>${accounts[i].Transactions[j].ClosingBalance}</td></tr>`);
     }
   }
 
