@@ -17,11 +17,11 @@ getCustomerData = (customer_id) => {
   $.getJSON(`../php/getAccountsTransactions.php?customer_id=${customer_id}`, (data) => {
     //console.log(data);
     let customerAccounts = []; //array to store account objects
-    customerAccounts = getCustomerAccounts(data);
-    // console.log(customerAccounts);
-    sortCustomerAccountTransactions(customerAccounts);
-    appendCustomerAccounts(customerAccounts);
-    appendCustomerAccountsTransactions(customerAccounts);
+    customerAccounts = getCustomerAccounts(data); //1.
+    console.log(customerAccounts);
+    sortCustomerAccountTransactions(customerAccounts); //3.
+    appendCustomerAccounts(customerAccounts); //4.
+    appendCustomerAccountsTransactions(customerAccounts);//5.
   });
 }
 
@@ -81,7 +81,7 @@ appendCustomerAccounts = (accounts) => {
     <div class="card">
       <div class="card-header" id="account-${i}-heading">
         <h5 class="mb-0">
-          <button class="btn btn-link" data-toggle="collapse" data-target="#account-${i}-collapse" aria-expanded="false" aria-controls="account-${i}-collapse">
+          <button class="btn btn-link" data-toggle="collapse" data-target="#account-${i}-collapse" aria-label="glyphicon glyphicon-plus" aria-expanded="false" aria-controls="account-${i}-collapse">
           <span>Account ${accounts[i].IBAN}</span>
           </button>
         </h5>
@@ -95,32 +95,16 @@ appendCustomerAccounts = (accounts) => {
 }
 
 appendCustomerAccountsTransactions = (accounts) => {
+  console.log(accounts);
   for (i in accounts) {
     accounts[i].Transactions.reverse();
   }
-
   for (i in accounts) {
-    $("#account-" + i + "-body").append(`<table class="table table-striped" width=80% id="table${i}" padding=1><thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>`);
-    $("#account-" + i + "-body").append(`<div class="btn-group" style=float:right; margin:10 role="group" aria-label="Basic example"> <button type="button" class="btn btn-secondary">Manage Payees</button>
-    <button type="button" class="btn btn-secondary">View Statements</button>
-    <button type="button" class="btn btn-secondary">View All Transactions</button></div><br>`);
-    for (let j = 0; j < 25; j++) {
-      $('#table' + i + "-body").append(`<tr scope="row"><td>${formatDate(accounts[i].Transactions[j].Date)}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(accounts[i].Transactions[j].Amount).toFixed(2) : parseFloat(accounts[i].Transactions[j].Amount).toFixed(2)}</td><td>${accounts[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr>`);
+    $("#account-" + i + "-body").append(`<table width=80% id="table${i}" border=1 padding=1><th style=text-align:center>Date</th><th th style=text-align:center>Description</th><th th style=text-align:center>Amount</th><th th style=text-align:center>Balance</th></table>`);
+    for (j in accounts[i].Transactions) {
+      //console.log("test:" + accountTransactions[i].Transactions[j].Date);
+      $('#table' + i).append(`<tr><td>${accounts[i].Transactions[j].Date}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Amount}</td><td>${accounts[i].Transactions[j].ClosingBalance}</td></tr>`);
     }
-
   }
 
-}
-
-formatDate = (date) => {
-  let day = [], year = [], month = [], new_date = [];
-  let d = date.slice(0, 10);
-  day.push(d[8], d[9], d[7]);
-  month.push(d[05], d[06], d[04]);
-  year.push(d[0], d[1], d[2], d[3])
-  day = day.join('');
-  month = month.join('');
-  year = year.join('');
-  new_date.push(day, month, year);
-  return new_date.join('');
 }
