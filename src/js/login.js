@@ -55,14 +55,6 @@ function handleLogin(){
                 if(dob === customer.DOB)
                     correctLoginDetails = true;
             }else {
-                console.log('phone num exists');
-                console.log('db phone num is: ', typeof customer.PhoneNumber);
-                console.log('phone num is: ', typeof  phoneNum);
-                console.log('db phone num is: ', customer.PhoneNumber);
-                console.log('phone num is: ', phoneNum);
-                console.log('db phone num length is: ', customer.PhoneNumber.length);
-                console.log('phone num length is: ', phoneNum.length);
-                console.log('condition: ', phoneNum === customer.PhoneNumber);
                 if(phoneNum === customer.PhoneNumber)
                     correctLoginDetails = true;
             }
