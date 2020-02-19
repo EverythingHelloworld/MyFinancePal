@@ -98,18 +98,25 @@ appendCustomerAccountsTransactions = (accounts) => {
   for (i in accounts) {
     accounts[i].Transactions.reverse();
   }
-  for (i in accounts) {
-    for (j in accounts[i].Transactions) {
-      let date = (accounts[i].Transactions[j].Date.slice(0, 10)).split("-").reverse();
-      console.log(date);
-    }
-  }
+
   for (i in accounts) {
     $("#account-" + i + "-body").append(`<table class="table table-striped" width=80% id="table${i}" padding=1><thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>`);
-    for (j in accounts[i].Transactions) {
-      //console.log("test:" + accountTransactions[i].Transactions[j].Date);
-      $('#table' + i + "-body").append(`<tr scope="row"><td>${accounts[i].Transactions[j].Date}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(accounts[i].Transactions[j].Amount).toFixed(2) : parseFloat(accounts[i].Transactions[j].Amount).toFixed(2)}</td><td>${accounts[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr>`);
+    for (let j = 0; j < 25; j++) {
+      $('#table' + i + "-body").append(`<tr scope="row"><td>${formatDate(accounts[i].Transactions[j].Date)}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(accounts[i].Transactions[j].Amount).toFixed(2) : parseFloat(accounts[i].Transactions[j].Amount).toFixed(2)}</td><td>${accounts[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr>`);
     }
   }
 
+}
+
+formatDate = (date) => {
+  let day = [], year = [], month = [], new_date = [];
+  let d = date.slice(0, 10);
+  day.push(d[8], d[9], d[7]);
+  month.push(d[05], d[06], d[04]);
+  year.push(d[0], d[1], d[2], d[3])
+  day = day.join('');
+  month = month.join('');
+  year = year.join('');
+  new_date.push(day, month, year);
+  return new_date.join('');
 }
