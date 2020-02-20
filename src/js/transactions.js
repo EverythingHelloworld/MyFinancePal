@@ -2,7 +2,6 @@ $("document").ready(() => {
 
   //session__customer_id -> pull this from customer_id cookie
   getCustomerData(1); // -> pass session_customer_id to return and display all customer data
-
 });
 
 //Function
@@ -128,3 +127,4 @@ formatDate = (date) => {
   new_date.push(day, month, year);
   return new_date.join('');
 }
+
