@@ -2,17 +2,17 @@
 {
     $name = $_GET["name"];
     $dob = $_GET["dob"];
+    $townCity = $_GET["townCity"];
     $street = $_GET["street"];
-    $city = $_GET["city"];
     $county = $_GET["county"];
-    $country = $_GET["country"];
     $postcode = $_GET["postcode"];
     $phoneNo = $_GET["phoneNo"];
+    $password = $_GET["password"];
 
     $connection = mysqli_connect("localhost","root","");
     mysqli_select_db($connection,"myfinancepal");
-    $result = mysqli_query($connection,"INSERT INTO Customer (Name, DOB, City, Street, PostCode)
-    VALUES ('$name', '$dob', '$city', '$street', '$postcode');");
+    $result = mysqli_query($connection,"INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber)
+    VALUES ('$name', '$dob', '$townCity', '$street', '$county', '$postcode', '$phoneNo');");
 
     $rs = array();
     $i=0;

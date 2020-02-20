@@ -27,7 +27,7 @@ $("document").ready(function()
     {
         $("#data").empty();
 
-        $.getJSON(`php/updateCustomer.php?id=${uId.val()}&name=${uName.val()}&dob=${uDOB.val()}&city=${uCity.val()}&street=${uStreet.val()}&postcode=${uPostCode.val()}`, function(data)
+        $.getJSON(`../php/updateCustomer.php?id=${uId.val()}&name=${uName.val()}&dob=${uDOB.val()}&city=${uCity.val()}&street=${uStreet.val()}&postcode=${uPostCode.val()}`, function(data)
         { 
         });
 
@@ -46,7 +46,7 @@ $("document").ready(function()
     {
         $("#data").empty();
 
-        $.getJSON(`php/insertCustomer.php?name=${iName.val()}&dob=${iDOB.val()}&city=${iCity.val()}&street=${iStreet.val()}&postcode=${iPostCode.val()}`, function(data)
+        $.getJSON(`../php/insertCustomer.php?name=${iName.val()}&dob=${iDOB.val()}&city=${iCity.val()}&street=${iStreet.val()}&postcode=${iPostCode.val()}`, function(data)
         { 
         });
 
@@ -64,7 +64,7 @@ $("document").ready(function()
     {
         $("#data").empty();
 
-           $.getJSON(`php/getCustomer.php?id=${id.val()}`, function(data)
+           $.getJSON(`../php/getCustomer.php?id=${id.val()}`, function(data)
            {
                for(var i=0;i<data.customer.length;i++)
                {
