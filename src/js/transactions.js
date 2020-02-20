@@ -70,7 +70,6 @@ sortCustomerAccountTransactions = (accountTransactions) => {
       }
     }
   }
-  console.log(accountTransactions);
 }
 
 appendCustomerAccounts = (accounts) => {
@@ -81,7 +80,12 @@ appendCustomerAccounts = (accounts) => {
       <div class="card-header" id="account-${i}-heading">
         <h5 class="mb-0">
           <button class="btn btn-link" data-toggle="collapse" data-target="#account-${i}-collapse" aria-expanded="false" aria-controls="account-${i}-collapse">
-          <span>Account ${accounts[i].IBAN}</span>
+          <div class="container">
+            <div class="row align-items-center">
+              <div class="col">
+                <span>~${accounts[i].IBAN.substr(16)}</span>
+              </div>
+            </div>     
           </button>
         </h5>
       </div>
@@ -105,26 +109,11 @@ appendCustomerAccountsTransactions = (accounts) => {
     <button type="button" class="btn btn-secondary">View All Transactions</button></div><br>`);
     for (j in accounts[i].Transactions) {
       if (j < 25) { //number of recent transactions to show
-        $('#table' + i + "-body").append(`<tr scope="row"><td>${formatDate(accounts[i].Transactions[j].Date)}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(accounts[i].Transactions[j].Amount).toFixed(2) : parseFloat(accounts[i].Transactions[j].Amount).toFixed(2)}</td><td>${accounts[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr>`);
+        $('#table' + i + "-body").append(`<tr scope="row"><td>${formatDate(accounts[i].Transactions[j].Date)}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(accounts[i].Transactions[j].Amount).toFixed(2) : parseFloat(accounts[i].Transactions[j].Amount).toFixed(2)}</td ><td>${accounts[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr > `);
       }
     }
 
   }
 
-}
-
-//Returns reformated transaction date
-//YYYY-MM-DD -> DD-MM-YYYY
-formatDate = (date) => {
-  let day = [], year = [], month = [], new_date = [];
-  let d = date.slice(0, 10);
-  day.push(d[8], d[9], d[7]);
-  month.push(d[05], d[06], d[04]);
-  year.push(d[0], d[1], d[2], d[3])
-  day = day.join('');
-  month = month.join('');
-  year = year.join('');
-  new_date.push(day, month, year);
-  return new_date.join('');
 }
 
