@@ -7,7 +7,7 @@ $("document").ready(function(){
     "<li class='nav-item'><a class='nav-link' href='../html/main.html' class='external' style='color:rgba(255,255,255,.5);'>Home</a>" +
     "</li><li class='nav-item'><a class='nav-link' href='../html/analytics.html' class='external' style='color:rgba(255,255,255,.5);'>Analytics</a>" +
     "</li><li class='nav-item'><a class='nav-link' href='../html/transfer.html' class='external' style='color:rgba(255,255,255,.5);'>Transfer</a>" +
-    "</li><li class='nav-item'><a class='nav-link' href='../html/applyOnline.html' class='external' style='color:rgba(255,255,255,.5);'>Apply Online</a>" +
+    "</li><li class='nav-item'><a class='nav-link' href='../html/loan.html' class='external' style='color:rgba(255,255,255,.5);'>Loan</a>" +
     "</li></ul></div></nav><br/>");
       
       //Change links in header depending on whether or not admin is logged in
@@ -16,6 +16,4 @@ $("document").ready(function(){
       // }else{
       //   $("#header").append("| <a href=login.html>Login</a>");
       // }
-      
-    $("#footer").html("Footer here");
 })
