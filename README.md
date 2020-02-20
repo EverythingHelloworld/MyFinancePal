@@ -32,13 +32,12 @@ Let everyone else know you've pushed something!
 **
     If you have merge conflicts, click on the source control button (looks like a tree) 
     and open the files with the conflicts. Incoming changes are what is different on github
-    current changes are what you are trying to push. Make sure your commit went through.
-    After that review the code to see which option to choose. You will have to choose
+     and current changes are what you are trying to push. Make sure your commit went through.
+    After that, review the code to see which option to choose. You will have to choose
     which changes to accept and / or reject. If you're not sure, ask someone else. If
     you're sure you've fixed the conflict, enter the following commands:
 
-    git status (this shows you which files you have changed, good to check in case you accidentally changed something - 
-    these are listed in red because they are unstaged i.e. not in the list of files to be committed)
+    git status 
 
     git add . (since you accepted or rejected changes the files 
     are different and you need to stage them again)
