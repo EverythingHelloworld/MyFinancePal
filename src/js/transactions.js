@@ -101,11 +101,11 @@ appendCustomerAccountsTransactions = (accounts) => {
 
   for (i in accounts) {
     $("#account-" + i + "-body").append(`<table class="table table-striped" width=80% id="table${i}" padding=1><thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>`);
-    $("#account-" + i + "-body").append(`<div class="btn-group" style=float:right; margin:10 role="group" aria-label="Basic example"> <button type="button" class="btn btn-secondary">Manage Payees</button>
+    $("#account-" + i + "-body").append(`<div class="btn-group" style=float:right; margin:10 role="group" aria-label="account-options"> <button type="button" class="btn btn-secondary">Manage Payees</button>
     <button type="button" class="btn btn-secondary">View Statements</button>
     <button type="button" class="btn btn-secondary">View All Transactions</button></div><br>`);
     for (j in accounts[i].Transactions) {
-      if (j < 25) {
+      if (j < 25) { //number of recent transactions to show
         $('#table' + i + "-body").append(`<tr scope="row"><td>${formatDate(accounts[i].Transactions[j].Date)}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(accounts[i].Transactions[j].Amount).toFixed(2) : parseFloat(accounts[i].Transactions[j].Amount).toFixed(2)}</td><td>${accounts[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr>`);
       }
     }
