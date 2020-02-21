@@ -2,16 +2,16 @@ var dobVisible;
 var dob;
 var phoneNum;
 var correctLoginDetails = false;
-$("document").ready(function(){
+$("document").ready(function () {
     insertRandomField();
     handleLogin();
 })
 
-function insertRandomField(){
+function insertRandomField() {
     var randomNumber = Math.round(Math.random());
     //console.log(randomNumber);
 
-    if(randomNumber == 0){
+    if (randomNumber == 0) {
         //Insert DOB field
         $("#signInDiv").before(`<div class="form-group row">
         <label for="inputDOBLabel" class="col-sm-5 col-form-label">Date of Birth:   </label>
@@ -20,7 +20,7 @@ function insertRandomField(){
         </div>
     </div>`);
 
-    }else{
+    } else {
         //Insert Phone Num field
         $("#signInDiv").before(`<div class="form-group row">
         <label for="inputPhoneLabel" class="col-sm-5 col-form-label">Phone Number:   </label>
@@ -32,39 +32,39 @@ function insertRandomField(){
 
 }
 
-function handleLogin(){
-    $("#btnLogin").click(function (){
-        this.disabled=true;
+function handleLogin() {
+    $("#btnLogin").click(function () {
+        this.disabled = true;
         var customerID = $('#inputID').val();
         var dobDivExists = $('#inputDOB').length;
-        if(dobDivExists){
+        if (dobDivExists) {
             dob = $('#inputDOB').val();
             dobVisible = true;
-        }else{
+        } else {
             phoneNum = $('#inputPhone').val();
             dobVisible = false;
-        }  
+        }
         getCustomerDetails(customerID);
-    })  
+    })
 
-    function getCustomerDetails(id){
-        $.getJSON(`../php/getLoginDetails.php?customerID=${id}`, function(data) {
+    function getCustomerDetails(id) {
+        $.getJSON(`../php/getLoginDetails.php?customerID=${id}`, function (data) {
             console.log(data);
             var customer = data.CustomerDetails[0];
-            if(dobVisible){
-                if(dob === customer.DOB)
+            if (dobVisible) {
+                if (dob === customer.DOB)
                     correctLoginDetails = true;
-            }else {
-                if(phoneNum === customer.PhoneNumber)
+            } else {
+                if (phoneNum === customer.PhoneNumber)
                     correctLoginDetails = true;
             }
-            if(correctLoginDetails){
+            if (correctLoginDetails) {
                 document.cookie = `CustomerID=${customer.CustomerID}; path=/`;
                 window.location.href = "loginPIN.html";
-            }else{
+            } else {
                 //Add error message to div
                 console.log('incorrect login details');
             }
-        });        
+        });
     }
 }//close handleLogin

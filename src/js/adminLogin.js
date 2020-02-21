@@ -19,7 +19,7 @@ getAdminDetails = (id, password) => {
     .done((data) => {
       let admin = data.AdminDetails[0];
       if (password === admin.Password) {
-        document.cookie = `AdminID=${admin.adminID}; path=/`;
+        document.cookie = `Admin=${admin.AdminID}; path=/`;
         window.location.href = "admin.html";
       }
       console.log(admin);
