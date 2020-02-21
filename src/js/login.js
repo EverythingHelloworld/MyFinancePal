@@ -6,7 +6,7 @@ $("document").ready(function(){
     handleLogin();
 })
 
-function insertRandomField(){
+function insertRandomField() {
     var randomNumber = Math.round(Math.random());
 
     //If random number is equal to 0 show dob field, else show phone num field
@@ -27,7 +27,6 @@ function insertRandomField(){
             </div>
         </div>`)
     }
-
 }
 
 //On click handler for login button
@@ -53,51 +52,57 @@ function handleLogin(){
             $('#signInDiv').before('<div id=errorMessage></div>');
             $('#errorMessage').attr('class', 'alert alert-danger text-center');
             $('#errorMessage').attr('role', 'alert');
-            $('#errorMessage').text('Incorrect login details');
+            $('#errorMessage').text('All fields are required!');
         }else {
             getCustomerDetails(customerID);
         }    
     })  
 
     //Retrieves customer details from db and checks if the values entered are valid
-    function getCustomerDetails(id){
-        var correctLoginDetails = false;
-        //Gets customer details from db
-        $.getJSON(`../php/getLoginDetails.php?customerID=${id}`, function(data) {
-            var customer = data.CustomerDetails[0];
-            var errorMessage;
-            /*If data is returned, check if it matches db values, 
-            else show error message*/
-            if(data.CustomerDetails.length > 0){
-                //Check if dob/phone num entered matches db value
-                if(dobVisible){
-                    if(dob === customer.DOB){
-                        correctLoginDetails = true;
+        function getCustomerDetails(id){
+            var correctLoginDetails = false;
+            //Gets customer details from db
+            $.getJSON(`../php/getLoginDetails.php?customerID=${id}`, function(data) {
+                var customer = data.CustomerDetails[0];
+                var errorMessage;
+                /*If data is returned, check if it matches db values, 
+                else show error message*/
+                if(data.CustomerDetails.length > 0){
+                    //Check if dob/phone num entered matches db value
+                    if(dobVisible){
+                        if(dob === customer.DOB){
+                            correctLoginDetails = true;
+                        }else {
+                            //Display incorrect DOB error message
+                            errorMessage = 'Incorrect date of birth';
+                        }
+                    }else {
+                        if(phoneNum === customer.PhoneNumber){
+                            correctLoginDetails = true;
+                        }else{
+                            //Display incorrect DOB error message
+                            errorMessage = 'Incorrect phone number';
+                        }
                     }
                 }else {
-                    if(phoneNum === customer.PhoneNumber){
-                        correctLoginDetails = true;
-                    }
+                    errorMessage = 'You are not a registered customer';
                 }
-            }else{
-                errorMessage = 'Incorrect login details';
-            }
-            
-            /*If the customer correctly entered their details, set the customer id
-             cookie and take them to the loginPIN page. Cookie expires in 15 minutes.*/
-            if(correctLoginDetails){
-                var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
-                Cookies.set('customerID', id, {
-                    expires: inFifteenMinutes
-                });
-                window.location.href = "loginPIN.html";
-            }else{
-                //Add error message to div
-                $('#signInDiv').before('<div id=errorMessage></div>');
-                $('#errorMessage').attr('class', 'alert alert-danger text-center');
-                $('#errorMessage').attr('role', 'alert');
-                $('#errorMessage').text(errorMessage);
-            }
-        });        
+                
+                /*If the customer correctly entered their details, set the customer id
+                cookie and take them to the loginPIN page. Cookie expires in 15 minutes.*/
+                if(correctLoginDetails){
+                    var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
+                    Cookies.set('customerID', id, {
+                        expires: inFifteenMinutes
+                    });
+                    window.location.href = "loginPIN.html";
+                } else {
+                    //Add error message to div
+                    $('#signInDiv').before('<div id=errorMessage></div>');
+                    $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                    $('#errorMessage').attr('role', 'alert');
+                    $('#errorMessage').text(errorMessage);
+                }
+            })
     }
 }//close handleLogin

@@ -1,26 +1,31 @@
 $("document").ready(() => {
   handleLogin();
-})
+});
 
 handleLogin = () => {
-  $("#btnLogin").click(() => {
-    this.disabled = true;
-    var adminID = $('#inputID').val();
-    var password = $('#inputPassword').val();
+  $("#btnAdminLogin").on('click', () => {
+    // this.disabled = true;
+    console.log("test");
+    let adminID = $('#inputAdminID').val();
+    let password = $('#inputAdminPassword').val();
+    console.log("ID:", adminID);
+    console.log("Password:", password);
     getAdminDetails(adminID, password);
   })
+}
 
-  getAdminDetails = (id, password) => {
-    $.getJSON(`../php/getAdminDetails.php?AdminID=${id}`, (data) => {
-      console.log(data);
-      var Admin = data.AdminDetails[0];
-      if (password === Admin.Password) {
-        document.cookie = `AdminID=${Admin.AdminID}; path=/`;
+getAdminDetails = (id, password) => {
+  $.getJSON(`../php/getAdminDetails.php?adminID=${id}`)
+    .done((data) => {
+      let admin = data.AdminDetails[0];
+      if (password === admin.Password) {
+        document.cookie = `Admin=${admin.AdminID}; path=/`;
         window.location.href = "admin.html";
-      } else {
-        //Add error message to div
-        console.log('incorrect login details');
       }
-    });
-  }
+      console.log(admin);
+    })
+    .fail(() => {
+      console.log("fail");
+    })
+
 }//close handleLogin
