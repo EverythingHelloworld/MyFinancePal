@@ -1,7 +1,6 @@
 var dobVisible;
 var dob;
 var phoneNum;
-var correctLoginDetails = false;
 $("document").ready(function(){
     insertRandomField();
     handleLogin();
@@ -9,61 +8,95 @@ $("document").ready(function(){
 
 function insertRandomField(){
     var randomNumber = Math.round(Math.random());
-    //console.log(randomNumber);
 
+    //If random number is equal to 0 show dob field, else show phone num field
     if(randomNumber == 0){
         //Insert DOB field
         $("#signInDiv").before(`<div class="form-group row">
-        <label for="inputDOBLabel" class="col-sm-5 col-form-label">Date of Birth:   </label>
-        <div class="col-sm-7">
-            <input type="text" class="form-control" id="inputDOB" placeholder="Date of Birth">
-        </div>
-    </div>`);
-
+            <label for="inputDOBLabel" class="col-sm-5 col-form-label">Date of Birth:   </label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="inputDOB" placeholder="Date of Birth">
+            </div>
+        </div>`);
     }else{
         //Insert Phone Num field
         $("#signInDiv").before(`<div class="form-group row">
-        <label for="inputPhoneLabel" class="col-sm-5 col-form-label">Phone Number:   </label>
-        <div class="col-sm-7">
-            <input type="text" class="form-control" id="inputPhone" placeholder="Phone No.">
-        </div>
-    </div>`)
+            <label for="inputPhoneLabel" class="col-sm-5 col-form-label">Phone Number:   </label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="inputPhone" placeholder="Phone No.">
+            </div>
+        </div>`)
     }
 
 }
 
+//On click handler for login button
 function handleLogin(){
     $("#btnLogin").click(function (){
-        this.disabled=true;
+        //Set customer id to customer ID from input field
         var customerID = $('#inputID').val();
+        //Check if dob field exists
         var dobDivExists = $('#inputDOB').length;
         if(dobDivExists){
+            //set dob to dob from input field
             dob = $('#inputDOB').val();
+            //This boolean is used so that we know which value to match from the db
             dobVisible = true;
         }else{
+            //set dob to dob from input field
             phoneNum = $('#inputPhone').val();
             dobVisible = false;
         }  
-        getCustomerDetails(customerID);
+        /*If any of the fields are empty, do not do the db call and show error message,
+        else getCustomerDetails from db*/
+        if((dob === '' || phoneNum === '') || customerID === ''){
+            $('#signInDiv').before('<div id=errorMessage></div>');
+            $('#errorMessage').attr('class', 'alert alert-danger text-center');
+            $('#errorMessage').attr('role', 'alert');
+            $('#errorMessage').text('Incorrect login details');
+        }else {
+            getCustomerDetails(customerID);
+        }    
     })  
 
+    //Retrieves customer details from db and checks if the values entered are valid
     function getCustomerDetails(id){
+        var correctLoginDetails = false;
+        //Gets customer details from db
         $.getJSON(`../php/getLoginDetails.php?customerID=${id}`, function(data) {
-            console.log(data);
             var customer = data.CustomerDetails[0];
-            if(dobVisible){
-                if(dob === customer.DOB)
-                    correctLoginDetails = true;
-            }else {
-                if(phoneNum === customer.PhoneNumber)
-                    correctLoginDetails = true;
+            var errorMessage;
+            /*If data is returned, check if it matches db values, 
+            else show error message*/
+            if(data.CustomerDetails.length > 0){
+                //Check if dob/phone num entered matches db value
+                if(dobVisible){
+                    if(dob === customer.DOB){
+                        correctLoginDetails = true;
+                    }
+                }else {
+                    if(phoneNum === customer.PhoneNumber){
+                        correctLoginDetails = true;
+                    }
+                }
+            }else{
+                errorMessage = 'Incorrect login details';
             }
+            
+            /*If the customer correctly entered their details, set the customer id
+             cookie and take them to the loginPIN page. Cookie expires in 15 minutes.*/
             if(correctLoginDetails){
-                document.cookie = `CustomerID=${customer.CustomerID}; path=/`;
+                var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
+                Cookies.set('customerID', id, {
+                    expires: inFifteenMinutes
+                });
                 window.location.href = "loginPIN.html";
             }else{
                 //Add error message to div
-                console.log('incorrect login details');
+                $('#signInDiv').before('<div id=errorMessage></div>');
+                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('role', 'alert');
+                $('#errorMessage').text(errorMessage);
             }
         });        
     }
