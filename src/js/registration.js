@@ -2,6 +2,9 @@ window.onload = function()
 {
     $("#btnRegister").click(function() 
     {
+
+        //check if mobile number is already registered
+
         //Get all text field entries
         var name = $("#inputName").val();
         var dob = $("#inputDate").val();
@@ -11,18 +14,28 @@ window.onload = function()
         var postcode = $("#inputPostcode").val();
         var phoneNo = $("#inputPhoneNo").val();
 
-        //Validate entries
+        //Validate date
+        var datePatt = new RegExp("[0-9/]");
+        var stTwnPostPatt = new RegExp("[a-zA-Z0-9_, ]");
 
 
+        if(!datePatt.test(dob))
+        {
 
+        }
+        else
+        {
         //Generate 6 digit password - needs to go to customerdetails table and the rest to customer table
-        var password = Math.floor(100000 + Math.random() * 900000);
+            var password = Math.floor(100000 + Math.random() * 900000);
 
+            $.getJSON(`../php/registerCustomer.php?name=${name}&dob=${dob}&street=${street}&townCity=${townCity}&county=${county}&postcode=${postcode}&phoneNo=${phoneNo}&password=${password}`, function(data)
+            { 
+            });
 
+            $("#displayPass").append("<b>Login Password: </b>"+password)
+            $("#regModal").modal();
+        }
 
-        $.getJSON(`../php/registerCustomer.php?name=${name}&dob=${dob}&street=${street}&townCity=${townCity}&county=${county}&postcode=${postcode}&phoneNo=${phoneNo}&password=${password}`, function(data)
-        { 
-        });
-
+        
     });
 }
