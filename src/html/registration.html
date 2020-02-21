@@ -32,7 +32,10 @@
                 <div class="form-group row">
                     <label for="nameLabel" class="col-sm-4 col-form-label">Name:   </label>
                     <div class="col-sm-8">
-                        <input onkeypress="return /[a-z ]/i.test(event.key)" type="text" class="form-control" value="" id="inputName" placeholder="" required>
+                        <input onkeypress="return /[a-z ]/i.test(event.key)" type="text" class="form-control" value="" id="inputName" placeholder="" required>asdasd</input>
+                        <div class="invalid-feedback">
+                          Please choose a name.
+                        </div>
                     </div>
                 </div>
 
@@ -78,7 +81,7 @@
                 <div class="form-group row">
                     <label for="postCode" class="col-sm-4 col-form-label">Phone No:   </label>
                     <div class="col-sm-8">
-                        <input type="number" class="form-control" value="" id="inputPhoneNo" placeholder="" required>
+                        <input onkeypress="return /^[0-9]*$/i.test(event.key)" type="text" class="form-control" value="" id="inputPhoneNo" placeholder="" required>
                     </div>
                 </div>
 
