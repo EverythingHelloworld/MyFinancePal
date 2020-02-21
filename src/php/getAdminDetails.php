@@ -1,5 +1,5 @@
 <?php
-    $admin_id = $_GET['adminID'];
+    $admin_id = $_GET["adminID"];
     $connection = mysqli_connect("localhost","root","");
     mysqli_select_db($connection,"MyFinancePal");
 
