@@ -78,16 +78,17 @@ appendCustomerAccounts = (accounts) => {
    for (i in accounts) {
       $('#accounts-collapse-container').append(`
      <div class="card">
-       <div class="card-header" id="account-${i}-heading">
+       <div class="card-header" height="100px" id="account-${i}-heading">
          <h5 class="mb-0">
-           <button class="btn btn-link" data-toggle="collapse" data-target="#account-${i}-collapse" aria-expanded="false" aria-controls="account-${i}-collapse">
+           <button id="btn-collapse-${i}" class="btn btn-link" data-toggle="collapse" data-target="#account-${i}-collapse" aria-expanded="false" aria-controls="account-${i}-collapse">
            <div class="container">
              <div class="row align-items-center">
                <div class="col">
-                 <span>~${accounts[i].IBAN.substr(16)}</span>
+               <i id="btn-collapse-symbol${i}" class="fas fa-plus"></i>
                </div>
              </div>     
            </button>
+           <span>~${accounts[i].AccountID}</span>
          </h5>
        </div>
    
@@ -116,14 +117,9 @@ appendCustomerAccountsTransactions = (accounts) => {
 
    }
    bindCustomerAccountButtonFunctions(accounts);
-
 }
 
 bindCustomerAccountButtonFunctions = (accounts) => {
-   for (i in accounts) {
-      $(`#account-${i}-transactions-btn`).on('click', () => {
-         console.log('test');
-      })
-   }
+
 }
 
