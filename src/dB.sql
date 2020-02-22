@@ -113,13 +113,13 @@ ALTER TABLE Account AUTO_INCREMENT=100000;
 -- select * from Account where locked = 0/1
 
 INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber)
-VALUES ('Aaryn MacCullagh', '1993/10/10', 'Letterkenny', '123 Street', 'Donegal', '0000', '0861111111');
+VALUES ('TestCus1', '1993/10/10', 'Letterkenny', '123 Street', 'Donegal', '0000', '0861111111');
 
 INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber)
-VALUES ('Daisy Johnson', '1991/12/10', 'Dublin', '456 Street', 'Dublin', '1111', '0862222222');
+VALUES ('TestCus2', '1991/12/10', 'Dublin', '456 Street', 'Dublin', '1111', '0862222222');
 
 INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber)
-VALUES ('Chloe Bennett', '1994/10/05', 'Cork', '678 Street', 'Cork', '2222', '0863333333');
+VALUES ('TestCus3', '1994/10/05', 'Cork', '678 Street', 'Cork', '2222', '0863333333');
 
 INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance, Locked)
 VALUES ('Student', 'IE12BOFI100002423554', 'BOFIIE234', '1', '2000-01-01', '1000.00', '100.00', false);
@@ -134,13 +134,13 @@ INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBal
 VALUES ('Current', 'IE12BOFI100001784459', 'BOFIIE333', '1', '2002-09-05', '1524.00', '226.00', false);
 
 INSERT INTO CustomerDetails (CustomerID, Password)
-VALUES ('1', 'password');
+VALUES ('1', '123456');
 
 INSERT INTO CustomerDetails (CustomerID, Password)
-VALUES ('2', 'password2');
+VALUES ('2', '123456');
 
 INSERT INTO CustomerDetails (CustomerID, Password)
-VALUES ('3', 'password3');
+VALUES ('3', '123456');
 
 INSERT INTO AdminDetails (AdminID, Password)
 VALUES ('1234', 'admin');

@@ -81,9 +81,14 @@
 
                 <div class="form-group row">
                     <label for="postCode" class="col-sm-4 col-form-label">Phone No:   </label>
-                    <div class="col-sm-8">
-                        <input onkeypress="return /^[0-9]*$/i.test(event.key)" type="text" class="form-control" value="" id="inputPhoneNo" placeholder="" required>
+                    <div class="col-sm-4">
+                      <select class="form-control" value="" id="inputPrefix" placeholder="" required>
+                        <option>083</option><option>085</option><option>086</option><option>087</option><option>089</option>
+                    </select>
                     </div>
+                    <div class="col-sm-4">
+                      <input onkeypress="return /^[0-9]*$/i.test(event.key)" type="text" class="form-control" value="" id="inputPhoneNo" placeholder="" required>
+                  </div>
                 </div>
 
                 <div class="form-group row" id="registerDiv">
@@ -112,7 +117,7 @@
           </button>
         </div>
         <div class="modal-body">
-        The following is your Customer ID & Password, please store them somewhere safe!
+        The following is your Customer ID & Password. Please store them somewhere safe!
         <div id = "displayPass"></div>
         </div>
         <div class="modal-footer">
