@@ -1,5 +1,5 @@
 <?php
-{
+
     $name = $_GET["name"];
     $dob = $_GET["dob"];
     $townCity = $_GET["townCity"];
@@ -14,14 +14,5 @@
     $result = mysqli_query($connection,"INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber)
     VALUES ('$name', '$dob', '$townCity', '$street', '$county', '$postcode', '$phoneNo');");
 
-    $rs = array();
-    $i=0;
-    while($rs[] = mysqli_fetch_assoc($result)) {
-    // do nothing ;-)
-    }
     mysqli_close($connection);
-
-    unset($rs[count($rs)-1]);  //removes a null value
-    print("{ \"customer\":" . json_encode($rs) . "}");
-}
 ?>

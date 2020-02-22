@@ -17,74 +17,83 @@ window.onload = function()
         { 
             for(var i=0;i<data.customer.length;i++)
 		    {
-                console.log(data.customer[i].PhoneNumber == phoneNo);
                 if(data.customer[i].PhoneNumber == phoneNo)
                 {
                     sameNumber = true;
                 }                  
             }
             
-        //RegEx patterns for inputs
-        var datePatt = new RegExp(/^\d{4}-\d{2}-\d{2}$/);
-        var stTwnPostPatt = new RegExp("^[a-zA-Z0-9 ]+$");
-        var phoneNoPatt = new RegExp("^[0-9]+$");
-        var namePatt = new RegExp("^[a-zA-Z ]+$");
+            //RegEx patterns for inputs
+            var datePatt = new RegExp(/^\d{4}-\d{2}-\d{2}$/);
+            var stTwnPostPatt = new RegExp("^[a-zA-Z0-9 ]+$");
+            var phoneNoPatt = new RegExp("^[0-9]+$");
+            var namePatt = new RegExp("^[a-zA-Z ]+$");
 
-        //If mobile number is registered display modal 
-        if(sameNumber)
-        {
-            $("#numberModal").modal();
-        }
-        //Check each fields pattern
-        else if(!datePatt.test(dob) )
-        {
+            //If mobile number is registered display modal 
+            if(sameNumber)
+            {
+                $("#numberModal").modal();
+            }
+            //Check each fields pattern
+            else if(!datePatt.test(dob) )
+            {
 
-        }
+            }
 
-        else if(name == "" || (!namePatt.test(name)))
-        {
+            else if(name == "" || (!namePatt.test(name)))
+            {
+                
+            }
+
+            else if(!stTwnPostPatt.test(street))
+            {
+
+            }
+
+            else if(!stTwnPostPatt.test(townCity))
+            {
+
+            }
+
+            else if(!stTwnPostPatt.test(postcode))
+            {
+
+            }
+
+            else if(!phoneNoPatt.test(phoneNo))
+            {
+
+            }
+
+            else
+            {
+                //Generate 6 digit password
+                var password = Math.floor(100000 + Math.random() * 900000);
             
-        }
+                //Insert details into customer table
+                $.getJSON(`../php/registerCustomer.php?name=${name}&dob=${dob}&street=${street}&townCity=${townCity}&county=${county}&postcode=${postcode}&phoneNo=${phoneNo}&password=${password}`, function(data)
+                { 
+                    
+                });
 
-        else if(!stTwnPostPatt.test(street))
-        {
+                //Retrieve Customer ID & Display modal with account details
+                $.getJSON(`../php/getCustomerID.php?phoneNo=${phoneNo}`, function(data)
+                { 
 
-        }
+                    for(var i=0;i<data.customer.length;i++)
+                    {
+                        var id = data.customer[i].CustomerID;          
+                    }       
 
-        else if(!stTwnPostPatt.test(townCity))
-        {
+                    //Show modal and display password + CustomerID
+                    $("#displayPass").empty();
+                    $("#displayPass").append("<b>Customer ID: </b>"+id+"<br>");
+                    $("#displayPass").append("<b>Login Password: </b>"+password);
+                    $("#regModal").modal();
 
-        }
-
-        else if(!stTwnPostPatt.test(postcode))
-        {
-
-        }
-
-        else if(!phoneNoPatt.test(phoneNo))
-        {
-
-        }
-
-        else
-        {
-            //Generate 6 digit password
-            var password = Math.floor(100000 + Math.random() * 900000);
-        
-            //Insert details into customer table
-            $.getJSON(`../php/registerCustomer.php?name=${name}&dob=${dob}&street=${street}&townCity=${townCity}&county=${county}&postcode=${postcode}&phoneNo=${phoneNo}&password=${password}`, function(data)
-            { 
-            });
-            //Get customer id 
-
-            //Show modal and display password
-            $("#displayPass").empty();
-            $("#displayPass").append("<b>Login Password: </b>"+password);
-            $("#regModal").modal();
-        }
-
-        });
-        
+                });
+            }
+        });  
     });
 
     $("#btnCancel").click(function() 
