@@ -27,7 +27,6 @@ CREATE TABLE Account
     `OpeningDate` DATE NOT NULL,
     `CurrentBalance` decimal(20,2) NOT NULL,
     `OpeningBalance` decimal(20,2) NOT NULL,
-    `Locked` boolean NOT NULL,
     PRIMARY KEY(`AccountID`),
     CONSTRAINT customer_id_constraint
     FOREIGN KEY (CustomerID)
@@ -41,6 +40,7 @@ CREATE TABLE CustomerDetails
     `CustomerID` int(20) NOT NULL,
     `Password` VARCHAR(20) NOT NULL,
     `LoginAttempts` int(1) NOT NULL,
+    `Locked` boolean NOT NULL,
     PRIMARY KEY(`CustomerID`),
     CONSTRAINT customer_Details_id_constraint
     FOREIGN KEY (CustomerID)
@@ -121,26 +121,26 @@ VALUES ('TestCus2', '1991/12/10', 'Dublin', '456 Street', 'Dublin', '1111', '086
 INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber)
 VALUES ('TestCus3', '1994/10/05', 'Cork', '678 Street', 'Cork', '2222', '0863333333');
 
-INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance, Locked)
-VALUES ('Student', 'IE12BOFI100002423554', 'BOFIIE234', '1', '2000-01-01', '1000.00', '100.00', false);
+INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
+VALUES ('Student', 'IE12BOFI100002423554', 'BOFIIE234', '1', '2000-01-01', '1000.00', '100.00');
 
-INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance, Locked)
-VALUES ('Current', 'IE12BOFI100004646355', 'BOFIIE333', '2', '2001-11-01', '2000.00', '500.00', false);
+INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
+VALUES ('Current', 'IE12BOFI100004646355', 'BOFIIE333', '2', '2001-11-01', '2000.00', '500.00');
 
-INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance, Locked)
-VALUES ('Student', 'IE12BOFI100002563463', 'BOFIIE122', '3', '2003-05-01', '8000.00', '400.00', false);
+INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
+VALUES ('Student', 'IE12BOFI100002563463', 'BOFIIE122', '3', '2003-05-01', '8000.00', '400.00');
 
-INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance, Locked)
-VALUES ('Current', 'IE12BOFI100001784459', 'BOFIIE333', '1', '2002-09-05', '1524.00', '226.00', false);
+INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
+VALUES ('Current', 'IE12BOFI100001784459', 'BOFIIE333', '1', '2002-09-05', '1524.00', '226.00');
 
-INSERT INTO CustomerDetails (CustomerID, Password)
-VALUES ('1', '123456');
+INSERT INTO CustomerDetails (CustomerID, Password, LoginAttempts, Locked)
+VALUES ('1', '123456', 0, false);
 
-INSERT INTO CustomerDetails (CustomerID, Password)
-VALUES ('2', '123456');
+INSERT INTO CustomerDetails (CustomerID, Password, LoginAttempts, Locked)
+VALUES ('2', '123456', 0, false);
 
-INSERT INTO CustomerDetails (CustomerID, Password)
-VALUES ('3', '123456');
+INSERT INTO CustomerDetails (CustomerID, Password, LoginAttempts, Locked)
+VALUES ('3', '123456', 0, false);
 
 INSERT INTO AdminDetails (AdminID, Password)
 VALUES ('1234', 'admin');
@@ -333,8 +333,8 @@ VALUES ('2003-08-12 18:01:13', 'Debit', 'YESSTYLE', '132.00', 'Online Shopping',
 
 -- Customer 1, 2nd Account Transactions
 
-INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance, Locked)
-VALUES ('Current', 'IE12BOFI100001784459', 'BOFIIE333', '1', '2002-09-05', '1750.00', '226.00', false);
+INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
+VALUES ('Current', 'IE12BOFI100001784459', 'BOFIIE333', '1', '2002-09-05', '1750.00', '226.00');
 
 INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
 VALUES ('2003-07-11 10:30:19', 'Credit', 'Wages', '800', 'Income', '100003');

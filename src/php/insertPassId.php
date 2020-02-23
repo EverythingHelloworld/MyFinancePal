@@ -5,8 +5,8 @@
 
     $connection = mysqli_connect("localhost","root","");
     mysqli_select_db($connection,"myfinancepal");
-    $result = mysqli_query($connection,"INSERT INTO customerdetails (Password, CustomerID, LoginAttempts)
-    VALUES ('$password', '$id', 0);");
+    $result = mysqli_query($connection,"INSERT INTO customerdetails (Password, CustomerID, LoginAttempts, Locked)
+    VALUES ('$password', '$id', 0, 0);");
 
     $rs = array();
     $i=0;
