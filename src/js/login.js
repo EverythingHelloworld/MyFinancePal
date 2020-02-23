@@ -13,16 +13,16 @@ function insertRandomField() {
     if(randomNumber == 0){
         //Insert DOB field
         $("#signInDiv").before(`<div class="form-group row">
-            <label for="inputDOBLabel" class="col-sm-5 col-form-label">Date of Birth:   </label>
-            <div class="col-sm-7">
-                <input type="text" class="form-control" id="inputDOB" placeholder="Date of Birth">
+            <label for="inputDOBLabel" class="col-sm-4 col-form-label">D.O.B:   </label>
+            <div class="col-sm-8">
+            <input type="date" id="inputDOB" max="2004-12-31" min="1899-01-01" class="form-control"></input>
             </div>
         </div>`);
     }else{
         //Insert Phone Num field
         $("#signInDiv").before(`<div class="form-group row">
-            <label for="inputPhoneLabel" class="col-sm-5 col-form-label">Phone Number:   </label>
-            <div class="col-sm-7">
+            <label for="inputPhoneLabel" class="col-sm-4 col-form-label">Phone Number:   </label>
+            <div class="col-sm-8">
                 <input type="text" class="form-control" id="inputPhone" placeholder="Phone No.">
             </div>
         </div>`)
@@ -62,7 +62,7 @@ function handleLogin(){
         function getCustomerDetails(id){
             var correctLoginDetails = false;
             //Gets customer details from db
-            $.getJSON(`../php/getLoginDetails.php?customerID=${id}`, function(data) {
+            $.getJSON(`../php/getAllCustomerLoginDetails.php?customerID=${id}`, function(data) {
                 var customer = data.CustomerDetails[0];
                 var errorMessage;
                 /*If data is returned, check if it matches db values, 
@@ -75,6 +75,7 @@ function handleLogin(){
                         }else {
                             //Display incorrect DOB error message
                             errorMessage = 'Incorrect date of birth';
+                            incrementLoginAttempts();
                         }
                     }else {
                         if(phoneNum === customer.PhoneNumber){
@@ -82,6 +83,7 @@ function handleLogin(){
                         }else{
                             //Display incorrect DOB error message
                             errorMessage = 'Incorrect phone number';
+                            incrementLoginAttempts();
                         }
                     }
                 }else {
@@ -106,3 +108,7 @@ function handleLogin(){
             })
     }
 }//close handleLogin
+
+function incrementLoginAttempts(){
+    
+}
