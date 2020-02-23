@@ -1,21 +1,16 @@
 $("document").ready(() => {
-  // checkValidAdmin();
   handleLogout();
 })
 
 handleLogout = () => {
   $("#btnAdminLogout").on('click', () => {
-    console.log('test');
-    window.location.href = "login.html";
+    clearAdminCookie();
   })
-  clearAdminCookie();
-}
 
-checkValidAdmin = () => {
-  let adminCookie;
-  console.log(adminCookie);
 }
 
 clearAdminCookie = () => {
+  document.cookie = "adminID=''; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  console.log(Cookies.get('adminID') + '<- cookie here');
 
 }

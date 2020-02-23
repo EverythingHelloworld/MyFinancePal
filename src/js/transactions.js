@@ -8,7 +8,7 @@ $("document").ready(() => {
 
 //Function
 //For current session
-//Retrieve all customer transactional information from database [customer accounts and transactions associated to those accounts]
+//Retrieve all customer transactional information from database [customer accounts and transactions associated with those accounts]
 //1. Extract all customer bank accounts -> (data) -> getCustomerAccounts(), returns an array of JSON objects
 //2. Extract all transactions and associate them with the correct bank account, returns a nested array of JSON objects
 //3. Sort transactions for each account -> calculates and stores the closing balance for an account after each transaction

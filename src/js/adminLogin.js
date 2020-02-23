@@ -19,10 +19,10 @@ getAdminDetails = (id, password) => {
     .done((data) => {
       let admin = data.AdminDetails[0];
       if (password === admin.Password) {
-        document.cookie = `Admin=${admin.AdminID}; path=/`;
+        Cookies.set('adminID', JSON.stringify(admin.AdminID));
+        console.log("AdminID = " + Cookies.get('adminID'));
         window.location.href = "admin.html";
       }
-      console.log(admin);
     })
     .fail(() => {
       console.log("fail");
