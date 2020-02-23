@@ -1,9 +1,8 @@
 $("document").ready(() => {
-  let x = document.cookie;
-  x = x.substr(11);
+  let customer = sessionStorage.getItem('CustomerID');
+  let account = sessionStorage.getItem('AccountID');
   //session__customer_account_id -> pull this from customer_id cookie
-  getAccountTransactionData(1, x); // -> pass session_customer_id to return and display all customer data
-  console.log(x);
+  getAccountTransactionData(customer, account); // -> pass session_customer_id to return and display all customer data
 });
 
 //Function

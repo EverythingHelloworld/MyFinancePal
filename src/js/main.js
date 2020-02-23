@@ -1,7 +1,7 @@
 $("document").ready(() => {
 
    setActiveNavLink();
-   //let session__customer_id = -> pull this from customer_id cookie
+   // let session__customer_id = cookies.get('customer_id');
    getCustomerData(1); // -> pass session_customer_id to return and display all customer data
 });
 
@@ -106,9 +106,13 @@ appendCustomerAccountsTransactions = (accounts) => {
 
    for (i in accounts) {
       $("#account-" + i + "-body").append(`<table class="table table-striped border" width=80% id="table${i}" padding=1><thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>`);
-      $("#account-" + i + "-body").append(`<div class="btn-group" style=float:right; margin:10 role="group" aria-label="account-options"> <button type="button" id=account-${i}-payees-btn class="btn btn-secondary">Manage Payees</button>
-     <button type="button" id=account-${i}-statements-btn class="btn btn-secondary">View Statements</button>
-     <button type="button" id=account-${i}-transactions-btn class="btn btn-secondary">View All Transactions</button></div><br>`);
+      $("#account-" + i + "-body").append(`<div class="btn-group" style=float:right; margin:10 role="group" aria-label="account-options">
+      <div id=account-buttons>
+         <button type="button" id=${accounts[i].AccountID}-payee-btn class="btn btn-secondary">Manage Payees</button>
+         <button type="button" id=${accounts[i].AccountID}-statements-btn class="btn btn-secondary">View Statements</button>
+         <button type="button" id=${accounts[i].AccountID}-transactions-btn class="btn btn-secondary">View All Transactions</button>
+      </div>
+      </div><br>`);
       for (j in accounts[i].Transactions) {
          if (j < 25) { //number of recent transactions to show
             $('#table' + i + "-body").append(`<tr scope="row"><td>${formatDate(accounts[i].Transactions[j].Date)}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(accounts[i].Transactions[j].Amount).toFixed(2) : parseFloat(accounts[i].Transactions[j].Amount).toFixed(2)}</td ><td>${accounts[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr > `);
@@ -120,6 +124,31 @@ appendCustomerAccountsTransactions = (accounts) => {
 }
 
 bindCustomerAccountButtonFunctions = (accounts) => {
+   let account_buttons = $('#account-buttons > button');
+   for (let i = 0; i < account_buttons.length; i++) {
+      let button = account_buttons[i];
+      let button_id = account_buttons[i].id;
+      button.onclick = () => {
+         appendRedirectInstructions(button_id, accounts);
+      };
+   }
+}
 
+appendRedirectInstructions = (button_id, accounts) => {
+   for (i in accounts) {
+      if (button_id === accounts[i].AccountID + "-payee-btn") {
+         console.log(accounts[i].AccountID + " payee");
+      }
+      if (button_id === accounts[i].AccountID + "-statements-btn") {
+         console.log(accounts[i].AccountID + " statements");
+      }
+      if (button_id === accounts[i].AccountID + "-transactions-btn") {
+         console.log(accounts[i].AccountID + " transactions");
+         sessionStorage.setItem('AccountID', accounts[i].AccountID);
+         sessionStorage.setItem('CustomerID', 1);
+         console.log(sessionStorage.getItem('AccountID'));
+         window.location.href = "transactionTester.html";
+      }
+   }
 }
 
