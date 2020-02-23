@@ -1,10 +1,12 @@
 $("document").ready(() => {
+  console.log(Cookies.get('adminID'));
   handleLogout();
 })
 
 handleLogout = () => {
   $("#btnAdminLogout").on('click', () => {
     clearAdminCookie();
+    window.location.href = "login.html";
   })
 
 }
