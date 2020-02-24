@@ -15,10 +15,10 @@ $("document").ready(() => {
 //5. Append all bank account transaction information to associated collapse element in main
 getCustomerData = (customer_id) => {
    $.getJSON(`../php/getAccountsTransactions.php?customer_id=${customer_id}`, (data) => {
-      //console.log(data);
+      console.log(data);
       let customerAccounts = []; //array to store account objects
       customerAccounts = getCustomerAccounts(data);
-      // console.log(customerAccounts);
+      console.log(customerAccounts);
       sortCustomerAccountTransactions(customerAccounts);
       appendCustomerAccounts(customerAccounts);
       appendCustomerAccountsTransactions(customerAccounts);
@@ -32,13 +32,13 @@ getCustomerAccounts = (data) => {
    //for every  object in data.accountTransactions
    //push only bank account information to the array (Account number, IBAN, opening balance,)
    for (let i in data.accountTransactions) {
-      accounts.push({ "AccountID": data.accountTransactions[i].accountID, "IBAN": data.accountTransactions[i].IBAN, "OpeningBalance": data.accountTransactions[i].OpeningBalance, "CurrentBalance": data.accountTransactions[i].CurrentBalance, "Transactions": [] });
+      accounts.push({ "AccountID": data.accountTransactions[i].AccountID, "IBAN": data.accountTransactions[i].IBAN, "OpeningBalance": data.accountTransactions[i].OpeningBalance, "CurrentBalance": data.accountTransactions[i].CurrentBalance, "Transactions": [] });
    }
    accounts = _.uniq(accounts, (x) => { return parseInt(x.AccountID) });
    for (i in accounts) {
       //console.log(accounts[i]);
       for (j in data.accountTransactions) {
-         if (accounts[i].AccountID == data.accountTransactions[j].accountID) {
+         if (accounts[i].AccountID == data.accountTransactions[j].AccountID) {
             accounts[i].Transactions.push({
                "TransactionID": data.accountTransactions[j].TransactionID,
                "Date": data.accountTransactions[j].TransDate,
@@ -59,7 +59,6 @@ sortCustomerAccountTransactions = (accountTransactions) => {
    let currentBalance = 0;
    for (i in accountTransactions) {
       currentBalance = parseFloat(accountTransactions[i].OpeningBalance);
-      console.log(currentBalance);
       for (j in accountTransactions[i].Transactions) {
          if (accountTransactions[i].Transactions[j].Type == "Credit") {
             accountTransactions[i].Transactions[j].ClosingBalance = currentBalance + parseFloat(accountTransactions[i].Transactions[j].Amount);

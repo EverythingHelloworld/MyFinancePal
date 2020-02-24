@@ -27,7 +27,6 @@ function redirectToLoginIfCustomerCookieNotSet() {
 //Returns reformated transaction date
 //YYYY-MM-DD -> DD-MM-YYYY
 formatDate = (date) => {
-    console.log(date);
     let day = [], year = [], month = [], new_date = [];
     let d = date.slice(0, 10);
     day.push(d[8], d[9], d[7]);

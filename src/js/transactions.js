@@ -31,15 +31,15 @@ getAccountTransactions = (data, account_id) => {
   //for every  object in data.accountTransactions
   //push only bank account information to the array (Account number, IBAN, opening balance,)
   for (let i in data.accountTransactions) {
-    if (data.accountTransactions[i].accountID == account_id) {
-      account.push({ "AccountID": data.accountTransactions[i].accountID, "IBAN": data.accountTransactions[i].IBAN, "OpeningBalance": data.accountTransactions[i].OpeningBalance, "CurrentBalance": data.accountTransactions[i].CurrentBalance, "Transactions": [] });
+    if (data.accountTransactions[i].AccountID == account_id) {
+      account.push({ "AccountID": data.accountTransactions[i].AccountID, "IBAN": data.accountTransactions[i].IBAN, "OpeningBalance": data.accountTransactions[i].OpeningBalance, "CurrentBalance": data.accountTransactions[i].CurrentBalance, "Transactions": [] });
     }
   }
   account = _.uniq(account, (x) => { return parseInt(x.AccountID) });
   for (i in account) {
     //console.log(accounts[i]);
     for (j in data.accountTransactions) {
-      if (account[i].AccountID == data.accountTransactions[j].accountID) {
+      if (account[i].AccountID == data.accountTransactions[j].AccountID) {
         account[i].Transactions.push({
           "TransactionID": data.accountTransactions[j].TransactionID,
           "Date": data.accountTransactions[j].TransDate,
