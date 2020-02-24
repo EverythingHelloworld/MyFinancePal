@@ -81,7 +81,7 @@ function handleLogin(){
                         if(phoneNum === customer.PhoneNumber){
                             correctLoginDetails = true;
                         }else{
-                            //Display incorrect DOB error message
+                            //Display incorrect phone number error message
                             errorMessage = 'Incorrect phone number';
                             incrementLoginAttempts();
                         }

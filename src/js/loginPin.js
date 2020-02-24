@@ -5,33 +5,63 @@ $("document").ready(function(){
 
 function getCustomerIDCookie(){
     var customerID = Cookies.get('customerID');
+    //If the customer id is set, get their password from db
     if (customerID != undefined) {
-    //do pin stuff here
-    console.log('logged in: ', Cookies.get('customerID') + ' <- cookie here');
-    getCustomerPassword(customerID);
-    } else {     
+        getCustomerPassword(customerID);
+    } else {   
+        //Redirect to login page if customer id not set  
         window.location.href = "login.html";
     }
 }
 
-//working on this
 function getCustomerPassword(id){
-    console.log('id is: ', id);
-    $.getJSON(`../php/getCustomerPassword.php?customerID=${id}`, function(data) {
-        console.log(data);
+    //Get customer password from db
+    $.getJSON(`../php/getCustomerDetails.php?customerID=${id}`, function(data) {
         var customer = data.CustomerDetails[0];
-        
-        // var errorMessage;
-        // if(data.CustomerDetails.length > 0){
-        //         // matchPassword();
-        // }else {
-        //     errorMessage = 'Error getting customer details from database.';
-        // }
+        var password = customer.Password;
+        var errorMessage;
+        var passwordDigits;
+        var digitsArray;
+        //If data is returned from the database, match pin digits against db password
+        if(data.CustomerDetails.length > 0) {
+            passwordDigits = getPasswordDigits(password);
+            //Copying to array so they can be sorted
+            digitsArray = Array.from(passwordDigits);
+            digitsArray.sort(function(a, b){
+                return a - b;
+            });
+        } else {
+            /*Adds error message alert if the password can't be retrieved from the db, 
+            --Test this later*/
+            errorMessage = 'Error getting customer details from database.';
+            $('#continueBtnDiv').before('<div id=errorMessage></div>');
+            $('#errorMessage').attr('class', 'alert alert-danger text-center');
+            $('#errorMessage').attr('role', 'alert');
+            $('#errorMessage').text(errorMessage);
+        }
     })
 }
 
-function matchPassword(){
+function getPasswordDigits(password){
+    var passwordLength = password.length;
+    var numberOfRandomDigitsNeeded = 3;
+    //Using a set because sets cannot contain duplicates
+    var digitsToCheck = new Set();
+    var randomNum;
+    //While the set does not contain enough random digits (3)
+    while(digitsToCheck.size < numberOfRandomDigitsNeeded){
+        //Generate random digit number between 0 (1st digit) and password length-1 (last digit)
+            randomNum = getRandomNumber(0, passwordLength-1);
+            //Check if the random digit number is already in the set, add if it isn't
+            if(!digitsToCheck.has(randomNum))
+                digitsToCheck.add(randomNum);
+    }
+    return digitsToCheck;
+}
 
+function getRandomNumber(min, max){
+    //Generate a random number between the minimum value and max value (inclusive)
+        return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 
 // function handleLogout(){
