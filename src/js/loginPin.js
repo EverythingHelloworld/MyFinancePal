@@ -51,6 +51,7 @@ function getCustomerPassword(id) {
                 //Set placeholders to * and disable inputs for digits not needed
                 $('#passwordDigitField' + digitsArray[i]).attr('placeholder', '');
                 $('#passwordDigitField' + digitsArray[i]).removeAttr('disabled');
+                $('#passwordDigitField' + digitsArray[i]).attr('oninput', 'this.value = this.value.replace(/[^0-9.]/g, \'\'\).replace(/(\..*)\./g, \'\$1\'\);');
             }
         } else {
             /*Adds error message alert if the password can't be retrieved from the db, 

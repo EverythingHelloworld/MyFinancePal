@@ -1,6 +1,7 @@
 var dobVisible;
 var dob;
 var phoneNum;
+var numberPattern = new RegExp("^[0-9_]+( [0-9_]+)*$");
 $("document").ready(function(){
     insertRandomField();
     handleLogin();
@@ -23,40 +24,47 @@ function insertRandomField() {
         $("#signInDiv").before(`<div class="form-group row">
             <label for="inputPhoneLabel" class="col-sm-4 col-form-label">Phone Number:   </label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="inputPhone" 
-                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Phone No.">
+                <input type="text" class="form-control" id="inputPhone" placeholder="Phone No.">
             </div>
         </div>`)
+        // $("#inputPhone").attr("oninput", "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');");
     }
 }
 
 //On click handler for login button
 function handleLogin() {
     $("#btnLogin").click(function () {
-        //Set customer id to customer ID from input field
-        var customerID = $('#inputID').val();
-        //Check if dob field exists
-        var dobDivExists = $('#inputDOB').length;
-        if (dobDivExists) {
-            //set dob to dob from input field
-            dob = $('#inputDOB').val();
-            //This boolean is used so that we know which value to match from the db
-            dobVisible = true;
-        } else {
-            //set dob to dob from input field
-            phoneNum = $('#inputPhone').val();
-            dobVisible = false;
-        }  
+        if(!dobDivExists && numberPattern.test($('#inputPhone').val())){
+            //Set customer id to customer ID from input field
+            var customerID = $('#inputID').val();
+            //Check if dob field exists
+            var dobDivExists = $('#inputDOB').length;
+            if (dobDivExists) {
+                //set dob to dob from input field
+                dob = $('#inputDOB').val();
+                //This boolean is used so that we know which value to match from the db
+                dobVisible = true;
+            } else {
+                //set dob to dob from input field
+                phoneNum = $('#inputPhone').val();
+                dobVisible = false;
+            }  
 
-        /*If any of the fields are empty, do not do the db call and show error message,
-        else getCustomerDetails from db*/
-        if ((dob === '' || phoneNum === '') || customerID === '') {
+            /*If any of the fields are empty, do not do the db call and show error message,
+            else getCustomerDetails from db*/
+            if ((dob === '' || phoneNum === '') || customerID === '') {
+                $('#signInDiv').before('<div id=errorMessage></div>');
+                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('role', 'alert');
+                $('#errorMessage').text('All fields are required!');
+            } else {
+                getCustomerDetails(customerID);
+            }
+        } else{
             $('#signInDiv').before('<div id=errorMessage></div>');
             $('#errorMessage').attr('class', 'alert alert-danger text-center');
             $('#errorMessage').attr('role', 'alert');
-            $('#errorMessage').text('All fields are required!');
-        } else {
-            getCustomerDetails(customerID);
+            $('#errorMessage').text('Phone number field can only contain numbers');
         }
     })
 
@@ -77,7 +85,6 @@ function handleLogin() {
                     } else {
                         //Display incorrect DOB error message
                         errorMessage = 'Incorrect date of birth';
-                        incrementLoginAttempts();
                     }
                 } else {
                     if (phoneNum === customer.PhoneNumber) {
@@ -85,7 +92,6 @@ function handleLogin() {
                     } else {
                         //Display incorrect phone number error message
                         errorMessage = 'Incorrect phone number';
-                        incrementLoginAttempts();
                     }
                 }
             } else {
@@ -110,7 +116,3 @@ function handleLogin() {
         })
     }
 }//close handleLogin
-
-function incrementLoginAttempts() {
-
-}
