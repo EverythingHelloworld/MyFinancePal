@@ -1,6 +1,7 @@
 var dobVisible;
 var dob;
 var phoneNum;
+var wrongPattern = false;
 $("document").ready(function(){
     insertRandomField();
     handleLogin();
@@ -23,7 +24,8 @@ function insertRandomField() {
         $("#signInDiv").before(`<div class="form-group row">
             <label for="inputPhoneLabel" class="col-sm-4 col-form-label">Phone Number:   </label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="inputPhone" placeholder="Phone No.">
+                <input type="text" class="form-control" id="inputPhone" 
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Phone No.">
             </div>
         </div>`)
     }
@@ -46,6 +48,7 @@ function handleLogin(){
             phoneNum = $('#inputPhone').val();
             dobVisible = false;
         }  
+
         /*If any of the fields are empty, do not do the db call and show error message,
         else getCustomerDetails from db*/
         if((dob === '' || phoneNum === '') || customerID === ''){
@@ -53,7 +56,7 @@ function handleLogin(){
             $('#errorMessage').attr('class', 'alert alert-danger text-center');
             $('#errorMessage').attr('role', 'alert');
             $('#errorMessage').text('All fields are required!');
-        }else {
+        } else {
             getCustomerDetails(customerID);
         }    
     })  

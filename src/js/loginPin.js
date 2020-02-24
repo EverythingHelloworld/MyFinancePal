@@ -67,16 +67,25 @@ function getCustomerPassword(id){
 
 function handleContinueClick() {
     $('#continueBtn').click(() => {
+        pinCorrect = true;
+        console.log('clicked');
         //Check if digit entered matches the selected digit in the database
         for(var i = 0; i < digitsArray.length; i++){
             if($('#passwordDigitField' + digitsArray[i]).val() === dbPassword.charAt([digitsArray[i]])){
-                //redirect to main page
-                window.location.href = "main.html";
             }else{
                 pinCorrect = false;
                 //Add error message here
+                errorMessage = 'Incorrect digits';
+                $('#continueBtnDiv').before('<div id=errorMessage></div>');
+                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('role', 'alert');
+                $('#errorMessage').text(errorMessage);
             }
         }
+        if(pinCorrect){
+            //redirect to main page
+            window.location.href = "main.html";
+        }                   
     });
 }
 
