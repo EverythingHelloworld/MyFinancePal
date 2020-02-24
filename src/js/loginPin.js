@@ -2,53 +2,52 @@ var digitsArray;
 var pinCorrect = true;
 var dbPassword;
 
-$("document").ready(function(){
+$("document").ready(function () {
     getCustomerIDCookie();
     handleContinueClick();
-    // handleLogout();
 })
 
-function getCustomerIDCookie(){
+function getCustomerIDCookie() {
     var customerID = Cookies.get('customerID');
     //If the customer id is set, get their password from db
     if (customerID != undefined) {
         getCustomerPassword(customerID);
-    } else {   
+    } else {
         //Redirect to login page if customer id not set  
         window.location.href = "login.html";
     }
 }
 
-function getCustomerPassword(id){
+function getCustomerPassword(id) {
     //Get customer password from db
-    $.getJSON(`../php/getCustomerDetails.php?customerID=${id}`, function(data) {
+    $.getJSON(`../php/getCustomerDetails.php?customerID=${id}`, function (data) {
         var customer = data.CustomerDetails[0];
         dbPassword = customer.Password;
         var errorMessage;
         var passwordDigits;
         //If data is returned from the database, match pin digits against db password
-        if(data.CustomerDetails.length > 0) {
+        if (data.CustomerDetails.length > 0) {
             passwordDigits = getPasswordDigits(dbPassword);
             //Copying to array so they can be sorted
             digitsArray = Array.from(passwordDigits);
-            digitsArray.sort(function(a, b){
+            digitsArray.sort(function (a, b) {
                 return a - b;
             });
             //Insert form fields
             $('#pinHeader').after('<br><div class="form-row"><div class="col">' +
-                '<label for="1stPasswordDigitFieldLabel">1st</label><input type="password" class="form-control" ' + 
+                '<label for="1stPasswordDigitFieldLabel">1st</label><input type="password" class="form-control" ' +
                 'id="passwordDigitField0" placeholder="*" disabled></div><div class="col"><label ' +
-                'for="2ndPasswordDigitFieldLabel">2nd</label><input type="password" class="form-control" ' + 
-                'id="passwordDigitField1" placeholder="*" disabled></div><div class="col"><label ' + 
-                'for="3rdPasswordDigitFieldLabel">3rd</label><input type="password" class="form-control" ' + 
-                'id="passwordDigitField2" placeholder="*" disabled></div><div class="col"><label ' + 
-                'for="4thPasswordDigitFieldLabel">4th</label><input type="password" class="form-control" ' + 
-                'id="passwordDigitField3" placeholder="*" disabled></div><div class="col"><label ' + 
-                'for="5thPasswordDigitFieldLabel">5th</label><input type="password" class="form-control" ' + 
-                'id="passwordDigitField4" placeholder="*" disabled></div><div class="col"><label ' + 
-                'for="6thPasswordDigitFieldLabel">6th</label><input type="password" class="form-control" ' + 
+                'for="2ndPasswordDigitFieldLabel">2nd</label><input type="password" class="form-control" ' +
+                'id="passwordDigitField1" placeholder="*" disabled></div><div class="col"><label ' +
+                'for="3rdPasswordDigitFieldLabel">3rd</label><input type="password" class="form-control" ' +
+                'id="passwordDigitField2" placeholder="*" disabled></div><div class="col"><label ' +
+                'for="4thPasswordDigitFieldLabel">4th</label><input type="password" class="form-control" ' +
+                'id="passwordDigitField3" placeholder="*" disabled></div><div class="col"><label ' +
+                'for="5thPasswordDigitFieldLabel">5th</label><input type="password" class="form-control" ' +
+                'id="passwordDigitField4" placeholder="*" disabled></div><div class="col"><label ' +
+                'for="6thPasswordDigitFieldLabel">6th</label><input type="password" class="form-control" ' +
                 'id="passwordDigitField5" placeholder="*" disabled></div></div><br>');
-            for(var i = 0; i < digitsArray.length; i++){
+            for (var i = 0; i < digitsArray.length; i++) {
                 //Set placeholders to * and disable inputs for digits not needed
                 $('#passwordDigitField' + digitsArray[i]).attr('placeholder', '');
                 $('#passwordDigitField' + digitsArray[i]).removeAttr('disabled');
@@ -89,31 +88,24 @@ function handleContinueClick() {
     });
 }
 
-function getPasswordDigits(password){
+function getPasswordDigits(password) {
     var passwordLength = password.length;
     var numberOfRandomDigitsNeeded = 3;
     //Using a set because sets cannot contain duplicates
     var digitsToCheck = new Set();
     var randomNum;
     //While the set does not contain enough random digits (3)
-    while(digitsToCheck.size < numberOfRandomDigitsNeeded){
+    while (digitsToCheck.size < numberOfRandomDigitsNeeded) {
         //Generate random digit number between 0 (1st digit) and password length-1 (last digit)
-            randomNum = getRandomNumber(0, passwordLength-1);
-            //Check if the random digit number is already in the set, add if it isn't
-            if(!digitsToCheck.has(randomNum))
-                digitsToCheck.add(randomNum);
+        randomNum = getRandomNumber(0, passwordLength - 1);
+        //Check if the random digit number is already in the set, add if it isn't
+        if (!digitsToCheck.has(randomNum))
+            digitsToCheck.add(randomNum);
     }
     return digitsToCheck;
 }
 
-function getRandomNumber(min, max){
+function getRandomNumber(min, max) {
     //Generate a random number between the minimum value and max value (inclusive)
-        return Math.floor(Math.random() * (max - min + 1) ) + min;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-// function handleLogout(){
-//     $("#btnLogout").click(function (){
-//         document.cookie = "customerID=''; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-//         console.log(Cookies.get('customerID') + '<- cookie here');
-//     }) 
-// } 
