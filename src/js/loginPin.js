@@ -1,5 +1,10 @@
+var digitsArray;
+var pinCorrect = true;
+var dbPassword;
+
 $("document").ready(function(){
     getCustomerIDCookie();
+    handleContinueClick();
     // handleLogout();
 })
 
@@ -18,18 +23,36 @@ function getCustomerPassword(id){
     //Get customer password from db
     $.getJSON(`../php/getCustomerDetails.php?customerID=${id}`, function(data) {
         var customer = data.CustomerDetails[0];
-        var password = customer.Password;
+        dbPassword = customer.Password;
         var errorMessage;
         var passwordDigits;
-        var digitsArray;
         //If data is returned from the database, match pin digits against db password
         if(data.CustomerDetails.length > 0) {
-            passwordDigits = getPasswordDigits(password);
+            passwordDigits = getPasswordDigits(dbPassword);
             //Copying to array so they can be sorted
             digitsArray = Array.from(passwordDigits);
             digitsArray.sort(function(a, b){
                 return a - b;
             });
+            //Insert form fields
+            $('#pinHeader').after('<br><div class="form-row"><div class="col">' +
+                '<label for="1stPasswordDigitFieldLabel">1st</label><input type="password" class="form-control" ' + 
+                'id="passwordDigitField0" placeholder="*" disabled></div><div class="col"><label ' +
+                'for="2ndPasswordDigitFieldLabel">2nd</label><input type="password" class="form-control" ' + 
+                'id="passwordDigitField1" placeholder="*" disabled></div><div class="col"><label ' + 
+                'for="3rdPasswordDigitFieldLabel">3rd</label><input type="password" class="form-control" ' + 
+                'id="passwordDigitField2" placeholder="*" disabled></div><div class="col"><label ' + 
+                'for="4thPasswordDigitFieldLabel">4th</label><input type="password" class="form-control" ' + 
+                'id="passwordDigitField3" placeholder="*" disabled></div><div class="col"><label ' + 
+                'for="5thPasswordDigitFieldLabel">5th</label><input type="password" class="form-control" ' + 
+                'id="passwordDigitField4" placeholder="*" disabled></div><div class="col"><label ' + 
+                'for="6thPasswordDigitFieldLabel">6th</label><input type="password" class="form-control" ' + 
+                'id="passwordDigitField5" placeholder="*" disabled></div></div><br>');
+            for(var i = 0; i < digitsArray.length; i++){
+                //Set placeholders to * and disable inputs for digits not needed
+                $('#passwordDigitField' + digitsArray[i]).attr('placeholder', '');
+                $('#passwordDigitField' + digitsArray[i]).removeAttr('disabled');
+            }
         } else {
             /*Adds error message alert if the password can't be retrieved from the db, 
             --Test this later*/
@@ -40,6 +63,21 @@ function getCustomerPassword(id){
             $('#errorMessage').text(errorMessage);
         }
     })
+}
+
+function handleContinueClick() {
+    $('#continueBtn').click(() => {
+        //Check if digit entered matches the selected digit in the database
+        for(var i = 0; i < digitsArray.length; i++){
+            if($('#passwordDigitField' + digitsArray[i]).val() === dbPassword.charAt([digitsArray[i]])){
+                //redirect to main page
+                window.location.href = "main.html";
+            }else{
+                pinCorrect = false;
+                //Add error message here
+            }
+        }
+    });
 }
 
 function getPasswordDigits(password){

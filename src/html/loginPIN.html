@@ -22,39 +22,12 @@
       <div class="mx-auto" style="width: 400px;">
         <!-- <div class="justify-content-center"> this stretches the content across the 
           whole page, might need for something else later --> 
-        <h5> Please enter following digits of your pin: </h5>
-        <br>
-          <div class="form-row">
-            <div class="col">
-              <label for="1stPasswordDigitFieldLabel">1st</label>
-              <input type="password" class="form-control" id="passwordDigitField0" placeholder="">
-            </div>
-            <div class="col">
-              <label for="2ndPasswordDigitFieldLabel">2nd</label>
-              <input type="password" class="form-control" id="passwordDigitField1" placeholder="">
-            </div>
-            <div class="col">
-              <label for="3rdPasswordDigitFieldLabel">3rd</label>
-              <input type="password" class="form-control" id="passwordDigitField2" placeholder="">
-            </div>   
-            <div class="col">
-              <label for="4thPasswordDigitFieldLabel">4th</label>
-              <input type="password" class="form-control" id="passwordDigitField3" placeholder="">
-            </div>
-            <div class="col">
-              <label for="5thPasswordDigitFieldLabel">5th</label>
-              <input type="password" class="form-control" id="passwordDigitField4" placeholder="">
-            </div>
-            <div class="col">
-              <label for="6thPasswordDigitFieldLabel">6th</label>
-              <input type="password" class="form-control" id="passwordDigitField5" placeholder="">
-            </div>   
-          </div>
-          <br>
+        <h5 id='pinHeader'> Please enter following digits of your pin: </h5>
+       
           <!-- <div class="alert alert-danger" role="alert" id="errorMessage">Error getting customer details from database.</div> -->
           <div class="form-row" id="continueBtnDiv">
             <div class="col">
-              <button type="button" class="btn btn-primary">Continue</button>
+              <button type="button" class="btn btn-primary" id='continueBtn'>Continue</button>
             </div>
           </div>
       </div>
