@@ -1,5 +1,4 @@
 $("document").ready(() => {
-  console.log(Cookies.get('adminID'));
   handleLogout();
 })
 

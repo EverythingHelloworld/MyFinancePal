@@ -34,7 +34,7 @@ function insertRandomField() {
 //On click handler for login button
 function handleLogin() {
     $("#btnLogin").click(function () {
-        if(!dobDivExists && numberPattern.test($('#inputPhone').val())){
+        // if(!dobDivExists && numberPattern.test($('#inputPhone').val())){
             //Set customer id to customer ID from input field
             var customerID = $('#inputID').val();
             //Check if dob field exists
@@ -60,12 +60,12 @@ function handleLogin() {
             } else {
                 getCustomerDetails(customerID);
             }
-        } else{
-            $('#signInDiv').before('<div id=errorMessage></div>');
-            $('#errorMessage').attr('class', 'alert alert-danger text-center');
-            $('#errorMessage').attr('role', 'alert');
-            $('#errorMessage').text('Phone number field can only contain numbers');
-        }
+        // } else{
+        //     $('#signInDiv').before('<div id=errorMessage></div>');
+        //     $('#errorMessage').attr('class', 'alert alert-danger text-center');
+        //     $('#errorMessage').attr('role', 'alert');
+        //     $('#errorMessage').text('Phone number field can only contain numbers');
+        // }
     })
 
     //Retrieves customer details from db and checks if the values entered are valid
