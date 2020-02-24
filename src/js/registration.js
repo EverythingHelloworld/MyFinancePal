@@ -13,8 +13,7 @@ window.onload = function()
         var prefix = $("#inputPrefix").val();
         var fullNumber = prefix+phoneNo;
         var sameNumber = false;
-
-        console.log(fullNumber);
+        var year = dob.substring(0,4);
 
         //Check if mobile number is already registered
         $.getJSON(`../php/getCustomerPhoneNum.php`, function(data)
@@ -29,9 +28,10 @@ window.onload = function()
             
             //RegEx patterns for inputs
             var datePatt = new RegExp(/^\d{4}-\d{2}-\d{2}$/);
-            var stTwnPostPatt = new RegExp("^[a-zA-Z0-9 ]+$");
-            var phoneNoPatt = new RegExp("^[0-9]+$");
-            var namePatt = new RegExp("^[a-zA-Z ]+$");
+            var stTwnPostPatt = new RegExp("^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$");
+            var phoneNoPatt = new RegExp("^[0-9_]+( [0-9_]+)*$");
+            var namePatt = new RegExp("^[a-zA-Z_]+( [a-zA-Z_]+)*$");
+            console.log(year);
 
             //If mobile number is registered display modal 
             if(sameNumber)
@@ -40,34 +40,50 @@ window.onload = function()
             }
 
             //Check each fields pattern
-            else if(!datePatt.test(dob) )
+
+            else if(!namePatt.test(name) || name === '')
+            {
+                $('#registerDiv').before('<div id=errorMessage></div>');
+                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('role', 'alert');
+                $('#errorMessage').text("Please enter a valid name.");
+            }
+
+            else if(!datePatt.test(dob) || year > 2004 || year < 1899)
             {
 
             }
 
-            else if(name == "" || (!namePatt.test(name)))
+            else if(!stTwnPostPatt.test(street) || street === '')
             {
-                
+                $('#registerDiv').before('<div id=errorMessage></div>');
+                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('role', 'alert');
+                $('#errorMessage').text("Please enter a valid street name.");
             }
 
-            else if(!stTwnPostPatt.test(street))
+            else if(!stTwnPostPatt.test(townCity) || townCity === '')
             {
-
+                $('#registerDiv').before('<div id=errorMessage></div>');
+                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('role', 'alert');
+                $('#errorMessage').text("Please enter a valid town/city name.");
             }
 
-            else if(!stTwnPostPatt.test(townCity))
+            else if(!stTwnPostPatt.test(postcode) || postcode === '')
             {
-
+                $('#registerDiv').before('<div id=errorMessage></div>');
+                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('role', 'alert');
+                $('#errorMessage').text("Please enter a valid postcode.");
             }
 
-            else if(!stTwnPostPatt.test(postcode))
+            else if(!phoneNoPatt.test(fullNumber) || phoneNo === '' || !(phoneNo.length == 6))
             {
-
-            }
-
-            else if(!phoneNoPatt.test(fullNumber))
-            {
-
+                $('#registerDiv').before('<div id=errorMessage></div>');
+                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('role', 'alert');
+                $('#errorMessage').text("Please enter a valid phone number.");
             }
 
             else
