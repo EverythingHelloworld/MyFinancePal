@@ -1,7 +1,10 @@
 $("document").ready(() => {
+  console.log(Cookies.get('customerID'));
   const customer = sessionStorage.getItem('CustomerID');
   const account = sessionStorage.getItem('AccountID');
   getAccountTransactionData(customer, account); // -> pass session_customer_id to return and display all customer data
+  bindButtonFunction();
+  handleLogout();
 });
 
 
@@ -70,12 +73,14 @@ appendAccountTransactions = (account) => {
   }
 
   for (i in account) {
+    $("#account-transactions-container").append(`<Button id='back-button' class="btn btn-secondary" style="float:left; margin-bottom:10">Back to Accounts</Button>`);
     $("#account-transactions-container").append(`<table class="table table-striped border" margin: 0 auto width=80% id="table${i}" padding=1><thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Category</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>`);
     for (j in account[i].Transactions) {
       if (j < 25) { //number of recent transactions to show
         $(`#table${i}-body`).append(`<tr scope="row"><td>${formatDate(account[i].Transactions[j].Date)}</td><td>${account[i].Transactions[j].Description}</td><td>${account[i].Transactions[j].Category}</td><td>${account[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(account[i].Transactions[j].Amount).toFixed(2) : parseFloat(account[i].Transactions[j].Amount).toFixed(2)}</td ><td>${account[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr> `);
       }
     }
+
   }
 }
 

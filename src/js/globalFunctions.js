@@ -38,3 +38,11 @@ formatDate = (date) => {
     new_date.push(day, month, year);
     return new_date.join('');
 }
+
+handleLogout = () => {
+    $("#btnLogout").click(function () {
+        Cookies.remove('customerID');
+        console.log(Cookies.get('customerID') + '<- cookie here');
+        window.location.href = "login.html";
+    })
+}
