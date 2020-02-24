@@ -1,5 +1,4 @@
 $("document").ready(() => {
-
    setActiveNavLink();
    const session_customer_id = Cookies.get('customerID');
    getCustomerData(session_customer_id); // -> pass session_customer_id to return and display all customer data
@@ -152,11 +151,4 @@ appendRedirectInstructions = (button_id, accounts) => {
    }
 }
 
-handleLogout = () => {
-   $("#btnLogout").click(function () {
-      Cookies.remove('customerID');
-      console.log(Cookies.get('customerID') + '<- cookie here');
-      window.location.href = "login.html";
-   })
-}
 
