@@ -1,8 +1,9 @@
 $("document").ready(() => {
 
    setActiveNavLink();
-   // let session__customer_id = cookies.get('customer_id');
-   getCustomerData(1); // -> pass session_customer_id to return and display all customer data
+   const session_customer_id = Cookies.get('customerID');
+   getCustomerData(session_customer_id); // -> pass session_customer_id to return and display all customer data
+   handleLogout();
 });
 
 //Function
@@ -149,5 +150,13 @@ appendRedirectInstructions = (button_id, accounts) => {
          window.location.href = "transactionTester.html";
       }
    }
+}
+
+handleLogout = () => {
+   $("#btnLogout").click(function () {
+      Cookies.remove('customerID');
+      console.log(Cookies.get('customerID') + '<- cookie here');
+      window.location.href = "login.html";
+   })
 }
 
