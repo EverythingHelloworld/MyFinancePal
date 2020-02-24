@@ -18,15 +18,14 @@ function setActiveNavLink() {
     //^If this function returns true for a link set that link to active
 }
 
-function redirectToLoginIfCustomerCookieNotSet(){
-    if(Cookies.get('customerID') === ""){
-        
+function redirectToLoginIfCustomerCookieNotSet() {
+    if (Cookies.get('customerID') === "") {
+
     }
 }
 
 //Returns reformated transaction date
 //YYYY-MM-DD -> DD-MM-YYYY
-//don't ask why
 formatDate = (date) => {
     console.log(date);
     let day = [], year = [], month = [], new_date = [];
