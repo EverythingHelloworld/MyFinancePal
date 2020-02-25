@@ -1,15 +1,26 @@
 $("document").ready(() => {
-  console.log(Cookies.get('customerID'));
-  const customer = sessionStorage.getItem('CustomerID');
-  const account = sessionStorage.getItem('AccountID');
-  getAccountTransactionData(customer, account); // -> pass session_customer_id to return and display all customer data
-  bindButtonFunction();
-  handleLogout();
+  // If a customer is not logged in <- if the customerID cookie exists
+  // hide page content and redirect to login page
+  if (Cookies.get('customerID') === undefined) {
+    $('#jumbotron').attr('style', 'display:none');
+    $('#navbar').attr('style', 'display:none');
+    window.location.href = 'login.html';
+  }
+  // else
+  // get the customer id and account id from sessionStorage
+  // and display all transactions for the customer account
+  else {
+    const customer = sessionStorage.getItem('CustomerID');
+    const account = sessionStorage.getItem('AccountID');
+    console.log(customer);
+    getAccountTransactionData(customer, account); // -> pass session_customer_id to return and display all customer data
+  }
 });
 
 
 getAccountTransactionData = (customer_id, account_id) => {
   $.getJSON(`../php/getAccountsTransactions.php?customer_id=${customer_id}`, (data) => {
+    // console.log(data);
     let accountTransactions = []; //array to store account transactions
     accountTransactions = getAccountTransactions(data, account_id);
     sortAccountTransactions(accountTransactions);
@@ -73,13 +84,16 @@ appendAccountTransactions = (account) => {
   }
 
   for (i in account) {
-    $("#account-transactions-container").append(`<Button id='back-button' class="btn btn-secondary" style="float:left; margin-bottom:10">Back to Accounts</Button>`);
-    $("#account-transactions-container").append(`<table class="table table-striped border" margin: 0 auto width=80% id="table${i}" padding=1><thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Category</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>`);
+    $("#account-transactions-container").append(`<Button id='back-button' class="btn btn-secondary" style="float:left; margin-bottom:10"><i class="fas fa-arrow-circle-left"></i><span class="h6"> My Bank Accounts<span></Button>`);
+    $("#account-transactions-container").append(`<table class="table table-striped table-bordered" margin: 0 auto width=80% id="table${i}" padding=1><thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Category</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>`);
     for (j in account[i].Transactions) {
       if (j < 25) { //number of recent transactions to show
         $(`#table${i}-body`).append(`<tr scope="row"><td>${formatDate(account[i].Transactions[j].Date)}</td><td>${account[i].Transactions[j].Description}</td><td>${account[i].Transactions[j].Category}</td><td>${account[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(account[i].Transactions[j].Amount).toFixed(2) : parseFloat(account[i].Transactions[j].Amount).toFixed(2)}</td ><td>${account[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr> `);
       }
     }
+    $('#back-button').click(() => {
+      window.location.href = "main.html";
+    });
 
   }
 }

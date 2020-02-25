@@ -41,8 +41,13 @@ formatDate = (date) => {
 
 handleLogout = () => {
     $("#btnLogout").click(function () {
-        Cookies.remove('customerID');
-        console.log(Cookies.get('customerID') + '<- cookie here');
         window.location.href = "login.html";
+        Cookies.remove('customerID');
+        sessionStorage.clear();
     })
+}
+
+function getRandomNumber(min, max) {
+    //Generate a random number between the minimum value and max value (inclusive)
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
