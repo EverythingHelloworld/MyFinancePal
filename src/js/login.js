@@ -31,12 +31,6 @@ function insertRandomField() {
     }
 }
 
-function handleRegister() {
-    $("#btnRegister").click(function () {
-        window.location.href = 'registration.html';
-    })
-}
-
 //On click handler for login button
 function handleLogin() {
     var errorMessage = '';
@@ -89,7 +83,7 @@ function handleLogin() {
 
     //Retrieves customer details from db and checks if the values entered are valid
     function getCustomerDetails(id) {
-        var correctLoginDetails = false;
+        var correctLoginDetails = false; 
 
         //Gets customer details from db
         $.getJSON(`../php/getAllCustomerLoginDetails.php?customerID=${id}`, function (data) {
@@ -138,3 +132,9 @@ function handleLogin() {
         }) //close getCustomerDetails db call
     } //close getCustomerDetails
 } //close handleLogin
+
+function handleRegister() {
+    $("#btnRegister").click(function () {
+        window.location.href = 'registration.html';
+    })
+}
