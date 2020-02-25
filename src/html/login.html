@@ -1,5 +1,4 @@
 <html>
-
 <head>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -26,14 +25,14 @@
             <form id="frmLogin">
                 <div class="form-group row">
                     <label for="inputIDLabel" class="col-sm-3 col-form-label">Customer ID:   </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-5">
                         <input type="text" class="form-control" value="" id="inputID" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Customer ID">
                     </div>
                 </div>
                 <div class="form-group row" id="signInDiv">
-                    <div class="col-sm-9 offset-sm-3">
-                        <button type="button" class="btn btn-primary" id="btnLogin">Sign in</button>
-                        <button type="button" class="btn btn-primary" id="btnRegister">Register</button>
+                    <div class="col-sm-8">
+                        <button type="button" class="btn btn-primary btn-block" id="btnLogin">Sign in</button>
+                        <button type="button" class="btn btn-primary btn-block" id="btnRegister">Register</button>
                     </div>
                 </div>
             </form>
