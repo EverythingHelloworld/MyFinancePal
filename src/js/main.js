@@ -3,9 +3,10 @@ $("document").ready(() => {
    // hide page content and redirect to login page
    redirectToLoginIfCustomerCookieNotSet();
    setActiveNavLink();
+   // Retrieve the customer id for the current session <- customer that is currently logged in
    const session_customer_id = Cookies.get('customerID');
    sessionStorage.setItem("CustomerID", session_customer_id);
-   getPageData(session_customer_id); // -> pass session_customer_id to return and display all customer data
+   getPageData(session_customer_id); // -> pass session_customer_id to return and display all page data for customer
 });
 
 getPageData = (customerID) => {
@@ -23,8 +24,6 @@ getPageData = (customerID) => {
          $.getJSON(`../php/getAccountsTransactions.php?customerID=${customerID}`)
             .done((accountsTransactionData) => {
                transactions = accountsTransactionData.accountTransactions;
-               // console.log('accounts', accounts);
-               // console.log('account transactions', accountsTransactions);
                accountsAndTransactions = combineAccountsAndTransactions(accounts, transactions);
                accountsAndTransactions = sortAccountsAndTransactions(accountsAndTransactions);
                appendCustomerAccounts(accountsAndTransactions);
