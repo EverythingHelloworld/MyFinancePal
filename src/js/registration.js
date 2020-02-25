@@ -17,7 +17,7 @@ window.onload = function()
 
         //Check if mobile number is already registered
         $.getJSON(`../php/getCustomerPhoneNum.php`, function(data)
-        { 
+        {    
             for(var i=0;i<data.customer.length;i++)
 		    {
                 if(data.customer[i].PhoneNumber == fullNumber)
@@ -31,7 +31,6 @@ window.onload = function()
             var stTwnPostPatt = new RegExp("^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$");
             var phoneNoPatt = new RegExp("^[0-9_]+( [0-9_]+)*$");
             var namePatt = new RegExp("^[a-zA-Z_]+( [a-zA-Z_]+)*$");
-            console.log(year);
 
             //If mobile number is registered display modal 
             if(sameNumber)
@@ -78,7 +77,7 @@ window.onload = function()
                 $('#errorMessage').text("Please enter a valid postcode.");
             }
 
-            else if(!phoneNoPatt.test(fullNumber) || phoneNo === '' || !(phoneNo.length == 6))
+            else if(!phoneNoPatt.test(fullNumber) || phoneNo === '' || !(phoneNo.length === 7))
             {
                 $('#registerDiv').before('<div id=errorMessage></div>');
                 $('#errorMessage').attr('class', 'alert alert-danger text-center');
@@ -111,6 +110,24 @@ window.onload = function()
                     { 
                     });
 
+                    //Inserting a new acount into account table
+                    // var iBan = "placeholder";
+                    // var accountType;
+                    
+                    // if(Math.floor(Math.random() * 2) == 0)
+                    // {
+                    //     account = "Current";
+                    // }
+                    // else
+                    //     account = "Student";
+
+                    // console.log(account);
+                    // console.log(iBan);
+
+                   // $.getJSON(`../php/insertAccount.php?id=${id}`, function(data)
+                    //{ 
+                   // });
+
                     //Show modal and display password + CustomerID
                     $("#displayPass").empty();
                     $("#displayPass").append("<b>Customer ID: </b>"+id+"<br>");
@@ -135,3 +152,4 @@ window.onload = function()
         location.reload();
     })
 }
+
