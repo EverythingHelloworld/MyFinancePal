@@ -168,6 +168,7 @@ window.onload = function()
     $('#regModal').on('hidden.bs.modal', function () 
     {
         location.reload();
+        window.location.href = 'login.html'
     })
 }
 
