@@ -16,7 +16,7 @@ function insertRandomField() {
         //Insert DOB field
         $("#signInDiv").before(`<div class="form-group row">
             <label for="inputDOBLabel" class="col-sm-3 col-form-label">D.O.B:   </label>
-            <div class="col-sm-3">
+            <div class="col-sm-5">
             <input type="date" id="inputDOB" max="2004-12-31" min="1899-01-01" class="form-control"></input>
             </div>
         </div>`);
@@ -24,17 +24,11 @@ function insertRandomField() {
         //Insert Phone Num field
         $("#signInDiv").before(`<div class="form-group row">
             <label for="inputPhoneLabel" class="col-sm-3 col-form-label">Phone Number:   </label>
-            <div class="col-sm-3">
+            <div class="col-sm-5">
                 <input type="text" class="form-control" id="inputPhone" placeholder="Phone No.">
             </div>
         </div>`)
     }
-}
-
-function handleRegister() {
-    $("#btnRegister").click(function () {
-        window.location.href = 'registration.html';
-    })
 }
 
 //On click handler for login button
@@ -81,7 +75,7 @@ function handleLogin() {
 
             //Insert error message div with specified error message
             $('#signInDiv').before('<div id=errorMessage></div>');
-            $('#errorMessage').attr('class', 'alert alert-danger text-center');
+            $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
             $('#errorMessage').attr('role', 'alert');
             $('#errorMessage').text(errorMessage);
         }
@@ -89,7 +83,7 @@ function handleLogin() {
 
     //Retrieves customer details from db and checks if the values entered are valid
     function getCustomerDetails(id) {
-        var correctLoginDetails = false;
+        var correctLoginDetails = false; 
 
         //Gets customer details from db
         $.getJSON(`../php/getAllCustomerLoginDetails.php?customerID=${id}`, function (data) {
@@ -130,7 +124,7 @@ function handleLogin() {
             } else {
                 //Add error message to div
                 $('#signInDiv').before('<div id=errorMessage></div>');
-                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
                 $('#errorMessage').attr('role', 'alert');
                 $('#errorMessage').text(errorMessage2);
             }
@@ -138,3 +132,9 @@ function handleLogin() {
         }) //close getCustomerDetails db call
     } //close getCustomerDetails
 } //close handleLogin
+
+function handleRegister() {
+    $("#btnRegister").click(function () {
+        window.location.href = 'registration.html';
+    })
+}
