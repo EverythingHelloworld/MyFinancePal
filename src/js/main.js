@@ -1,13 +1,15 @@
 $("document").ready(() => {
+   // If a customer is not logged in <- if the customerID cookie exists
+   // hide page content and redirect to login page
    if (Cookies.get('customerID') === undefined) {
-      $('document').empty();
+      $('#jumbotron').attr('style', 'display:none');
+      $('#navbar').attr('style', 'display:none');
       window.location.href = 'login.html';
    }
    else {
       setActiveNavLink();
       const session_customer_id = Cookies.get('customerID');
       getCustomerData(session_customer_id); // -> pass session_customer_id to return and display all customer data
-      handleLogout();
    }
 });
 
@@ -156,9 +158,8 @@ appendRedirectInstructions = (button_id, accounts) => {
       }
       if (button_id === accounts[i].AccountID + "-transactions-btn") {
          console.log(accounts[i].AccountID + " transactions");
-         sessionStorage.setItem('AccountID', accounts[i].AccountID);
-         sessionStorage.setItem('CustomerID', 1);
-         console.log(sessionStorage.getItem('AccountID'));
+         sessionStorage.setItem("AccountID", accounts[i].AccountID);
+         sessionStorage.setItem("CustomerID", 1);
          window.location.href = "transactionTester.html";
       }
    }

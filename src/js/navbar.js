@@ -12,4 +12,8 @@ $("document").ready(function () {
         if (Cookies.get('customerID') !== undefined) {
                 $('#list').append(`<li class='nav-item'><a class='nav-link' id='btnLogout' href='#' class='external' style='color:rgba(255,255,255,.5);'>Logout</a>`);
         }
+
+        // handleLogout has to be binded to the onclick event here
+        // don't change this
+        $('#btnLogout').onclick = handleLogout();
 })

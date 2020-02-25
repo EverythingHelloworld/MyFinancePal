@@ -1,9 +1,20 @@
 $("document").ready(() => {
-  console.log(Cookies.get('customerID'));
-  const customer = sessionStorage.getItem('CustomerID');
-  const account = sessionStorage.getItem('AccountID');
-  getAccountTransactionData(customer, account); // -> pass session_customer_id to return and display all customer data
-  handleLogout();
+  // If a customer is not logged in <- if the customerID cookie exists
+  // hide page content and redirect to login page
+  if (Cookies.get('customerID') === undefined) {
+    $('#jumbotron').attr('style', 'display:none');
+    $('#navbar').attr('style', 'display:none');
+    window.location.href = 'login.html';
+  }
+  // else
+  // get the customer id and account id from sessionStorage
+  // and display all transactions for the customer account
+  else {
+    const customer = sessionStorage.getItem('CustomerID');
+    const account = sessionStorage.getItem('AccountID');
+    console.log(customer);
+    getAccountTransactionData(customer, account); // -> pass session_customer_id to return and display all customer data
+  }
 });
 
 
