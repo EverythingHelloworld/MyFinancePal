@@ -92,13 +92,8 @@ function handleLogin() {
                 /*If data is returned, check if it matches db values, 
                 else show error message*/
                 if (data.CustomerDetails.length > 0) {
-                    console.log(customer.Locked);
-
-                    console.log(customer.Locked === '0');
-
                     //If the customer's account is not locked, do further validation, else show error message
                     if(customer.Locked === '0'){
-                        console.log('account not locked do calls');
                         //Check if dob/phone num entered matches db value
                         if (dobVisible) {
                             if (dob === customer.DOB) {
@@ -123,16 +118,17 @@ function handleLogin() {
                             Cookies.set('customerID', id, {
                                 expires: inFifteenMinutes
                             });
-                            console.log('resetting loginAttempts! :)');
+                            //Customer has signed in successfully so reset their login attempts
                             resetLoginAttempts(id);
+                            //Go to login pin page
                             window.location.href = "loginPIN.html";
                         } else {
-                            console.log('incrementing loginAttempts! :/');
+                            //Customer has entered incorrect login details so increment their login attempts
                             incrementLoginAttempts(id);
+                            //Use the value obtained in original db call, no need for another db call
                             var noAttempts = customer.LoginAttempts;
-                            console.log('no attempts: ', noAttempts);
+                            //If number of attempts is greater than or equal to 2, lock their account
                             if(noAttempts >= '2'){
-                                console.log('locking account!');
                                 lockAccount(id);
                             }
                             //Add error message to div
@@ -142,7 +138,6 @@ function handleLogin() {
                             $('#errorMessage').text(errorMessage2 + ' Your account will be locked after 3 incorrect attempts.');
                         }
                     }else{
-                        console.log('account locked error');
                         //Add error message to div
                         $('#signInDiv').before('<div id=errorMessage></div>');
                         $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
