@@ -41,9 +41,9 @@ formatDate = (date) => {
 
 handleLogout = () => {
     $("#btnLogout").click(function () {
-        Cookies.remove('customerID');
-        console.log(Cookies.get('customerID') + '<- cookie here');
         window.location.href = "login.html";
+        Cookies.remove('customerID');
+        sessionStorage.clear();
     })
 }
 

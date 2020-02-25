@@ -135,8 +135,3 @@ window.onload = function()
         location.reload();
     })
 }
-
-//Notes:
-//Date can go beyond 2004 when typed into.
-//Add error handling to only allow 6 digits in 2nd number field.
-//Error messages for each field.
