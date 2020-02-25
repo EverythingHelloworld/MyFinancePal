@@ -3,32 +3,40 @@ $("document").ready(() => {
    // hide page content and redirect to login page
    redirectToLoginIfCustomerCookieNotSet();
    setActiveNavLink();
+   // Retrieve the customer id for the current session <- customer that is currently logged in
    const session_customer_id = Cookies.get('customerID');
    sessionStorage.setItem("CustomerID", session_customer_id);
-   getPageData(session_customer_id); // -> pass session_customer_id to return and display all customer data
+   getPageData(session_customer_id); // -> pass session_customer_id to return and display all page data for customer
 });
 
 getPageData = (customerID) => {
-   // Query the MyFinancePal database for the accounts associated with the current customer
-   $.getJSON(`../php/getCustomerAccounts.php?customerID=${customerID}`, (customerAccountData) => {
-      let accounts = []
-      let transactions = [];
-      let accountsAndTransactions = [];
-      accounts = customerAccountData.CustomerAccounts;
+   // Query the MyFinancePal database for the accounts associated with the customer
+   // that is currently logged in
+   $.getJSON(`../php/getCustomerAccounts.php?customerID=${customerID}`)
+      .done((customerAccountData) => {
+         let accounts = []
+         let transactions = [];
+         let accountsAndTransactions = [];
+         accounts = customerAccountData.CustomerAccounts;
 
-      // Query the MyFinancePal database for the transactions associated to the current customers accounts
-      $.getJSON(`../php/getAccountsTransactions.php?customerID=${customerID}`, (accountsTransactionData) => {
-         transactions = accountsTransactionData.accountTransactions;
-         // console.log('accounts', accounts);
-         // console.log('account transactions', accountsTransactions);
-         accountsAndTransactions = combineAccountsAndTransactions(accounts, transactions);
-         accountsAndTransactions = sortAccountsAndTransactions(accountsAndTransactions);
-         console.log("accountsAndTransactions", accountsAndTransactions);
-         appendCustomerAccounts(accountsAndTransactions);
-         appendCustomerAccountsTransactions(accountsAndTransactions);
-      });
+         // Query the MyFinancePal database for the transactions associated to the accounts
+         // of the customer that is currently logged in
+         $.getJSON(`../php/getAccountsTransactions.php?customerID=${customerID}`)
+            .done((accountsTransactionData) => {
+               transactions = accountsTransactionData.accountTransactions;
+               accountsAndTransactions = combineAccountsAndTransactions(accounts, transactions);
+               accountsAndTransactions = sortAccountsAndTransactions(accountsAndTransactions);
+               appendCustomerAccounts(accountsAndTransactions);
+               appendCustomerAccountsTransactions(accountsAndTransactions);
+            })
+            .fail(() => {
+               console.log('database call failed for account transactions');
+            })
 
-   });
+      })
+      .fail(() => {
+         console.log('database call failed for customer account');
+      })
 }
 
 combineAccountsAndTransactions = (accounts, transactions) => {
