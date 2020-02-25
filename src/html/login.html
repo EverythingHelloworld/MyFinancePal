@@ -22,24 +22,21 @@
     <div id='navbar'></div>
     <div class="container">
         <div class="row">
-          <div class="col-sm">
-          </div>
-          <div class="col-sm">
+          <div class="col-sm offset-4">
             <form id="frmLogin">
                 <div class="form-group row">
-                    <label for="inputIDLabel" class="col-sm-4 col-form-label">Customer ID:   </label>
-                    <div class="col-sm-8">
+                    <label for="inputIDLabel" class="col-sm-3 col-form-label">Customer ID:   </label>
+                    <div class="col-sm-3">
                         <input type="text" class="form-control" value="" id="inputID" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Customer ID">
                     </div>
                 </div>
                 <div class="form-group row" id="signInDiv">
-                    <div class="col-sm-10 offset-sm-2">
+                    <div class="col-sm-9 offset-sm-3">
                         <button type="button" class="btn btn-primary" id="btnLogin">Sign in</button>
+                        <button type="button" class="btn btn-primary" id="btnRegister">Register</button>
                     </div>
                 </div>
             </form>
-          </div>
-          <div class="col-sm">
           </div>
     </div>
    </div>

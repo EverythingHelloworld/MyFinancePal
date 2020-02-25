@@ -5,6 +5,7 @@ var numberPattern = new RegExp("^[0-9]*$");
 $("document").ready(function(){
     insertRandomField();
     handleLogin();
+    handleRegister();
 })
 
 function insertRandomField() {
@@ -14,20 +15,26 @@ function insertRandomField() {
     if (randomNumber == 0) {
         //Insert DOB field
         $("#signInDiv").before(`<div class="form-group row">
-            <label for="inputDOBLabel" class="col-sm-4 col-form-label">D.O.B:   </label>
-            <div class="col-sm-8">
+            <label for="inputDOBLabel" class="col-sm-3 col-form-label">D.O.B:   </label>
+            <div class="col-sm-3">
             <input type="date" id="inputDOB" max="2004-12-31" min="1899-01-01" class="form-control"></input>
             </div>
         </div>`);
     } else {
         //Insert Phone Num field
         $("#signInDiv").before(`<div class="form-group row">
-            <label for="inputPhoneLabel" class="col-sm-4 col-form-label">Phone Number:   </label>
-            <div class="col-sm-8">
+            <label for="inputPhoneLabel" class="col-sm-3 col-form-label">Phone Number:   </label>
+            <div class="col-sm-3">
                 <input type="text" class="form-control" id="inputPhone" placeholder="Phone No.">
             </div>
         </div>`)
     }
+}
+
+function handleRegister() {
+    $("#btnRegister").click(function () {
+        window.location.href = 'registration.html';
+    })
 }
 
 //On click handler for login button
