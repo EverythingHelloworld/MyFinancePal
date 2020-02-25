@@ -17,7 +17,7 @@ window.onload = function()
 
         //Check if mobile number is already registered
         $.getJSON(`../php/getCustomerPhoneNum.php`, function(data)
-        { 
+        {    
             for(var i=0;i<data.customer.length;i++)
 		    {
                 if(data.customer[i].PhoneNumber == fullNumber)
@@ -78,7 +78,7 @@ window.onload = function()
                 $('#errorMessage').text("Please enter a valid postcode.");
             }
 
-            else if(!phoneNoPatt.test(fullNumber) || phoneNo === '' || !(phoneNo.length == 6))
+            else if(!phoneNoPatt.test(fullNumber) || phoneNo === '' || !(phoneNo.length == 7))
             {
                 $('#registerDiv').before('<div id=errorMessage></div>');
                 $('#errorMessage').attr('class', 'alert alert-danger text-center');
@@ -111,6 +111,24 @@ window.onload = function()
                     { 
                     });
 
+                    //Inserting a new acount into account table
+                    var iBan = "placeholder";
+                    var accountType;
+                    
+                    if(Math.floor(Math.random() * 2) == 0)
+                    {
+                        account = "Current";
+                    }
+                    else
+                        account = "Student";
+
+                    console.log(account);
+                    console.log(iBan);
+
+                   // $.getJSON(`../php/insertAccount.php?id=${id}`, function(data)
+                    //{ 
+                   // });
+
                     //Show modal and display password + CustomerID
                     $("#displayPass").empty();
                     $("#displayPass").append("<b>Customer ID: </b>"+id+"<br>");
@@ -135,3 +153,4 @@ window.onload = function()
         location.reload();
     })
 }
+
