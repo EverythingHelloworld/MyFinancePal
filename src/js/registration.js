@@ -77,7 +77,7 @@ window.onload = function()
                 $('#errorMessage').text("Please enter a valid postcode.");
             }
 
-            else if(!phoneNoPatt.test(fullNumber) || phoneNo === '' || !(phoneNo.length === 7))
+            else if(!phoneNoPatt.test(fullNumber) || phoneNo === '' || phoneNo.length !== 7)
             {
                 $('#registerDiv').before('<div id=errorMessage></div>');
                 $('#errorMessage').attr('class', 'alert alert-danger text-center');
@@ -91,49 +91,51 @@ window.onload = function()
                 var password = Math.floor(100000 + Math.random() * 900000);
             
                 //Insert details into customer table
-                $.getJSON(`../php/registerCustomer.php?name=${name}&dob=${dob}&street=${street}&townCity=${townCity}&county=${county}&postcode=${postcode}&phoneNo=${fullNumber}&password=${password}`, function(data)
+                $.getJSON(`../php/registerCustomer.php?name=${name}&dob=${dob}&street=${street}&townCity=${townCity}&county=${county}&postcode=${postcode}&phoneNo=${fullNumber}&password=${password}`, function()
                 { 
                     
                 });
 
                 //Retrieve Customer ID & Display modal with account details
-                $.getJSON(`../php/getCustomerID.php?phoneNo=${fullNumber}`, function(data)
+                $.getJSON(`../php/getCustomerID.php?phoneNo=${fullNumber}`, function(data2)
                 { 
 
-                    for(var i=0;i<data.customer.length;i++)
+                    for(var i=0;i<data2.customer.length;i++)
                     {
-                        var id = data.customer[i].CustomerID;          
+                        var id = data2.customer[i].CustomerID;          
                     }     
                     
                     //Insert password into customerdetails table
-                    $.getJSON(`../php/insertPassId.php?password=${password}&id=${id}`, function(data)
+                    $.getJSON(`../php/insertPassId.php?password=${password}&id=${id}`, function()
                     { 
                     });
-
-                    //Inserting a new acount into account table
-                    // var iBan = "placeholder";
-                    // var accountType;
-                    
-                    // if(Math.floor(Math.random() * 2) == 0)
-                    // {
-                    //     account = "Current";
-                    // }
-                    // else
-                    //     account = "Student";
-
-                    // console.log(account);
-                    // console.log(iBan);
-
-                   // $.getJSON(`../php/insertAccount.php?id=${id}`, function(data)
-                    //{ 
-                   // });
 
                     //Show modal and display password + CustomerID
                     $("#displayPass").empty();
                     $("#displayPass").append("<b>Customer ID: </b>"+id+"<br>");
                     $("#displayPass").append("<b>Login Password: </b>"+password);
                     $("#regModal").modal();
+ 
 
+                    //Inserting a new acount into account table
+                    var iBan = "placeholder";
+                    var accountType;
+                    
+                    if(Math.floor(Math.random() * 2) == 0)
+                    {
+                        account = "Current";
+                    }
+                    else
+                        account = "Student";
+
+                    console.log(account);
+                    console.log(iBan);
+
+                   // $.getJSON(`../php/insertAccount.php?id=${id}`, function(data)
+                    //{ 
+                   // });
+
+                   
                 });
 
                 
