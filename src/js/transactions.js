@@ -20,6 +20,7 @@ $("document").ready(() => {
 
 getAccountTransactionData = (customer_id, account_id) => {
   $.getJSON(`../php/getAccountsTransactions.php?customer_id=${customer_id}`, (data) => {
+    // console.log(data);
     let accountTransactions = []; //array to store account transactions
     accountTransactions = getAccountTransactions(data, account_id);
     sortAccountTransactions(accountTransactions);
