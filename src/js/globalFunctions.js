@@ -51,3 +51,15 @@ function getRandomNumber(min, max) {
     //Generate a random number between the minimum value and max value (inclusive)
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+function resetLoginAttempts(id) {
+    $.post("../php/resetLoginAttempts.php", {'id': id});
+}
+
+function incrementLoginAttempts(id) {
+    $.post("../php/incrementLoginAttempts.php", {'id': id});
+}
+
+function lockAccount(id) {
+    $.post("../php/lockAccount.php", {'id': id});
+}

@@ -34,7 +34,8 @@ function insertRandomField() {
 //On click handler for login button
 function handleLogin() {
     var errorMessage = '';
-    //Triggered when customer clicks the sign in button
+
+    //Triggered when customer clicks the sign in button, this function validates the inputs
     $("#btnLogin").click(function () {
         //Checks if the dob input exists. Length = 0 if it doesn't and 1 if it does.
         var dobDivExists = $('#inputDOB').length;
@@ -60,17 +61,17 @@ function handleLogin() {
 
             //If dob div doesn't exist (phone num exists) and phone number not valid, set error message
             if(!dobDivExists && !numberPattern.test($('#inputPhone').val())){
-                errorMessage = 'Phone number field can only contain numbers';
+                errorMessage = 'Phone number field can only contain numbers.';
             }
 
             //if any of the fields are empty, set error message
             if((dob === '' || phoneNum === '') || customerID === ''){
-                errorMessage = 'All fields required';
+                errorMessage = 'All fields required.';
             }
 
             //if customer id pattern is invalid, set message
             if(!numberPattern.test($('#inputID').val())){
-                errorMessage = 'Customer ID field can only contain numbers';
+                errorMessage = 'Customer ID field can only contain numbers.';
             }
 
             //Insert error message div with specified error message
@@ -81,54 +82,81 @@ function handleLogin() {
         }
     }) //close sign in button click handler
 
-    //Retrieves customer details from db and checks if the values entered are valid
+    //Retrieves customer details from db and checks if the values match those in the database
     function getCustomerDetails(id) {
         var correctLoginDetails = false; 
-
         //Gets customer details from db
         $.getJSON(`../php/getAllCustomerLoginDetails.php?customerID=${id}`, function (data) {
             var customer = data.CustomerDetails[0];
             var errorMessage2;
-            /*If data is returned, check if it matches db values, 
-            else show error message*/
-            if (data.CustomerDetails.length > 0) {
-                //Check if dob/phone num entered matches db value
-                if (dobVisible) {
-                    if (dob === customer.DOB) {
-                        correctLoginDetails = true;
-                    } else {
-                        //Display incorrect DOB error message
-                        errorMessage2 = 'Incorrect date of birth';
+                /*If data is returned, check if it matches db values, 
+                else show error message*/
+                if (data.CustomerDetails.length > 0) {
+                    console.log(customer.Locked);
+
+                    console.log(customer.Locked === '0');
+
+                    //If the customer's account is not locked, do further validation, else show error message
+                    if(customer.Locked === '0'){
+                        console.log('account not locked do calls');
+                        //Check if dob/phone num entered matches db value
+                        if (dobVisible) {
+                            if (dob === customer.DOB) {
+                                correctLoginDetails = true;
+                            } else {
+                                //Display incorrect DOB error message
+                                errorMessage2 = 'Incorrect date of birth.';
+                            }
+                        } else {
+                            if (phoneNum === customer.PhoneNumber) {
+                                correctLoginDetails = true;
+                            } else {
+                                //Display incorrect phone number error message
+                                errorMessage2 = 'Incorrect phone number.';
+                            }
+                        }
+
+                        /*If the customer correctly entered their details, set the customer id
+                        cookie and take them to the loginPIN page. Cookie expires in 15 minutes.*/
+                        if (correctLoginDetails) {
+                            var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
+                            Cookies.set('customerID', id, {
+                                expires: inFifteenMinutes
+                            });
+                            console.log('resetting loginAttempts! :)');
+                            resetLoginAttempts(id);
+                            window.location.href = "loginPIN.html";
+                        } else {
+                            console.log('incrementing loginAttempts! :/');
+                            incrementLoginAttempts(id);
+                            var noAttempts = customer.LoginAttempts;
+                            console.log('no attempts: ', noAttempts);
+                            if(noAttempts >= '2'){
+                                console.log('locking account!');
+                                lockAccount(id);
+                            }
+                            //Add error message to div
+                            $('#signInDiv').before('<div id=errorMessage></div>');
+                            $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
+                            $('#errorMessage').attr('role', 'alert');
+                            $('#errorMessage').text(errorMessage2 + ' Your account will be locked after 3 incorrect attempts.');
+                        }
+                    }else{
+                        console.log('account locked error');
+                        //Add error message to div
+                        $('#signInDiv').before('<div id=errorMessage></div>');
+                        $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
+                        $('#errorMessage').attr('role', 'alert');
+                        $('#errorMessage').text('Your account is locked. Please contact a member of staff in branch or over the phone.');
                     }
                 } else {
-                    if (phoneNum === customer.PhoneNumber) {
-                        correctLoginDetails = true;
-                    } else {
-                        //Display incorrect phone number error message
-                        errorMessage2 = 'Incorrect phone number';
-                    }
+                    //If customer id is not in the database set the error message
+                    errorMessage2 = 'You are not a registered customer.';
+                    $('#signInDiv').before('<div id=errorMessage></div>');
+                        $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
+                        $('#errorMessage').attr('role', 'alert');
+                        $('#errorMessage').text(errorMessage2);
                 }
-            } else {
-                //If customer id is not in the database set the error message
-                errorMessage2 = 'You are not a registered customer';
-            }
-
-            /*If the customer correctly entered their details, set the customer id
-            cookie and take them to the loginPIN page. Cookie expires in 15 minutes.*/
-            if (correctLoginDetails) {
-                var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
-                Cookies.set('customerID', id, {
-                    expires: inFifteenMinutes
-                });
-                window.location.href = "loginPIN.html";
-            } else {
-                //Add error message to div
-                $('#signInDiv').before('<div id=errorMessage></div>');
-                $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
-                $('#errorMessage').attr('role', 'alert');
-                $('#errorMessage').text(errorMessage2);
-            }
-
         }) //close getCustomerDetails db call
     } //close getCustomerDetails
 } //close handleLogin
