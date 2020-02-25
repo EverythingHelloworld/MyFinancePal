@@ -9,26 +9,35 @@ $("document").ready(() => {
 });
 
 getPageData = (customerID) => {
-   // Query the MyFinancePal database for the accounts associated with the current customer
-   $.getJSON(`../php/getCustomerAccounts.php?customerID=${customerID}`, (customerAccountData) => {
-      let accounts = []
-      let transactions = [];
-      let accountsAndTransactions = [];
-      accounts = customerAccountData.CustomerAccounts;
+   // Query the MyFinancePal database for the accounts associated with the customer
+   // that is currently logged in
+   $.getJSON(`../php/getCustomerAccounts.php?customerID=${customerID}`)
+      .done((customerAccountData) => {
+         let accounts = []
+         let transactions = [];
+         let accountsAndTransactions = [];
+         accounts = customerAccountData.CustomerAccounts;
 
-      // Query the MyFinancePal database for the transactions associated to the current customers accounts
-      $.getJSON(`../php/getAccountsTransactions.php?customerID=${customerID}`, (accountsTransactionData) => {
-         transactions = accountsTransactionData.accountTransactions;
-         // console.log('accounts', accounts);
-         // console.log('account transactions', accountsTransactions);
-         accountsAndTransactions = combineAccountsAndTransactions(accounts, transactions);
-         accountsAndTransactions = sortAccountsAndTransactions(accountsAndTransactions);
-         console.log("accountsAndTransactions", accountsAndTransactions);
-         appendCustomerAccounts(accountsAndTransactions);
-         appendCustomerAccountsTransactions(accountsAndTransactions);
-      });
+         // Query the MyFinancePal database for the transactions associated to the accounts
+         // of the customer that is currently logged in
+         $.getJSON(`../php/getAccountsTransactions.php?customerID=${customerID}`)
+            .done((accountsTransactionData) => {
+               transactions = accountsTransactionData.accountTransactions;
+               // console.log('accounts', accounts);
+               // console.log('account transactions', accountsTransactions);
+               accountsAndTransactions = combineAccountsAndTransactions(accounts, transactions);
+               accountsAndTransactions = sortAccountsAndTransactions(accountsAndTransactions);
+               appendCustomerAccounts(accountsAndTransactions);
+               appendCustomerAccountsTransactions(accountsAndTransactions);
+            })
+            .fail(() => {
+               console.log('database call failed for account transactions');
+            })
 
-   });
+      })
+      .fail(() => {
+         console.log('database call failed for customer account');
+      })
 }
 
 combineAccountsAndTransactions = (accounts, transactions) => {
