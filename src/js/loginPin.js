@@ -68,7 +68,6 @@ function getCustomerPassword(id) {
 function handleContinueClick() {
     $('#continueBtn').click(() => {
         pinCorrect = true;
-        console.log('clicked');
         //Check if digit entered matches the selected digit in the database
         for(var i = 0; i < digitsArray.length; i++){
             if($('#passwordDigitField' + digitsArray[i]).val() === dbPassword.charAt([digitsArray[i]])){
@@ -104,9 +103,4 @@ function getPasswordDigits(password) {
             digitsToCheck.add(randomNum);
     }
     return digitsToCheck;
-}
-
-function getRandomNumber(min, max) {
-    //Generate a random number between the minimum value and max value (inclusive)
-    return Math.floor(Math.random() * (max - min + 1)) + min;
 }

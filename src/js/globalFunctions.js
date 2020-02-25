@@ -46,3 +46,8 @@ handleLogout = () => {
         sessionStorage.clear();
     })
 }
+
+function getRandomNumber(min, max) {
+    //Generate a random number between the minimum value and max value (inclusive)
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
