@@ -1,15 +1,15 @@
 <?php
 {
-    $name = $_GET["name"];
-    $dob = $_GET["dob"];
-    $street = $_GET["street"];
-    $city = $_GET["city"];
-    $postcode = $_GET["postcode"];
+    $accountType = $_GET["accountType"];
+    $tempIBAN = $_GET["tempIBAN"];
+    $bic = $_GET["bic"];
+    $id = $_GET["id"];
+    $openDate = $_GET["openDate"];
 
     $connection = mysqli_connect("localhost","root","");
     mysqli_select_db($connection,"myfinancepal");
-    $result = mysqli_query($connection,"INSERT INTO Customer (Name, DOB, City, Street, PostCode)
-    VALUES ('$name', '$dob', '$city', '$street', '$postcode');");
+    $result = mysqli_query($connection,"INSERT INTO account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
+    VALUES ('$accountType', '$tempIBAN', '$bic', '$id', '$openDate', 0, 0);");
 
     $rs = array();
     $i=0;
