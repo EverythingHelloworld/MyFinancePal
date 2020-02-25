@@ -125,8 +125,11 @@ window.onload = function()
                         else
                             account = "Student";
 
+
+                        
                         console.log(account);
                         console.log(iBan);
+                        console.log(todaysDate());
 
                         // $.getJSON(`../php/insertAccount.php?id=${id}`, function(data)
                         // { 
@@ -153,6 +156,17 @@ window.onload = function()
     //Reload page after modal closes
     $('#regModal').on('hidden.bs.modal', function () 
     {
-        //location.reload();
+        location.reload();
     })
+}
+
+function todaysDate()
+{
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    return today;
 }
