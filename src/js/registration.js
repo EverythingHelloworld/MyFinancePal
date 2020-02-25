@@ -18,6 +18,8 @@ window.onload = function()
         var fullNumber = prefix+phoneNo;
         var sameNumber = false;
         var year = dob.substring(0,4);
+        var accountId;
+        var iBan;
 
         //Check if mobile number is already registered
         $.getJSON(`../php/getCustomerPhoneNum.php`, function(data)
@@ -114,33 +116,45 @@ window.onload = function()
                     { 
                     });
 
-                        //Inserting a new acount into account table
-                        var iBan = "placeholder";
+                        //Generate account details
+                        var tempIBAN = "placeholder";
                         var accountType;
+                        var bic = "BOFIIE"+ Math.floor(Math.random()*(999-100+1)+100);
                         
                         if(Math.floor(Math.random() * 2) == 0)
                         {
-                            account = "Current";
+                            accountType = "Current";
                         }
                         else
-                            account = "Student";
+                        accountType = "Student";
 
-                        console.log(account);
+                        //inserting account details into the accounts table
+                        $.getJSON(`../php/insertAccount.php?accountType=${accountType}&tempIBAN=${tempIBAN}&bic=${bic}&id=${id}&openDate=${todaysDate()}`, function(data)
+                        { 
+                        });
+
+                        $.getJSON(`../php/getAccountId.php?id=${id}`, function(data)
+                        { 
+                            for(var i=0;i<data.customer.length;i++)
+                            {
+                                accountId = data.customer[i].AccountID;         
+                            } 
+                        });
+
+                        iBan = "IE12BOFI"+accountId+Math.floor(100000 + Math.random() * 900000);
                         console.log(iBan);
 
-                        // $.getJSON(`../php/insertAccount.php?id=${id}`, function(data)
-                        // { 
-                        // });
+                        $.getJSON(`../php/insertIBAN.php?iBan=${iBan}&accountId=${accountId}`, function(data)
+                        { 
+                        });
 
-                    //Show modal and display password + CustomerID
-                    $("#displayPass").empty();
-                    $("#displayPass").append("<b>Customer ID: </b>"+id+"<br>");
-                    $("#displayPass").append("<b>Login Password: </b>"+password);
-                    $("#regModal").modal();
+                        //Show modal and display password + CustomerID
+                        $("#displayPass").empty();
+                        $("#displayPass").append("<b>Customer ID: </b>"+id+"<br>");
+                        $("#displayPass").append("<b>Login Password: </b>"+password);
+                        $("#regModal").modal();
 
                 });
-
-                
             }
         });  
     });
@@ -153,6 +167,17 @@ window.onload = function()
     //Reload page after modal closes
     $('#regModal').on('hidden.bs.modal', function () 
     {
-        //location.reload();
+        location.reload();
     })
+}
+
+function todaysDate()
+{
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    return today;
 }

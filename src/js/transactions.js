@@ -1,25 +1,20 @@
 $("document").ready(() => {
   // If a customer is not logged in <- if the customerID cookie exists
   // hide page content and redirect to login page
-  if (Cookies.get('customerID') === undefined) {
-    $('#jumbotron').attr('style', 'display:none');
-    $('#navbar').attr('style', 'display:none');
-    window.location.href = 'login.html';
-  }
+  redirectToLoginIfCustomerCookieNotSet();
   // else
   // get the customer id and account id from sessionStorage
   // and display all transactions for the customer account
-  else {
-    const customer = sessionStorage.getItem('CustomerID');
-    const account = sessionStorage.getItem('AccountID');
-    console.log(customer);
-    getAccountTransactionData(customer, account); // -> pass session_customer_id to return and display all customer data
-  }
+  const customer = sessionStorage.getItem('CustomerID');
+  const account = sessionStorage.getItem('AccountID');
+  console.log(account);
+  console.log(customer);
+  getAccountTransactionData(customer, account); // -> pass session_customer_id to return and display all customer data
 });
 
 
 getAccountTransactionData = (customer_id, account_id) => {
-  $.getJSON(`../php/getAccountsTransactions.php?customer_id=${customer_id}`, (data) => {
+  $.getJSON(`../php/getAccountsTransactions.php?customerID=${customer_id}`, (data) => {
     // console.log(data);
     let accountTransactions = []; //array to store account transactions
     accountTransactions = getAccountTransactions(data, account_id);
