@@ -114,9 +114,9 @@ function handleLogin() {
                         /*If the customer correctly entered their details, set the customer id
                         cookie and take them to the loginPIN page. Cookie expires in 15 minutes.*/
                         if (correctLoginDetails) {
-                            var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
+                            var inThirtyMinutes = new Date(new Date().getTime() + 30 * 60 * 1000);
                             Cookies.set('customerID', id, {
-                                expires: inFifteenMinutes
+                                expires: inThirtyMinutes
                             });
                             //Customer has signed in successfully so reset their login attempts
                             resetLoginAttempts(id);

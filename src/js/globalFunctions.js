@@ -19,7 +19,7 @@ function setActiveNavLink() {
 }
 
 function redirectToLoginIfCustomerCookieNotSet() {
-    if (Cookies.get('customerID') === undefined) {
+    if (Cookies.get('loggedIn') === undefined) {
         $('#jumbotron').attr('style', 'display:none');
         $('#navbar').attr('style', 'display:none');
         window.location.href = 'login.html';

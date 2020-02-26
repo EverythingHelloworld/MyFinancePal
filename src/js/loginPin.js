@@ -104,6 +104,11 @@ function handleContinueClick() {
                 if(pinCorrect){
                     //Customer has logged in successfully, reset login attempts to 0
                     resetLoginAttempts(customerID);
+                    //Set logged in cookie
+                    var inThirtyMinutes = new Date(new Date().getTime() + 30 * 60 * 1000);
+                    Cookies.set('loggedIn', 'true', {
+                        expires: inThirtyMinutes
+                    });
                     //redirect to main page
                     window.location.href = "main.html";
                 }else{
