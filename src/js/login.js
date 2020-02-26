@@ -125,9 +125,11 @@ function handleLogin() {
                         } else {
                             //Customer has entered incorrect login details so increment their login attempts
                             incrementLoginAttempts(id);
-                            //Use the value obtained in original db call, no need for another db call
+                            //Use the value obtained in original db call, no need for another db call.
                             var noAttempts = customer.LoginAttempts;
-                            //If number of attempts is greater than or equal to 2, lock their account
+                            /*Login attempts in db is one more than login attempts variable we set with data obtained from 
+                            our earlier db call as we have just incremented it in the db. There is no need to do an additional db 
+                            call here. If number of attempts is greater than or equal to 2 (3+ in db), lock their account*/
                             if(noAttempts >= '2'){
                                 lockAccount(id);
                             }
@@ -156,6 +158,7 @@ function handleLogin() {
     } //close getCustomerDetails
 } //close handleLogin
 
+//If the customer clicks the register button, go to register page
 function handleRegister() {
     $("#btnRegister").click(function () {
         window.location.href = 'registration.html';

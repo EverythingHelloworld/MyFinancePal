@@ -41,6 +41,7 @@ formatDate = (date) => {
     return new_date.join('');
 }
 
+//This function logs the customer out when they click the log out button
 handleLogout = () => {
     $("#btnLogout").click(function () {
         window.location.href = "login.html";
@@ -49,19 +50,22 @@ handleLogout = () => {
     })
 }
 
+//Generates a random number between the minimum value and max value (inclusive)
 function getRandomNumber(min, max) {
-    //Generate a random number between the minimum value and max value (inclusive)
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+//Reset customer login attempts to 0
 function resetLoginAttempts(id) {
     $.post("../php/resetLoginAttempts.php", {'id': id});
 }
 
+//increment customer login attempts by 1
 function incrementLoginAttempts(id) {
     $.post("../php/incrementLoginAttempts.php", {'id': id});
 }
 
+//Lock customer account
 function lockAccount(id) {
     $.post("../php/lockAccount.php", {'id': id});
 }
