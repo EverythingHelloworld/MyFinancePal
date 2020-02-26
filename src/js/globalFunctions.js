@@ -46,6 +46,7 @@ handleLogout = () => {
     $("#btnLogout").click(function () {
         window.location.href = "login.html";
         Cookies.remove('customerID');
+        Cookies.remove('loggedIn');
         sessionStorage.clear();
     })
 }
@@ -57,15 +58,15 @@ function getRandomNumber(min, max) {
 
 //Reset customer login attempts to 0
 function resetLoginAttempts(id) {
-    $.post("../php/resetLoginAttempts.php", {'id': id});
+    $.post("../php/resetLoginAttempts.php", { 'id': id });
 }
 
 //increment customer login attempts by 1
 function incrementLoginAttempts(id) {
-    $.post("../php/incrementLoginAttempts.php", {'id': id});
+    $.post("../php/incrementLoginAttempts.php", { 'id': id });
 }
 
 //Lock customer account
 function lockAccount(id) {
-    $.post("../php/lockAccount.php", {'id': id});
+    $.post("../php/lockAccount.php", { 'id': id });
 }

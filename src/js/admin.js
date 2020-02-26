@@ -1,4 +1,13 @@
 $("document").ready(() => {
+  if (Cookies.get('adminID') === undefined) {
+    $("#jumbotron").attr('style', 'display:none');
+    $("#navbar").attr('style', 'display:none');
+    $("#btnDiv").attr('style', 'display:none');
+    window.location.href = 'login.html';
+
+  }
+  console.log(Cookies.get('adminID'));
+  $('#btnDiv').append(`<button type="button" class="btn btn-primary" id="btnAdminLogout">Log out</button>`);
   handleLogout();
 })
 
