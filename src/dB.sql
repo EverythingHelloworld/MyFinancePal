@@ -14,6 +14,7 @@ CREATE TABLE Customer
     `County` varchar(50) NOT NULL,
     `PostCode` varchar(50) NOT NULL, 
     `PhoneNumber` varchar(20) NOT NULL,
+    `Email` varchar(50) NOT NULL,
     PRIMARY KEY (`CustomerID`)
 );
 
@@ -112,14 +113,14 @@ ALTER TABLE Account AUTO_INCREMENT=100000;
 -- select * from Account where locked IS TRUE/IS FALSE/IS NOT TRUE
 -- select * from Account where locked = 0/1
 
-INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber)
-VALUES ('TestCus1', '1993/10/10', 'Letterkenny', '123 Street', 'Donegal', '0000', '0861111111');
+INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber, Email)
+VALUES ('TestCus1', '1993/10/10', 'Letterkenny', '123 Street', 'Donegal', '0000', '0861111111', '123@hotmail.com');
 
-INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber)
-VALUES ('TestCus2', '1991/12/10', 'Dublin', '456 Street', 'Dublin', '1111', '0862222222');
+INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber, Email)
+VALUES ('TestCus2', '1991/12/10', 'Dublin', '456 Street', 'Dublin', '1111', '0862222222', '456@hotmail.com');
 
-INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber)
-VALUES ('TestCus3', '1994/10/05', 'Cork', '678 Street', 'Cork', '2222', '0863333333');
+INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber, Email)
+VALUES ('TestCus3', '1994/10/05', 'Cork', '678 Street', 'Cork', '2222', '0863333333', '789@hotmail.com');
 
 INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
 VALUES ('Student', 'IE12BOFI100002423554', 'BOFIIE234', '1', '2000-01-01', '1000.00', '100.00');

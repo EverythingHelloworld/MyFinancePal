@@ -8,6 +8,7 @@ window.onload = function()
     {
         //Get all text field entries
         var name = $("#inputName").val();
+        var email = $("#inputEmail").val();
         var dob = $("#inputDate").val();
         var street = $("#inputStreet").val();
         var townCity = $("#inputTwnCty").val();
@@ -20,6 +21,8 @@ window.onload = function()
         var year = dob.substring(0,4);
         var accountId;
         var iBan;
+
+        console.log(email);
 
         //Check if mobile number is already registered
         $.getJSON(`../php/getCustomerPhoneNum.php`, function(data)
