@@ -74,7 +74,7 @@ window.onload = function()
                 $('#registerDiv').before('<div id=errorMessage></div>');
                 $('#errorMessage').attr('class', 'alert alert-danger text-center');
                 $('#errorMessage').attr('role', 'alert');
-                $('#errorMessage').text("Please enter a valid street name.");
+                $('#errorMessage').text("Please enter a valid Street Name.");
             }
 
             else if(!stTwnPostPatt.test(townCity) || townCity === '')
@@ -82,7 +82,7 @@ window.onload = function()
                 $('#registerDiv').before('<div id=errorMessage></div>');
                 $('#errorMessage').attr('class', 'alert alert-danger text-center');
                 $('#errorMessage').attr('role', 'alert');
-                $('#errorMessage').text("Please enter a valid town/city name.");
+                $('#errorMessage').text("Please enter a valid Town/City Name.");
             }
 
             else if(!stTwnPostPatt.test(postcode) || postcode === '')
@@ -90,7 +90,7 @@ window.onload = function()
                 $('#registerDiv').before('<div id=errorMessage></div>');
                 $('#errorMessage').attr('class', 'alert alert-danger text-center');
                 $('#errorMessage').attr('role', 'alert');
-                $('#errorMessage').text("Please enter a valid postcode.");
+                $('#errorMessage').text("Please enter a valid Postcode.");
             }
 
             else if(!phoneNoPatt.test(fullNumber) || phoneNo === '' || !(phoneNo.length === 7))
@@ -98,7 +98,15 @@ window.onload = function()
                 $('#registerDiv').before('<div id=errorMessage></div>');
                 $('#errorMessage').attr('class', 'alert alert-danger text-center');
                 $('#errorMessage').attr('role', 'alert');
-                $('#errorMessage').text("Please enter a valid phone number.");
+                $('#errorMessage').text("Please enter a valid Phone Number.");
+            }
+
+            else if(county === "Select a County...")
+            {
+                $('#registerDiv').before('<div id=errorMessage></div>');
+                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('role', 'alert');
+                $('#errorMessage').text("Please select a County.");
             }
 
             else
