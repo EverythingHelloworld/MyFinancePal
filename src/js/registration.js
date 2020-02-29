@@ -17,21 +17,19 @@ window.onload = function()
         var phoneNo = $("#inputPhoneNo").val();
         var prefix = $("#inputPrefix").val();
         var fullNumber = prefix+phoneNo;
-        var sameNumber = false;
+        var sameEmail = false;
         var year = dob.substring(0,4);
         var accountId;
         var iBan;
 
-        console.log(email);
-
         //Check if mobile number is already registered
-        $.getJSON(`../php/getCustomerPhoneNum.php`, function(data)
+        $.getJSON(`../php/getCustomerEmail.php`, function(data)
         {    
             for(var i=0;i<data.customer.length;i++)
 		    {
-                if(data.customer[i].PhoneNumber == fullNumber)
+                if(data.customer[i].Email === email)
                 {
-                    sameNumber = true;
+                    sameEmail = true;
                 }                  
             }
             
@@ -40,11 +38,12 @@ window.onload = function()
             var stTwnPostPatt = new RegExp("^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$");
             var phoneNoPatt = new RegExp("^[0-9_]+( [0-9_]+)*$");
             var namePatt = new RegExp("^[a-zA-Z_]+( [a-zA-Z_]+)*$");
+            var emailPatt = new RegExp("^[^@]+@[^@]+\.[^@]+$");
 
             //If mobile number is registered display modal 
-            if(sameNumber)
+            if(sameEmail)
             {
-                $("#numberModal").modal();
+                $("#emailModal").modal();
             }
 
             //Check each fields pattern
@@ -55,6 +54,14 @@ window.onload = function()
                 $('#errorMessage').attr('class', 'alert alert-danger text-center');
                 $('#errorMessage').attr('role', 'alert');
                 $('#errorMessage').text("Please enter a valid name.");
+            }
+
+            else if(!emailPatt.test(email) || email === '')
+            {
+                $('#registerDiv').before('<div id=errorMessage></div>');
+                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('role', 'alert');
+                $('#errorMessage').text("Please enter a valid e-mail. (Must contain @ and .)");
             }
 
             else if(!datePatt.test(dob) || year > 2004 || year < 1899)
@@ -100,13 +107,13 @@ window.onload = function()
                 var password = Math.floor(100000 + Math.random() * 900000);
             
                 //Insert details into customer table
-                $.getJSON(`../php/registerCustomer.php?name=${name}&dob=${dob}&street=${street}&townCity=${townCity}&county=${county}&postcode=${postcode}&phoneNo=${fullNumber}&password=${password}`, function(data)
+                $.getJSON(`../php/registerCustomer.php?name=${name}&dob=${dob}&street=${street}&townCity=${townCity}&county=${county}&postcode=${postcode}&phoneNo=${fullNumber}&email=${email}`, function(data)
                 { 
                     
                 });
 
                 //Retrieve Customer ID & Display modal with account details
-                $.getJSON(`../php/getCustomerID.php?phoneNo=${fullNumber}`, function(data)
+                $.getJSON(`../php/getCustomerID.php?email=${email}`, function(data)
                 { 
 
                     for(var i=0;i<data.customer.length;i++)
@@ -156,7 +163,6 @@ window.onload = function()
                         $("#displayPass").append("<b>Customer ID: </b>"+id+"<br>");
                         $("#displayPass").append("<b>Login Password: </b>"+password);
                         $("#regModal").modal();
-
                 });
             }
         });  

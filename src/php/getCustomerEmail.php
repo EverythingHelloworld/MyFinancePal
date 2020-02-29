@@ -2,7 +2,7 @@
     $connection = mysqli_connect("localhost","root","");
     mysqli_select_db($connection,"MyFinancePal");
 
-    $result = mysqli_query($connection, "SELECT PhoneNumber FROM Customer ");
+    $result = mysqli_query($connection, "SELECT Email FROM Customer ");
     
     $rs = array();
     $i=0;
