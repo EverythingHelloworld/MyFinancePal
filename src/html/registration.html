@@ -27,15 +27,20 @@
           </div>
           <div class="col-sm">
             <form id="regForm" onsubmit="return false">
+
                 <div class="form-group row">
                     <label for="nameLabel" class="col-sm-4 col-form-label">Name:   </label>
                     <div class="col-sm-8">
-                        <input onkeypress="return /[a-z ]/i.test(event.key)" type="text" class="form-control" value="" id="inputName" placeholder="" required>
-                        <div class="invalid-feedback">
-                          Please choose a name.
-                        </div>
+                        <input oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" value="" id="inputName" placeholder="" required>
                     </div>
                 </div>
+
+                <div class="form-group row">
+                  <label for="emailLabel" class="col-sm-4 col-form-label">E-mail:   </label>
+                  <div class="col-sm-8">
+                      <input oninput="this.value = this.value.replace(/[^a-z0-9@. ]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" value="" id="inputEmail" placeholder="" required>
+                  </div>
+              </div>
 
                 <div class="form-group row">
                     <label for="dateLabel" class="col-sm-4 col-form-label">D.O.B:   </label>
@@ -49,14 +54,14 @@
                 <div class="form-group row">
                     <label for="streetLabel" class="col-sm-4 col-form-label">Street:   </label>
                     <div class="col-sm-8">
-                        <input onkeypress="return /^[a-zA-Z0-9_, ]*$/i.test(event.key)" type="text" class="form-control" value="" id="inputStreet" placeholder="" required>
+                        <input oninput="this.value = this.value.replace(/[^0-9a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" value="" id="inputStreet" placeholder="" required>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="twnCtyLabel" class="col-sm-4 col-form-label">Town/City:   </label>
                     <div class="col-sm-8">
-                        <input onkeypress="return /^[a-zA-Z0-9_, ]*$/i.test(event.key)" type="text" class="form-control" value="" id="inputTwnCty" placeholder="" required>
+                        <input oninput="this.value = this.value.replace(/[^0-9a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" value="" id="inputTwnCty" placeholder="" required>
                     </div>
                 </div>
 
@@ -64,30 +69,30 @@
                     <label for="county" class="col-sm-4 col-form-label">County:   </label>
                     <div class="col-sm-8">
                         <select class="form-control" value="" id="inputCounty" placeholder="" required>
-                            <option>Carlow</option><option>Cavan</option><option>Clare</option><option>Cork</option><option>Donegal</option><option>Dublin</option><option>Galway</option><option>Kerry</option><option>Kildare</option><option>Kilkenny</option><option>Laois</option><option>Leitrim</option><option>Limerick</option><option>Longford</option><option>Louth</option><option>Mayo</option><option>Meath</option><option>Monaghan</option><option>Offaly</option><option>Roscommon</option><option>Sligo</option><option>Tipperary</option><option>Waterford</option><option>Westmeath</option><option>Wexford</option><option>Wicklow</option>
+                            <option>Select a County...</option><option>Carlow</option><option>Cavan</option><option>Clare</option><option>Cork</option><option>Donegal</option><option>Dublin</option><option>Galway</option><option>Kerry</option><option>Kildare</option><option>Kilkenny</option><option>Laois</option><option>Leitrim</option><option>Limerick</option><option>Longford</option><option>Louth</option><option>Mayo</option><option>Meath</option><option>Monaghan</option><option>Offaly</option><option>Roscommon</option><option>Sligo</option><option>Tipperary</option><option>Waterford</option><option>Westmeath</option><option>Wexford</option><option>Wicklow</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="postCode" class="col-sm-4 col-form-label">Postcode:   </label>
+                    <label for="postCodeLabel" class="col-sm-4 col-form-label">Postcode:   </label>
                     <div class="col-sm-8">
-                        <input onkeypress="return /^[a-zA-Z0-9_, ]*$/i.test(event.key)" type="text" class="form-control" value="" id="inputPostcode" placeholder="" required>
+                        <input oninput="this.value = this.value.replace(/[^0-9a-zA-Z ]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" value="" id="inputPostcode" placeholder="" required>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="postCode" class="col-sm-4 col-form-label">Phone No:   </label>
+                    <label for="phoneNoLabel" class="col-sm-4 col-form-label">Phone No:   </label>
                     <div class="col-sm-4">
                       <select class="form-control" value="" id="inputPrefix" placeholder="" required>
                         <option>083</option><option>085</option><option>086</option><option>087</option><option>089</option>
                     </select>
                     </div>
                     <div class="col-sm-4">
-                      <input onkeypress="return /^[0-9]*$/i.test(event.key)" type="text" class="form-control" value="" id="inputPhoneNo" placeholder="" required>
-                  </div>
-                  
+                      <input oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" value="" id="inputPhoneNo" placeholder="" required>
+                  </div> 
                 </div>
+
                 <div class="form-group row" id="registerDiv">
                     <div class="col-sm-6">
                         <button type="submit" class="btn btn-primary btn-block" id="btnRegister">Register</button>
@@ -96,6 +101,7 @@
                         <button class="btn btn-primary btn-block" id="btnCancel">Back to Login</button>
                     </div>
                 </div>
+
           </div>
         </form>
           <div class="col-sm">
@@ -124,7 +130,7 @@
   </div>
 </body>
 
-<div class="modal fade" id="numberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -134,7 +140,7 @@
         </button>
       </div>
       <div class="modal-body">
-      That mobile number is already registered with another account. 
+      That e-mail address is already registered with another account. 
       <div ></div>
       </div>
       <div class="modal-footer">
