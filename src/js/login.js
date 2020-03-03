@@ -1,7 +1,9 @@
 var dobVisible;
 var dob;
 var phoneNum;
+
 var numberPattern = new RegExp("^[0-9]*$");
+
 $("document").ready(function(){
     insertRandomField();
     handleLogin();
@@ -99,20 +101,20 @@ function handleLogin() {
                             if (dob === customer.DOB) {
                                 correctLoginDetails = true;
                             } else {
-                                //Display incorrect DOB error message
+                                //Set incorrect DOB error message
                                 errorMessage2 = 'Incorrect date of birth.';
                             }
                         } else {
                             if (phoneNum === customer.PhoneNumber) {
                                 correctLoginDetails = true;
                             } else {
-                                //Display incorrect phone number error message
+                                //Set incorrect phone number error message
                                 errorMessage2 = 'Incorrect phone number.';
                             }
                         }
 
                         /*If the customer correctly entered their details, set the customer id
-                        cookie and take them to the loginPIN page. Cookie expires in 15 minutes.*/
+                        cookie and take them to the loginPIN page. Cookie expires in 30 minutes.*/
                         if (correctLoginDetails) {
                             var inThirtyMinutes = new Date(new Date().getTime() + 30 * 60 * 1000);
                             Cookies.set('customerID', id, {
@@ -127,7 +129,7 @@ function handleLogin() {
                             incrementLoginAttempts(id);
                             //Use the value obtained in original db call, no need for another db call.
                             var noAttempts = customer.LoginAttempts;
-                            /*Login attempts in db is one more than login attempts variable we set with data obtained from 
+                            /*Login attempts in db is one more than noAttempts variable we set with data obtained from 
                             our earlier db call as we have just incremented it in the db. There is no need to do an additional db 
                             call here. If number of attempts is greater than or equal to 2 (3+ in db), lock their account*/
                             if(noAttempts >= '2'){
@@ -147,7 +149,7 @@ function handleLogin() {
                         $('#errorMessage').text('Your account is locked. Please contact a member of staff in branch or over the phone.');
                     }
                 } else {
-                    //If customer id is not in the database set the error message
+                    //If customer id is not in the database, add error message to div
                     errorMessage2 = 'You are not a registered customer.';
                     $('#signInDiv').before('<div id=errorMessage></div>');
                         $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
