@@ -1,22 +1,16 @@
 $("document").ready(() => {
   // If a customer is not logged in <- if the customerID cookie exists
   // hide page content and redirect to login page
-  if (Cookies.get('customerID') === undefined) {
-    $('#jumbotron').attr('style', 'display:none');
-    $('#navbar').attr('style', 'display:none');
-    window.location.href = 'login.html';
-  }
-  else {
-    setActiveNavLink();
-    const session_customer_id = Cookies.get('customerID');
-    getPageData(session_customer_id); // -> pass session_customer_id to return and display all customer data
-  }
+  setActiveNavLink();
+  const session_customer_id = 1;
+  getPageData(session_customer_id); // -> pass session_customer_id to return and display all customer data
 });
 
 getPageData = (customerID) => {
+  appendCustomerDetails();
   // Query the MyFinancePal database for the accounts associated with the current customer
   $.getJSON(`../php/getCustomerAccounts.php?customerID=${customerID}`, (customerAccountData) => {
-    let accounts = []
+    let accounts = [];
     let transactions = [];
     let accountsAndTransactions = [];
     accounts = customerAccountData.CustomerAccounts;
@@ -29,11 +23,16 @@ getPageData = (customerID) => {
       accountsAndTransactions = combineAccountsAndTransactions(accounts, transactions);
       accountsAndTransactions = sortAccountsAndTransactions(accountsAndTransactions);
       console.log("accountsAndTransactions", accountsAndTransactions);
-      appendCustomerAccounts(accountsAndTransactions);
-      appendCustomerAccountsTransactions(accountsAndTransactions);
+      appendCustomerBankAccounts(accountsAndTransactions);
+      appendCustomerBankAccountsTransactions(accountsAndTransactions);
+      appendQuickTransferForm(accountsAndTransactions);
     });
 
   });
+}
+
+appendCustomerDetails = () => {
+  $('#customer-details-container').append(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table>`);
 }
 
 combineAccountsAndTransactions = (accounts, transactions) => {
@@ -58,6 +57,7 @@ combineAccountsAndTransactions = (accounts, transactions) => {
           "Date": transactions[j].TransDate,
           "Type": transactions[j].Type,
           "Description": transactions[j].Description,
+          "PaymentType": null,
           "Amount": transactions[j].Amount,
           "Category": transactions[j].Category,
           "ClosingBalance": null
@@ -66,6 +66,7 @@ combineAccountsAndTransactions = (accounts, transactions) => {
 
     }
   }
+  console.log(dataToReturn);
   return dataToReturn;
 }
 
@@ -88,8 +89,8 @@ sortAccountsAndTransactions = (accountsAndTransactions) => {
   return dataToReturn;
 }
 
-appendCustomerAccounts = (accounts) => {
-  $('#accounts-collapse-container').append(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Bank Accounts</h3></th></tr></thead></table><div id="accordion"></div>`);
+appendCustomerBankAccounts = (accounts) => {
+  $('#accounts-collapse-container').append(`<table id="my-bank-accounts-header" class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Bank Accounts</h3></th></tr></thead></table><div id="accordion"></div>`);
   for (i in accounts) {
     $('#accounts-collapse-container').append(`
      <div class="card">
@@ -121,7 +122,7 @@ appendCustomerAccounts = (accounts) => {
   }
 }
 
-appendCustomerAccountsTransactions = (accounts) => {
+appendCustomerBankAccountsTransactions = (accounts) => {
   for (i in accounts) {
     accounts[i].Transactions.reverse();
   }
@@ -143,6 +144,10 @@ appendCustomerAccountsTransactions = (accounts) => {
 
   }
   bindCustomerAccountButtonFunctions(accounts);
+}
+
+appendQuickTransferForm = (accountsAndTransactions) => {
+  $('#my-bank-accounts-header').append(`<div><table id="quick-transfer-table"><h4 class="h4">Quick Transfer</h4></table></div>`)
 }
 
 bindCustomerAccountButtonFunctions = (accounts) => {
