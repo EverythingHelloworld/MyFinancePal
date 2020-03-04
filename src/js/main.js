@@ -28,6 +28,7 @@ getPageData = (customerID) => {
                accountsAndTransactions = sortAccountsAndTransactions(accountsAndTransactions);
                appendCustomerAccounts(accountsAndTransactions);
                appendCustomerAccountsTransactions(accountsAndTransactions);
+               appendQuickTransferForm(accountsAndTransactions);
             })
             .fail(() => {
                console.log('database call failed for account transactions');
@@ -92,7 +93,7 @@ sortAccountsAndTransactions = (accountsAndTransactions) => {
 }
 
 appendCustomerAccounts = (accounts) => {
-   $('#accounts-collapse-container').append(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Bank Accounts</h3></th></tr></thead></table><div id="accordion"></div>`);
+   $('#accounts-collapse-container').append(`<table id="my-bank-accounts-header" class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Bank Accounts</h3></th></tr></thead></table><div id="accordion"></div>`);
    for (i in accounts) {
       $('#accounts-collapse-container').append(`
       <div class="card">
@@ -144,6 +145,10 @@ appendCustomerAccountsTransactions = (accounts) => {
 
    }
    bindCustomerAccountButtonFunctions(accounts);
+}
+
+appendQuickTransferForm = (accountsAndTransactions) => {
+   $('#my-bank-accounts-header').append(`<div><table id="quick-transfer-table" class="table"><thead><tr scope="row"><th><h5 class="h5">Transfer</h5><th></tr></thead></table></div>`);
 }
 
 bindCustomerAccountButtonFunctions = (accounts) => {
