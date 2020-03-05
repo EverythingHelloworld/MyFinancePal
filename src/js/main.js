@@ -28,7 +28,8 @@ getPageData = (customerID) => {
                accountsAndTransactions = sortAccountsAndTransactions(accountsAndTransactions);
                appendCustomerAccounts(accountsAndTransactions);
                appendCustomerAccountsTransactions(accountsAndTransactions);
-               appendQuickTransferForm(accountsAndTransactions);
+               appendQuickTransferForm();
+               bindAccountsToQuickTransferForm(accountsAndTransactions);
             })
             .fail(() => {
                console.log('database call failed for account transactions');
@@ -147,8 +148,17 @@ appendCustomerAccountsTransactions = (accounts) => {
    bindCustomerAccountButtonFunctions(accounts);
 }
 
-appendQuickTransferForm = (accountsAndTransactions) => {
-   $('#my-bank-accounts-header').append(`<div><table id="quick-transfer-table" class="table"><thead><tr scope="row"><th><h5 class="h5">Transfer</h5><th></tr></thead></table></div>`);
+appendQuickTransferForm = () => {
+   $('#my-bank-accounts-header').append(`<table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Transfer</h5><th></tr></thead><td><form class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control"></select></div><div class="form-group"><select id='account-to-dropdown' class="form-control"></select></div><div class="form-group"><label for="amount"><span>amount:</span></label><input type="text"></div></form></td></table>`);
+   $('#account-from-dropdown').append(`<option value=From_account>From account...</option>`);
+   $('#account-to-dropdown').append(`<option value=to_account>to account...</option>`);
+}
+
+bindAccountsToQuickTransferForm = (accountsAndTransactions) => {
+
+   for (i in accountsAndTransactions) {
+      $('#account-from-dropdown').append(`<option value=${accountsAndTransactions[i].AccountID}>~${accountsAndTransactions[i].IBAN.substr(16)}</option>`);
+   }
 }
 
 bindCustomerAccountButtonFunctions = (accounts) => {
