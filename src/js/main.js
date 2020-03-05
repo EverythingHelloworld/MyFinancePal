@@ -149,15 +149,15 @@ appendCustomerAccountsTransactions = (accounts) => {
 }
 
 appendQuickTransferForm = () => {
-   $('#my-bank-accounts-header').append(`<div style="width:80%;"><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Transfer</h5><th></tr></thead><td><form class="form-inline"><div style="width:80%% class="form-group"><select id='account-from-dropdown' class="form-control"></select></div><div class="form-group"><select id='account-to-dropdown' class="form-control"></select></div><div class="form-group"><label for="amount"><span>amount:</span></label><input type="text"></div></form></td></table></div>`);
+   $('#my-bank-accounts-header').append(`<div><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Quick Transfer</h5></th><th></th><th></th></tr></thead><td colspan="2"><form style="border:black 1px;" class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control" style="margin-right:25px;"></select></div><div class="form-group"><select id='account-to-dropdown' class="form-control" style="margin-right:25px;"></select></div><div class="form-group"><input type="text" class="form-control" placeholder="Amount" style="margin-right:25px;"><button type="submit" class="btn btn-primary">Transfer<i style="margin-left:5px; margin-top:5px;" class="fas fa-arrow-circle-right"></i></button></div></form></td><td></td></table></div>`);
    $('#account-from-dropdown').append(`<option value=From_account>From account...</option>`);
-   $('#account-to-dropdown').append(`<option value=to_account>to account...</option>`);
+   $('#account-to-dropdown').append(`<option value=to_account>To account...</option>`);
 }
 
 bindAccountsToQuickTransferForm = (accountsAndTransactions) => {
 
    for (i in accountsAndTransactions) {
-      $('#account-from-dropdown').append(`<option value=${accountsAndTransactions[i].AccountID}>~${accountsAndTransactions[i].IBAN.substr(16)}</option>`);
+      $('#account-from-dropdown').append(`<option value=${accountsAndTransactions[i].AccountID}>${accountsAndTransactions[i].AccountType} Account ~${accountsAndTransactions[i].IBAN.substr(16)}</option>`);
    }
 }
 
