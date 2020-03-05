@@ -149,7 +149,7 @@ appendCustomerAccountsTransactions = (accounts) => {
 }
 
 appendQuickTransferForm = () => {
-   $('#my-bank-accounts-header').append(`<table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Transfer</h5><th></tr></thead><td><form class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control"></select></div><div class="form-group"><select id='account-to-dropdown' class="form-control"></select></div><div class="form-group"><label for="amount"><span>amount:</span></label><input type="text"></div></form></td></table>`);
+   $('#my-bank-accounts-header').append(`<div style="width:80%;"><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Transfer</h5><th></tr></thead><td><form class="form-inline"><div style="width:80%% class="form-group"><select id='account-from-dropdown' class="form-control"></select></div><div class="form-group"><select id='account-to-dropdown' class="form-control"></select></div><div class="form-group"><label for="amount"><span>amount:</span></label><input type="text"></div></form></td></table></div>`);
    $('#account-from-dropdown').append(`<option value=From_account>From account...</option>`);
    $('#account-to-dropdown').append(`<option value=to_account>to account...</option>`);
 }
