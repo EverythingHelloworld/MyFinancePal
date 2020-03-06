@@ -24,9 +24,9 @@ function handleAddPayee(){
     console.log('BIC: ', $('#BIC').val());
     console.log('customerID: ', customerID);
     $.post("../php/addPayee.php", {'PayeeName': $('#payeeName').val(), 'IBAN': $('#IBAN').val(), 'BIC': $('#BIC').val(), 'customerID': customerID}, function(data, status){
-      alert('Data: ', data, ', Status: ', status);
+      // alert('Data: ', data, ', Status: ', status);
     });
-    // window.location.href = 'managePayees.html';
+    window.location.href = 'managePayees.html#add';
   });
 }
 
@@ -42,7 +42,7 @@ function removeDefaultDropdownOptionOnChange(){
 function handleRemovePayee(){
   $('#removePayee').click(() => {
     $.post("../php/deletePayee.php", {'payeeID': $('#selectPayee option:selected').val()});
-    window.location.href = 'managePayees.html';
+    window.location.href = 'managePayees.html#delete';
   });
 }
 
