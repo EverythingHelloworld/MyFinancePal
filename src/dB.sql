@@ -81,11 +81,11 @@ CREATE TABLE Payee
     `IBAN` varchar(50) NOT NULL,
     `BIC` varchar(20) NOT NULL,
     `Name` varchar(100) NOT NULL,
-    `AccountID` int(10) NOT NULL,
+    `CustomerID` int(10) NOT NULL,
     PRIMARY KEY (`PayeeID`),
-    CONSTRAINT payee_account_id_constraint
-    FOREIGN KEY (AccountID)
-    REFERENCES Account(AccountID)
+    CONSTRAINT payee_customer_id_constraint
+    FOREIGN KEY (CustomerID)
+    REFERENCES Customer(CustomerID)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
@@ -349,10 +349,21 @@ VALUES ('2003-07-20 12:30:11', 'Credit', 'Wages', '822.00', 'Wages', '100003');
 
 
 
-INSERT INTO Payee (IBAN, BIC, Name, AccountID)
-VALUES('IE12BOFI1245002423554','BOFIIE123', 'Jemma Simmons', 100000);
-INSERT INTO Payee (IBAN, BIC, Name, AccountID)
-VALUES('IE12BOFI1568336554334','BOFIIE767', 'Jeff Ward', 100001);
+INSERT INTO Payee (IBAN, BIC, Name, CustomerID)
+VALUES('IE12BOFI1245002423554','BOFIIE123', 'Jemma Simmons', 1);
+INSERT INTO Payee (IBAN, BIC, Name, CustomerID)
+VALUES('IE12BOFI1568336554334','BOFIIE767', 'Jeff Ward', 1);
+INSERT INTO Payee (IBAN, BIC, Name, CustomerID)
+VALUES('IE12BOFI1241102423554','BOFIIE443', 'Kristen Bell', 2);
+INSERT INTO Payee (IBAN, BIC, Name, CustomerID)
+VALUES('IE12BOFI1563336554334','BOFIIE117', 'Jodie Comer', 2);
+INSERT INTO Payee (IBAN, BIC, Name, CustomerID)
+VALUES('IE12BOFI1245442423554','BOFIIE333', 'Aaron Stanford', 1);
+INSERT INTO Payee (IBAN, BIC, Name, CustomerID)
+VALUES('IE12BOFI1568355554334','BOFIIE227', 'Maggie Quigley', 3);
+INSERT INTO Payee (IBAN, BIC, Name, CustomerID)
+VALUES('IE12BOFI1245002113554','BOFIIE883', 'Shane West', 3);
+
 
 -- INSERT INTO Loan (Amount, AccountID)
 -- VALUES('5000', 100000)
