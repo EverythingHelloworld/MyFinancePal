@@ -2,6 +2,9 @@ $("document").ready(() => {
    // If a customer is not logged in <- if the customerID cookie exists
    // hide page content and redirect to login page
    redirectToLoginIfCustomerCookieNotSet();
+   $.ajaxSetup({
+      async: false
+   });
    setActiveNavLink();
    // Retrieve the customer id for the current session <- customer that is currently logged in
    const session_customer_id = Cookies.get('customerID');
@@ -30,7 +33,7 @@ getPageData = (customerID) => {
                appendCustomerAccountsTransactions(accountsAndTransactions);
                appendQuickTransferForm();
                bindAccountsToQuickTransferForm(accountsAndTransactions);
-               handleTransferForm(accountsAndTransactions);
+               handleTransferForm(accountsAndTransactions, customerID);
             })
             .fail(() => {
                console.log('database call failed for account transactions');
@@ -136,7 +139,7 @@ appendCustomerAccountsTransactions = (accounts) => {
       $("#account-" + i + "-body").append(`<table class="table table-striped table-bordered"><thead class="thead-dark"><tr><th scope="row" colspan="4">My Account Details</th></tr><tr><th scope="col">Account Type</th><th scope="col">IBAN</th><th scope="col">BIC</th></tr></thead><tbody><tr scope="row"><td>${accounts[i].AccountType}</td><td>${accounts[i].IBAN}</td><td>${accounts[i].BIC}</td></tr></tbody></table>${(accounts[i].Transactions.length > 0 ? `<table class="table table-striped table-bordered" width=80% id="table${i}" padding=1><thead class="thead-dark"><tr><th scope="row" colspan="4">My Recent Transactions</th></tr><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>` : `<table class="table table-borderless><thead><tr scope="row><th class="h4">There isn't any transactions on this account</th></tr></thead></table>`)}`);
       $("#account-" + i + "-body").append(`${(accounts[i].Transactions.length > 0 ? `<div class="btn-group" style=float:right; margin:10 role="group" aria-label="account-options"><div id=account-buttons>
          <button type="button" id=${accounts[i].AccountID}-statements-btn class="btn btn-secondary">View Statements</button>
-         <button type="button" id=${accounts[i].AccountID}-transactions-btn class="btn btn-primary">View All Transactions</button>
+         <button type="button" id=${accounts[i].AccountID}-transactions-btn class="btn btn-secondary">View All Transactions</button>
       </div></div><br>`: ``)}`);
       for (j in accounts[i].Transactions) {
          if (j < 25 && accounts[i].Transactions.length > 0) { //number of recent transactions to show
@@ -154,9 +157,9 @@ appendQuickTransferForm = () => {
    $('#account-to-dropdown').append(`<option value=to_account>To account...</option>`);
 }
 
-handleTransferForm = (accountsAndTransactions) => {
+handleTransferForm = (accountsAndTransactions, session_customer_id) => {
    let date = transactionDateAndTime();
-   console.log(date);
+   let isPayee = false;
    let from_account_id, to_account_id, amount;
    $('#account-from-dropdown').change(() => {
       $('#account-to-dropdown')
@@ -173,12 +176,18 @@ handleTransferForm = (accountsAndTransactions) => {
          if (accountsAndTransactions[i].AccountID !== from_account_id)
             $('#account-to-dropdown').append(`<option value=${accountsAndTransactions[i].AccountID}>${accountsAndTransactions[i].AccountType} Account ~${accountsAndTransactions[i].IBAN.substr(16)}</option>`);
       }
+      $.getJSON(`../php/getPayees.php?customerID=${session_customer_id}`, (data) => {
+         for (i in data.Payees) {
+            $('#account-to-dropdown').append(`<option value="true"}>Payee - ${data.Payees[i].Name} ~${data.Payees[i].IBAN.substr(16)}</option>`);
+         }
+      });
       $('#account-to-dropdown').attr('disabled', false);
       $('#account-to-dropdown').change(() => {
          $('#transfer-amount').attr('disabled', false);
          to_account_id = $('#account-to-dropdown').val();
-         console.log("from account:", from_account_id);
-         console.log("to account:", to_account_id);
+         if (to_account_id === true) {
+            isPayee = true;
+         }
       })
 
    })
@@ -189,7 +198,8 @@ handleTransferForm = (accountsAndTransactions) => {
       else {
          amount = $('#transfer-amount').val();
          if (checkTransfer(accountsAndTransactions, from_account_id, amount) === true) {
-            submitTransfer(date, from_account_id, to_account_id, amount);
+
+            submitTransfer(date, from_account_id, to_account_id, amount, isPayee);
          }
          else {
             console.log('insufficient funds');
@@ -214,8 +224,8 @@ checkTransfer = (accountsAndTransactions, from_account_id, amount) => {
    return false;
 }
 
-submitTransfer = (date, from_account_id, to_account_id, amount) => {
-   $.getJSON(`../php/handleTransfer.php?date=${date}&from_account=${from_account_id}&to_account=${to_account_id}&amount=${amount}`)
+submitTransfer = (date, from_account_id, to_account_id, amount, isPayee) => {
+   $.getJSON(`../php/handleTransfer.php?date=${date}&from_account=${from_account_id}&to_account=${to_account_id}&amount=${amount}&isPayee=${isPayee}`)
       .done((data, status) => {
          console.log('ok');
          console.log(status);
