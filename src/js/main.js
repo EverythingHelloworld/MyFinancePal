@@ -133,10 +133,10 @@ appendCustomerAccountsTransactions = (accounts) => {
    }
 
    for (i in accounts) {
-      $("#account-" + i + "-body").append(`<table class="table table-striped table-bordered"><thead class="thead-dark"><tr><th scope="row" colspan="4">My Account Details</th></tr><tr><th scope="col">Account Type</th><th scope="col">IBAN</th><th scope="col">BIC</th></tr></thead><tbody><tr scope="row"><td>${accounts[i].AccountType}</td><td>${accounts[i].IBAN}</td><td>${accounts[i].BIC}</td></tr></tbody></table>${(accounts[i].Transactions.length > 0 ? `<table class="table table-striped table-bordered" width=80% id="table${i}" padding=1><thead class="thead-dark"><tr><th scope="row" colspan="4">My Recent Transactions</th></tr><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>` : `<table class="table table-borderless><thead><tr scope="row><th class="h4">There isn't any transactions on this account</th></tr></thead></tabe>`)}`);
+      $("#account-" + i + "-body").append(`<table class="table table-striped table-bordered"><thead class="thead-dark"><tr><th scope="row" colspan="4">My Account Details</th></tr><tr><th scope="col">Account Type</th><th scope="col">IBAN</th><th scope="col">BIC</th></tr></thead><tbody><tr scope="row"><td>${accounts[i].AccountType}</td><td>${accounts[i].IBAN}</td><td>${accounts[i].BIC}</td></tr></tbody></table>${(accounts[i].Transactions.length > 0 ? `<table class="table table-striped table-bordered" width=80% id="table${i}" padding=1><thead class="thead-dark"><tr><th scope="row" colspan="4">My Recent Transactions</th></tr><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>` : `<table class="table table-borderless><thead><tr scope="row><th class="h4">There isn't any transactions on this account</th></tr></thead></table>`)}`);
       $("#account-" + i + "-body").append(`${(accounts[i].Transactions.length > 0 ? `<div class="btn-group" style=float:right; margin:10 role="group" aria-label="account-options"><div id=account-buttons>
-         <button type="button" id=${accounts[i].AccountID}-statements-btn class="btn btn-secondary">View Statements</button>
-         <button type="button" id=${accounts[i].AccountID}-transactions-btn class="btn btn-secondary">View All Transactions</button>
+         <button type="button" id=${accounts[i].AccountID}-statements-btn class="btn btn-primary">View Statements</button>
+         <button type="button" id=${accounts[i].AccountID}-transactions-btn class="btn btn-primary">View All Transactions</button>
       </div></div><br>`: ``)}`);
       for (j in accounts[i].Transactions) {
          if (j < 25 && accounts[i].Transactions.length > 0) { //number of recent transactions to show
@@ -188,7 +188,7 @@ handleTransferForm = (accountsAndTransactions) => {
       }
       else {
          amount = $('#transfer-amount').val();
-         if (checkTransfer(accountsAndTransactions, from_account_id, amount)) {
+         if (checkTransfer(accountsAndTransactions, from_account_id, amount) === true) {
             submitTransfer(date, from_account_id, to_account_id, amount);
          }
          else {
