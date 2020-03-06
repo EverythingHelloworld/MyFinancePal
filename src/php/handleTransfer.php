@@ -1,21 +1,21 @@
 <?php
 {
-    $from_account_id = $_GET["account_from_ID"];
-    $to_account_Id = $_GET["account_to_ID"];
-    $date = $_GET["date"];
-    $amount = $_GET["amount"];
+    $date = $_POST["date"];
+    $from_account = $_POST["from_account"];
+    $to_account = $_POST["to_account"];
+    $amount = $_POST["amount"];
 
     $connection = mysqli_connect("localhost","root","");
     mysqli_select_db($connection,"myfinancepal");
 
-    $result = mysqli_query($connection,"INSERT INTO `transaction`(`TransDate`, `Type`, `Description`, `Amount`, `Category`, `AccountID`) VALUES ($date,"Credit","Transfer In",$amount,"Transfers",$to_account_Id)");
+    $result = mysqli_query($connection,"INSERT INTO `transaction`(`TransDate`, `Type`, `Description`, `Amount`, `Category`, `AccountID`) VALUES ($date,"Credit","Transfer In",$amount,"Transfers",$to_account)");
 
 
-    $result2 = mysqli_query($connection,"INSERT INTO `transaction`(`TransDate`, `Type`, `Description`, `Amount`, `Category`, `AccountID`) VALUES ($date,"Credit","Transfer Out",$amount,"Transfers",$from_account_Id)");
+    $result2 = mysqli_query($connection,"INSERT INTO `transaction`(`TransDate`, `Type`, `Description`, `Amount`, `Category`, `AccountID`) VALUES ($date,"Debit","Transfer Out",$amount,"Transfers",$from_account)");
 
-    $result3 = mysqli_query($connection,"UPDATE account SET CurrentBalance+=$amount where AccountID="$_GET['to_account_id']);
+    $result3 = mysqli_query($connection,"UPDATE account SET CurrentBalance+=$amount WHERE AccountID=$to_account");
 
-    $result4 = mysqli_query($connection,"UPDATE account SET CurrentBalance-=$amount where AccountID="$_GET['from_account_id']);
+    $result4 = mysqli_query($connection,"UPDATE account SET CurrentBalance-=$amount WHERE AccountID=$from_account");
 
     $rs = array();
     $i=0;

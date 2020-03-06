@@ -81,3 +81,22 @@ function todaysDate() {
     today = yyyy + '-' + mm + '-' + dd;
     return today;
 }
+
+function transactionDateAndTime() {
+    let d = todaysDate(); let x;
+    let dateTime = new Date();
+    let hours = dateTime.getHours(); let minutes = dateTime.getMinutes(); let seconds = dateTime.getSeconds();
+    if (minutes < 10) {
+        x = ["0", minutes];
+        minutes = x.join('');
+
+    }
+    if (seconds < 10) {
+        x = ["0", seconds];
+        seconds = x.join('');
+
+    }
+    let transactionTime = [d, " ", hours, ":", minutes, ":", seconds]
+    return transactionTime.join('');
+
+}
