@@ -198,8 +198,11 @@ handleTransferForm = (accountsAndTransactions, session_customer_id) => {
       $('#account-to-dropdown').change(() => {
          $('#transfer-amount').attr('disabled', false);
          to_account_id = $('#account-to-dropdown').val();
-         if (to_account_id === true) {
+         if (to_account_id.val() === "true") {
             isPayee = true;
+         }
+         else {
+            isPayee = false;
          }
       })
 

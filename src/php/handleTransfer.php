@@ -9,7 +9,7 @@
     $connection = mysqli_connect("localhost","root","");
     mysqli_select_db($connection,"myfinancepal");
 
-    if(isset($isPayee) && $isPayee == true)
+    if($isPayee === true)
     {
 
         $result = mysqli_query($connection,"INSERT INTO `transaction`(`TransDate`, `Type`, `Description`, `Amount`, `Category`, `AccountID`) VALUES ('$date','Debit','Transfer Out', $amount,'Transfers','$from_account')");
@@ -27,10 +27,6 @@
         $result4 = mysqli_query($connection,"UPDATE account SET CurrentBalance=CurrentBalance+$amount WHERE AccountID='$to_account'");
 
     }
-
-
-
-
 
     mysqli_close($connection);
 }
