@@ -30,6 +30,7 @@ getPageData = (customerID) => {
                appendCustomerAccountsTransactions(accountsAndTransactions);
                appendQuickTransferForm();
                bindAccountsToQuickTransferForm(accountsAndTransactions);
+               handleTransferForm(accountsAndTransactions);
             })
             .fail(() => {
                console.log('database call failed for account transactions');
@@ -94,7 +95,7 @@ sortAccountsAndTransactions = (accountsAndTransactions) => {
 }
 
 appendCustomerAccounts = (accounts) => {
-   $('#accounts-collapse-container').append(`<table id="my-bank-accounts-header" class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Bank Accounts</h3></th></tr></thead></table><div id="accordion"></div>`);
+   $('#accounts-collapse-container').append(`<table id="my-bank-accounts-header" class="table table-borderless"><thead class><tr scope="row"><th><span class="display-4">My Bank Accounts</span></th></tr></thead></table><div id="accordion"></div>`);
    for (i in accounts) {
       $('#accounts-collapse-container').append(`
       <div class="card">
@@ -149,9 +150,38 @@ appendCustomerAccountsTransactions = (accounts) => {
 }
 
 appendQuickTransferForm = () => {
-   $('#my-bank-accounts-header').append(`<div><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Quick Transfer</h5></th><th></th><th></th></tr></thead><td colspan="2"><form style="border:black 1px;" class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control" style="margin-right:25px;"></select></div><div class="form-group"><select id='account-to-dropdown' class="form-control" style="margin-right:25px;"></select></div><div class="form-group"><input type="text" class="form-control" placeholder="Amount" style="margin-right:25px;"><button type="submit" class="btn btn-primary">Transfer<i style="margin-left:5px; margin-top:5px;" class="fas fa-arrow-circle-right"></i></button></div></form></td><td></td></table></div>`);
+   $('#my-bank-accounts-header').append(`<div><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Quick Transfer</h5></th><th></th><th></th></tr></thead><td colspan="2"><form id="transfer-form" style="border:black 1px;" class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control" style="margin-right:25px;"></select></div><div class="form-group"><select id='account-to-dropdown' disabled class="form-control" style="margin-right:25px;"></select></div><div class="form-group"><input type="text" id=transfer-amount class="form-control" placeholder="Amount" disabled style="margin-right:25px;"><button type="submit" id="submit-transfer-btn" class="btn btn-primary"><span class="h6">Transfer</span><i style="margin-left:5px; margin-top:5px;" class="fas fa-arrow-circle-right"></i></button></div></form></td><td></td></table></div>`);
    $('#account-from-dropdown').append(`<option value=From_account>From account...</option>`);
    $('#account-to-dropdown').append(`<option value=to_account>To account...</option>`);
+}
+
+handleTransferForm = (accountsAndTransactions) => {
+   let date = todaysDate();
+   $('#account-from-dropdown').change(() => {
+      $('#account-to-dropdown')
+         .find('option')
+         .remove()
+         .end()
+         .append('<option>To Account...</option>')
+         .val('To account....');
+      ;
+      $('#transfer-amount').attr('disabled', true);
+
+      let selectedAccount = $('#account-from-dropdown').val();
+      for (i in accountsAndTransactions) {
+         if (accountsAndTransactions[i].AccountID !== selectedAccount)
+            $('#account-to-dropdown').append(`<option value=${accountsAndTransactions[i].IBAN}>${accountsAndTransactions[i].AccountType} Account ~${accountsAndTransactions[i].IBAN.substr(16)}</option>`);
+      }
+      $('#account-to-dropdown').attr('disabled', false);
+      $('#account-to-dropdown').change(() => {
+         $('#transfer-amount').attr('disabled', false);
+
+      })
+
+   })
+   $('#submit-transfer-btn').click(() => {
+   })
+
 }
 
 bindAccountsToQuickTransferForm = (accountsAndTransactions) => {
