@@ -177,7 +177,8 @@ handleTransferForm = (accountsAndTransactions) => {
       $('#account-to-dropdown').change(() => {
          $('#transfer-amount').attr('disabled', false);
          to_account_id = $('#account-to-dropdown').val();
-         console.log(to_account_id);
+         console.log("from account:", from_account_id);
+         console.log("to account:", to_account_id);
       })
 
    })
@@ -188,7 +189,6 @@ handleTransferForm = (accountsAndTransactions) => {
       else {
          amount = $('#transfer-amount').val();
          if (checkTransfer(accountsAndTransactions, from_account_id, amount)) {
-            console.log('valid');
             submitTransfer(date, from_account_id, to_account_id, amount);
          }
          else {
@@ -204,9 +204,10 @@ checkTransfer = (accountsAndTransactions, from_account_id, amount) => {
    console.log(from_account_id, amount)
    for (i in accountsAndTransactions) {
       if (accountsAndTransactions[i].AccountID === from_account_id) {
-         console.log(accountsAndTransactions[i].AccountID, accountsAndTransactions[i].CurrentBalance);
          if (parseFloat(accountsAndTransactions[i].CurrentBalance) >= parseFloat(amount)) {
+            console.log('transfer ok');
             return true;
+
          }
       }
    }
@@ -214,16 +215,10 @@ checkTransfer = (accountsAndTransactions, from_account_id, amount) => {
 }
 
 submitTransfer = (date, from_account_id, to_account_id, amount) => {
-   $.post("handleTransfer.php",
-      {
-         date: date,
-         from_account: from_account_id,
-         to_account: to_account_id,
-         amount: amount
-
-      })
+   $.getJSON(`../php/handleTransfer.php?date=${date}&from_account=${from_account_id}&to_account=${to_account_id}&amount=${amount}`)
       .done((data, status) => {
-         console.log('status');
+         console.log('ok');
+         console.log(status);
       })
       .fail(() => {
          console.log('failed to transfer');
