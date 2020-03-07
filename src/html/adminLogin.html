@@ -9,7 +9,6 @@
     crossorigin="anonymous"></script>
   <script type="text/javascript" src="../libraries/underscore.js"></script>
   <script type="text/javascript" src="../libraries/d3.min.js"></script>
-  <script type="text/javascript" src="../js/navbar.js"></script>
   <script type="text/javascript" src="../js/jumbotron.js"></script>
   <script type="text/javascript" src="../js/adminLogin.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
@@ -25,25 +24,30 @@
       <div class="col-sm">
       </div>
       <div class="col-sm">
-        <form id="frmAdminLogin">
+
           <div class="form-group row">
             <label for="inputAdminIDLabel" class="col-sm-5 col-form-label">Admin ID:</label>
             <div class="col-sm-7">
-              <input type="text" class="form-control" value="" id="inputAdminID" placeholder="ID">
+              <input oninput="this.value = this.value.replace(/[^0-9a-zA-Z]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" value="" id="inputAdminID" placeholder="ID">
             </div>
           </div>
+
           <div class="form-group row">
             <label for="inputPasswordIDLabel" class="col-sm-5 col-form-label">Password:</label>
             <div class="col-sm-7">
-              <input type="text" class="form-control" value="" id="inputAdminPassword" placeholder="Password">
+              <input oninput="this.value = this.value.replace(/[^0-9a-zA-Z]/g, '').replace(/(\..*)\./g, '$1');" type="password" class="form-control" value="" id="inputAdminPassword" placeholder="Password">
             </div>
           </div>
+
           <div class="form-group row" id="adminPassword">
-            <div class="col-sm-10 offset-sm-2">
-              <button type="button" class="btn btn-primary" id="btnAdminLogin">Sign in</button>
+            <div class="col-sm-6">
+              <button class="btn btn-primary btn-block" id="btnAdminLogin">Sign in</button>
             </div>
+            <div class="col-sm-6">
+              <button class="btn btn-primary btn-block" id="btnCancel">Back to Login</button>
           </div>
-        </form>
+        </div>
+
       </div>
       <div class="col-sm">
       </div>

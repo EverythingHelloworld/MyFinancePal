@@ -2,14 +2,25 @@ $("document").ready(() => {
   handleLogin();
 });
 
+
 handleLogin = () => {
+  $("#btnCancel").on('click', () => {
+    window.location.href = 'login.html'
+  })
+
   $("#btnAdminLogin").on('click', () => {
     // this.disabled = true;
-    console.log("test");
     let adminID = $('#inputAdminID').val();
     let password = $('#inputAdminPassword').val();
-    console.log("ID:", adminID);
-    console.log("Password:", password);
+
+    if(adminID === '' || password === '')
+    {
+      $('#adminPassword').before('<div id=errorMessage></div>');
+      $('#errorMessage').attr('class', 'col-sm-12 alert alert-danger text-center');
+      $('#errorMessage').attr('role', 'alert');
+      $('#errorMessage').text('All fields required.');
+    }
+    else
     getAdminDetails(adminID, password);
   })
 }
@@ -25,7 +36,16 @@ getAdminDetails = (id, password) => {
       }
     })
     .fail(() => {
-      console.log("fail");
+      console.log("failed");
+      $('#adminPassword').before('<div id=errorMessage></div>');
+      $('#errorMessage').attr('class', 'col-sm-12 alert alert-danger text-center');
+      $('#errorMessage').attr('role', 'alert');
+      $('#errorMessage').text('Incorrect Login details');
     })
 
 }//close handleLogin
+
+
+
+
+

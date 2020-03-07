@@ -33,7 +33,6 @@ getPageData = (customerID) => {
 
 appendCustomerDetails = () => {
   $('#customer-details-container').append(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table>`);
-  $('#customer-details-container').append(`<button class="btn border-primary btn-block" id="btnAddAccount">Add Account</button>`);
 }
 
 combineAccountsAndTransactions = (accounts, transactions) => {
