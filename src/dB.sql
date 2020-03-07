@@ -103,6 +103,19 @@ CREATE TABLE Loan
     ON UPDATE CASCADE
 );
 
+CREATE TABLE Request
+(
+    `RequestID` int(10) NOT NULL AUTO_INCREMENT,
+    `AccountActive` boolean NOT NULL,
+    `CustomerID` int(10) NOT NULL,
+    PRIMARY KEY (`RequestID`),
+    CONSTRAINT request_customer_id_constraint
+    FOREIGN KEY (CustomerID)
+    REFERENCES Customer(CustomerID)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
 ALTER TABLE Account AUTO_INCREMENT=100000;
 
 -- db test lines - NOTE: Boolean values inserted as true or false appear as 
@@ -367,3 +380,6 @@ VALUES('IE12BOFI1245002113554','BOFIIE883', 'Shane West', 3);
 
 -- INSERT INTO Loan (Amount, AccountID)
 -- VALUES('5000', 100000)
+
+INSERT INTO Request (AccountActive, CustomerID)
+VALUES(false, 3);
