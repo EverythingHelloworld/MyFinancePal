@@ -1,0 +1,88 @@
+<html>
+
+<head>
+  <script type="text/javascript" src="../libraries/popper.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script type="text/javascript" src="../libraries/jquery-3.3.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="../js/navbar.js"></script>
+  <script type="text/javascript" src="../js/jumbotron.js"></script>
+  <script type="text/javascript" src="../js/managePayees.js"></script>
+  <script type="text/javascript" src="../js/globalFunctions.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+<style>
+</style>
+
+<body>
+  <div id='jumbotron'></div>
+  <div id='navbar'></div>
+  <div id='container' style="float:none;margin:0 auto;display: block;text-align: center;">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" style="display: inline-block;float:none;">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+          aria-selected="true" style="font-size:60;">Home</a>
+      </li>
+      <li class="nav-item" style="display: inline-block;float:none;">
+        <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="add"
+          aria-selected="false" style="font-size:60;">+</a>
+      </li>
+      <li class="nav-item" style="display: inline-block;float:none;">
+        <a class="nav-link" id="delete-tab" data-toggle="tab" href="#delete" role="tab" aria-controls="delete"
+          aria-selected="false" style="font-size:60;">-</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+
+      <!--Home-->
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      </div>
+
+      <!--Add-->
+      <div class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
+        <br>
+        <div class="row">
+          <div class="col-sm offset-4">
+            <form id="frmLogin">
+              <div class="form-group row">
+                <label for="inputPayeeNameLabel" class="col-sm-3 col-form-label">Name: </label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="payeeName" placeholder="Payee Name">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputIBANLabel" class="col-sm-3 col-form-label">IBAN: </label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="IBAN" placeholder="IBAN">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputBICLabel" class="col-sm-3 col-form-label">BIC: </label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="BIC" placeholder="BIC">
+                </div>
+              </div>
+              <div class="form-group row" id="payeeButtonDiv">
+                <div class="col-sm-7 offset-1">
+                  <button type="button" class="btn btn-primary btn-block" id="btnAddPayee">Add Payee</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!--Delete-->
+      <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete-tab">
+      </div>
+    </div>
+    <!--Close tab content-->
+  </div>
+  <!--Close container-->
+</body>
+
+</html>

@@ -29,7 +29,7 @@
               <label for="inputIDLabel" class="col-sm-3 col-form-label">Customer ID: </label>
               <div class="col-sm-5">
                 <input type="text" class="form-control" value="" id="inputID"
-                  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"
                   placeholder="Customer ID">
               </div>
             </div>
@@ -45,9 +45,9 @@
               </div>
             </div>
           </form>
-        </div>
       </div>
     </div>
+  </div>
 </body>
 
 </html>

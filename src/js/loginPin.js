@@ -63,8 +63,8 @@ function getCustomerPassword(id) {
                 //Set placeholders to empty and enable inputs for digits we want to check
                 $('#passwordDigitField' + digitsArray[i]).attr('placeholder', '');
                 $('#passwordDigitField' + digitsArray[i]).removeAttr('disabled');
-                //Add pattern matching to input
-                $('#passwordDigitField' + digitsArray[i]).attr('oninput', 'this.value = this.value.replace(/[^0-9.]/g, \'\'\).replace(/(\..*)\./g, \'\$1\'\);');
+                //Add pattern matching to input, only allow one number
+                $('#passwordDigitField' + digitsArray[i]).attr('oninput', 'this.value = this.value.replace(/[^0-9]/g, \'\'\).replace(/(\..*)\./g, \'\$1\'\);');
             }
         } else {
             /*Adds error message alert if the password can't be retrieved from the db*/

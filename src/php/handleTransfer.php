@@ -1,30 +1,33 @@
 <?php
 {
-    $from_account_id = $_GET["account_from_ID"];
-    $to_account_Id = $_GET["account_to_ID"];
     $date = $_GET["date"];
+    $from_account = $_GET["from_account"];
+    $to_account = $_GET["to_account"];
     $amount = $_GET["amount"];
+    $isPayee = $_GET["isPayee"];
 
     $connection = mysqli_connect("localhost","root","");
     mysqli_select_db($connection,"myfinancepal");
 
-    $result = mysqli_query($connection,"INSERT INTO `transaction`(`TransDate`, `Type`, `Description`, `Amount`, `Category`, `AccountID`) VALUES ($date,"Credit","Transfer In",$amount,"Transfers",$to_account_Id)");
+    if($isPayee === true)
+    {
 
+        $result = mysqli_query($connection,"INSERT INTO `transaction`(`TransDate`, `Type`, `Description`, `Amount`, `Category`, `AccountID`) VALUES ('$date','Debit','Transfer Out', $amount,'Transfers','$from_account')");
 
-    $result2 = mysqli_query($connection,"INSERT INTO `transaction`(`TransDate`, `Type`, `Description`, `Amount`, `Category`, `AccountID`) VALUES ($date,"Credit","Transfer Out",$amount,"Transfers",$from_account_Id)");
-
-    $result3 = mysqli_query($connection,"UPDATE account SET CurrentBalance+=$amount where AccountID="$_GET['to_account_id']);
-
-    $result4 = mysqli_query($connection,"UPDATE account SET CurrentBalance-=$amount where AccountID="$_GET['from_account_id']);
-
-    $rs = array();
-    $i=0;
-    while($rs[] = mysqli_fetch_assoc($result)) {
-    // do nothing ;-)
+        $result2 = mysqli_query($connection,"UPDATE account SET CurrentBalance=CurrentBalance-$amount WHERE AccountID='$from_account'");
     }
-    mysqli_close($connection);
+    else{
 
-    unset($rs[count($rs)-1]);  //removes a null value
-    print("{ \"customer\":" . json_encode($rs) . "}");
+        $result = mysqli_query($connection,"INSERT INTO `transaction`(`TransDate`, `Type`, `Description`, `Amount`, `Category`, `AccountID`) VALUES ('$date','Debit','Transfer Out', $amount,'Transfers','$from_account')");
+
+        $result2 = mysqli_query($connection,"UPDATE account SET CurrentBalance=CurrentBalance-$amount WHERE AccountID='$from_account'");
+
+        $result3 = mysqli_query($connection,"INSERT INTO `transaction`(`TransDate`, `Type`, `Description`, `Amount`, `Category`, `AccountID`) VALUES ('$date','Credit','Transfer In', $amount ,'Transfers', $to_account)");
+
+        $result4 = mysqli_query($connection,"UPDATE account SET CurrentBalance=CurrentBalance+$amount WHERE AccountID='$to_account'");
+
+    }
+
+    mysqli_close($connection);
 }
 ?>
