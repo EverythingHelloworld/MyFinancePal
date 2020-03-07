@@ -27,7 +27,7 @@ function insertRandomField() {
         $("#signInDiv").before(`<div class="form-group row">
             <label for="inputPhoneLabel" class="col-sm-3 col-form-label">Phone Number:   </label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" id="inputPhone" placeholder="Phone No.">
+                <input type="text" class="form-control" id="inputPhone" placeholder="Phone No." maxLength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
             </div>
         </div>`)
     }
@@ -55,9 +55,8 @@ function handleLogin() {
         //Get id the customer entered
         var customerID = $('#inputID').val();
 
-        /*Only do the db call if (the dob div doesn't exist - i.e. phone num exists - and phone number is valid pattern) OR 
-        dob exists - no need to check phone num pattern - AND none of the fields are empty AND the customer ID pattern is valid*/
-        if( ((!dobDivExists && numberPattern.test($('#inputPhone').val())) || dobDivExists) && dob !== '' && phoneNum !== '' && customerID !== '' && numberPattern.test($('#inputID').val())) { 
+        /*Only do the db call if none of the fields are empty AND the customer ID pattern is valid*/
+        if(dob !== '' && phoneNum !== '' && customerID !== '' && numberPattern.test($('#inputID').val())) { 
                 getCustomerDetails(customerID);
         } else{
 
