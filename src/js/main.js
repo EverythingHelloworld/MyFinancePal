@@ -246,6 +246,20 @@ checkTransfer = (accountsAndTransactions, from_account_id, amount) => {
    return false;
 }
 
+requestAccountDeletion = (session_customer_id) => {
+   $.post(`../php/sendAccountClosureRequest.php`, {
+
+      customer: session_customer_id
+
+   })
+      .done(() => {
+         console.log('success');
+      })
+      .fail(() => {
+         console.log('fail');
+      })
+}
+
 // Submit the transfer to the database
 submitTransfer = (date, from_account_id, to_account_id, amount, isPayee) => {
    $.getJSON(`../php/handleTransfer.php?date=${date}&from_account=${from_account_id}&to_account=${to_account_id}&amount=${amount}&isPayee=${isPayee}`)
