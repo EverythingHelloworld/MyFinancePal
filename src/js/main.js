@@ -37,6 +37,7 @@ getPageData = (customerID) => {
                appendQuickTransferForm();
                bindAccountsToQuickTransferForm(accountsAndTransactions);
                handleTransferForm(accountsAndTransactions, customerID);
+               handleAccountDeletion(customerID);
             })
             .fail(() => {
                console.log('database call failed for account transactions');
@@ -246,10 +247,17 @@ checkTransfer = (accountsAndTransactions, from_account_id, amount) => {
    return false;
 }
 
+handleAccountDeletion = (session_customer_id) => {
+   $('#btnRequestAccountDeletion').click(() => {
+      console.log('request account deletion button clicked');
+      requestAccountDeletion(session_customer_id);
+   })
+}
+
 requestAccountDeletion = (session_customer_id) => {
    $.post(`../php/sendAccountClosureRequest.php`, {
 
-      customer: session_customer_id
+      'customerID': session_customer_id
 
    })
       .done(() => {

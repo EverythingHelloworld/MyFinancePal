@@ -3,9 +3,6 @@ var customerID;
 $("document").ready(function () {
   // If a customer is not logged in <- if the customerID cookie exists
   // hide page content and redirect to login page
-  $.ajaxSetup({
-    async: false
-  });
   redirectToLoginIfCustomerCookieNotSet();
   setActiveNavLink();
   handleLogout();
@@ -22,10 +19,17 @@ $("document").ready(function () {
 to a new row in the payee table in the db and then refreshes the page.*/
 function handleAddPayee() {
   $('#btnAddPayee').click(() => {
-    console.log('Name: ', typeof ($('#payeeName').val()));
-    console.log('IBAN: ', typeof ($('#IBAN').val()));
-    console.log('BIC: ', typeof ($('#BIC').val()));
-    console.log('customerID: ', typeof (customerID));
+    var payeeName; var IBAN; var BIC;
+    payeeName = $('#payeeName').val();
+    IBAN = $('#IBAN').val();
+    BIC = $('#BIC').val();
+    console.log('Name: ', payeeName);
+    console.log('IBAN: ', IBAN);
+    console.log('BIC: ', BIC);
+    console.log('customerID: ', customerID);
+    // if (validPayee(payeeName, IBAN, BIC)) {
+
+    // }
     $.post("../php/addPayee.php",
       {
         'PayeeName': $('#payeeName').val(),
@@ -36,7 +40,7 @@ function handleAddPayee() {
       function (data, status) {
         // alert('Data: ', data, ', Status: ', status);
       });
-    window.location.href = 'managePayees.html#add';
+    window.location.href = 'managePayees.html';
   });
 }
 
