@@ -123,16 +123,16 @@ INSERT INTO Customer (Name, DOB, City, Street, County, PostCode, PhoneNumber, Em
 VALUES ('TestCus3', '1994/10/05', 'Cork', '678 Street', 'Cork', '2222', '0863333333', '789@hotmail.com');
 
 INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
-VALUES ('Student', 'IE12BOFI100002423554', 'BOFIIE234', '1', '2000-01-01', '1000.00', '100.00');
+VALUES ('Student', 'IE12BOFI100000423554', 'BOFIIE234', '1', '2000-01-01', '1000.00', '100.00');
 
 INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
-VALUES ('Current', 'IE12BOFI100004646355', 'BOFIIE333', '2', '2001-11-01', '2000.00', '500.00');
+VALUES ('Current', 'IE12BOFI100001646355', 'BOFIIE333', '2', '2001-11-01', '2000.00', '500.00');
 
 INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
 VALUES ('Student', 'IE12BOFI100002563463', 'BOFIIE122', '3', '2003-05-01', '8000.00', '400.00');
 
 INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
-VALUES ('Current', 'IE12BOFI100001784459', 'BOFIIE333', '1', '2002-09-05', '1524.00', '226.00');
+VALUES ('Current', 'IE12BOFI100003784459', 'BOFIIE333', '1', '2002-09-05', '1524.00', '226.00');
 
 INSERT INTO CustomerDetails (CustomerID, Password, LoginAttempts, Locked)
 VALUES ('1', '123456', 0, false);
@@ -335,7 +335,7 @@ VALUES ('2003-08-12 18:01:13', 'Debit', 'YESSTYLE', '132.00', 'Online Shopping',
 -- Customer 1, 2nd Account Transactions
 
 INSERT INTO Account (AccountType, IBAN, BIC, CustomerID, OpeningDate, CurrentBalance, OpeningBalance)
-VALUES ('Current', 'IE12BOFI100001784459', 'BOFIIE333', '1', '2002-09-05', '1750.00', '226.00');
+VALUES ('Current', 'IE12BOFI100004127459', 'BOFIIE333', '1', '2002-09-05', '1750.00', '226.00');
 
 INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
 VALUES ('2003-07-11 10:30:19', 'Credit', 'Wages', '800', 'Income', '100003');

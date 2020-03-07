@@ -71,6 +71,11 @@ function lockAccount(id) {
     $.post("../php/lockAccount.php", { 'id': id });
 }
 
+//Unlock customer account
+function unlockAccount(id) {
+    $.post("../php/unlockAccount.php", { 'id': id });
+}
+
 //Get today's date
 function todaysDate() {
     var today = new Date();
