@@ -382,4 +382,4 @@ VALUES('IE12BOFI1245002113554','BOFIIE883', 'Shane West', 3);
 -- VALUES('5000', 100000)
 
 INSERT INTO Request (AccountActive, CustomerID)
-VALUES(false, 3);
+VALUES(true, 3);
