@@ -15,6 +15,7 @@ $("document").ready(() => {
 // Function that retrvieves all data that needs to be
 // displayed on the main page
 getPageData = (customerID) => {
+   appendCustomerDetails();
    // Query the MyFinancePal database for the accounts associated with the customer
    // that is currently logged in
    $.getJSON(`../php/getCustomerAccounts.php?customerID=${customerID}`)
@@ -45,6 +46,11 @@ getPageData = (customerID) => {
       .fail(() => {
          console.log('database call failed for customer account');
       })
+}
+
+appendCustomerDetails = () => {
+   $('#customer-details-container').append(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table>`);
+   $('#customer-details-container').append(`<button class="btn border-primary btn-block" id="btnRequestAccountDeletion">Request Account Deletion</button>`);
 }
 
 // Function builds a JSON object that associates each account
@@ -105,7 +111,7 @@ sortAccountsAndTransactions = (accountsAndTransactions) => {
 // Function appends tucstomer account collapse elements
 // to main page
 appendCustomerAccounts = (accounts) => {
-   $('#accounts-collapse-container').append(`<table id="my-bank-accounts-header" class="table table-borderless"><thead class><tr scope="row"><th><span class="display-4">My Bank Accounts</span></th></tr></thead></table><div id="accordion"></div>`);
+   $('#accounts-collapse-container').append(`<div class="table-responsive"><table id="my-bank-accounts-header" class="table table-borderless"><thead class><tr scope="row"><th><span class="display-4">My Bank Accounts</span></th></tr></thead></table></div><div id="accordion"></div>`);
    for (i in accounts) {
       $('#accounts-collapse-container').append(`
       <div class="card">
@@ -163,7 +169,7 @@ appendCustomerAccountsTransactions = (accounts) => {
 // Function that appends the quick transfer form
 // to the page
 appendQuickTransferForm = () => {
-   $('#my-bank-accounts-header').append(`<div><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Quick Transfer</h5></th><th></th><th></th></tr></thead><td colspan="2"><form id="transfer-form" style="border:black 1px;" class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control" style="margin-right:25px;"></select></div><div class="form-group"><select id='account-to-dropdown' disabled class="form-control" style="margin-right:25px;"></select></div><div class="form-group"><input type="text" id=transfer-amount class="form-control" placeholder="Amount" disabled style="margin-right:25px;"><button type="submit" id="submit-transfer-btn" class="btn btn-primary"><span class="h6">Transfer</span><i style="margin-left:5px; margin-top:5px;" class="fas fa-arrow-circle-right"></i></button></div></form></td><td></td></table></div>`);
+   $('#my-bank-accounts-header').append(`<div><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Quick Transfer</h5></th><th></th><th></th></tr></thead><td colspan="2"><form id="transfer-form" style="border:black 1px;" class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><select id='account-to-dropdown' disabled class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><input type="text" id=transfer-amount class="form-control" placeholder="Amount" disabled style="margin-right:25px; margin-bottom:5px;"><button type="submit" id="submit-transfer-btn" class="btn btn-primary" style="margin-bottom:5px;"><span class="h6">Transfer</span><i style="margin-left:5px; margin-top:5px;" class="fas fa-arrow-circle-right"></i></button></div></form></td><td></td></table></div>`);
    $('#account-from-dropdown').append(`<option value=From_account>From account...</option>`);
    $('#account-to-dropdown').append(`<option value=to_account>To account...</option>`);
 }

@@ -4,7 +4,7 @@ var phoneNum;
 
 var numberPattern = new RegExp("^[0-9]*$");
 
-$("document").ready(function(){
+$("document").ready(function () {
     insertRandomField();
     handleLogin();
     handleRegister();
@@ -41,37 +41,37 @@ function handleLogin() {
     $("#btnLogin").click(function () {
         //Checks if the dob input exists. Length = 0 if it doesn't and 1 if it does.
         var dobDivExists = $('#inputDOB').length;
-        
+
         //If dob exists, get the value the user entered for dob and set dobVisible to true
-        if(dobDivExists){
+        if (dobDivExists) {
             dob = $('#inputDOB').val();
             dobVisible = true;
-        }else {
+        } else {
             //If dob does not exist, get the value the user entered for phone number and set dobVisible to false
             phoneNum = $('#inputPhone').val();
             dobVisible = false;
-        }  
+        }
 
         //Get id the customer entered
         var customerID = $('#inputID').val();
 
         /*Only do the db call if none of the fields are empty AND the customer ID pattern is valid*/
-        if(dob !== '' && phoneNum !== '' && customerID !== '' && numberPattern.test($('#inputID').val())) { 
-                getCustomerDetails(customerID);
-        } else{
+        if (dob !== '' && phoneNum !== '' && customerID !== '' && numberPattern.test($('#inputID').val())) {
+            getCustomerDetails(customerID);
+        } else {
 
             //If dob div doesn't exist (phone num exists) and phone number not valid, set error message
-            if(!dobDivExists && !numberPattern.test($('#inputPhone').val())){
+            if (!dobDivExists && !numberPattern.test($('#inputPhone').val())) {
                 errorMessage = 'Phone number field can only contain numbers.';
             }
 
             //if any of the fields are empty, set error message
-            if((dob === '' || phoneNum === '') || customerID === ''){
+            if ((dob === '' || phoneNum === '') || customerID === '') {
                 errorMessage = 'All fields required.';
             }
 
             //if customer id pattern is invalid, set message
-            if(!numberPattern.test($('#inputID').val())){
+            if (!numberPattern.test($('#inputID').val())) {
                 errorMessage = 'Customer ID field can only contain numbers.';
             }
 
@@ -85,16 +85,17 @@ function handleLogin() {
 
     //Retrieves customer details from db and checks if the values match those in the database
     function getCustomerDetails(id) {
-        var correctLoginDetails = false; 
+        var correctLoginDetails = false;
         //Gets customer details from db
-        $.getJSON(`../php/getAllCustomerLoginDetails.php?customerID=${id}`, function (data) {
-            var customer = data.CustomerDetails[0];
-            var errorMessage2;
+        $.getJSON(`../php/getAllCustomerLoginDetails.php?customerID=${id}`)
+            .done(function (data) {
+                var customer = data.CustomerDetails[0];
+                var errorMessage2;
                 /*If data is returned, check if it matches db values, 
                 else show error message*/
                 if (data.CustomerDetails.length > 0) {
                     //If the customer's account is not locked, do further validation, else show error message
-                    if(customer.Locked === '0'){
+                    if (customer.Locked === '0') {
                         //Check if dob/phone num entered matches db value
                         if (dobVisible) {
                             if (dob === customer.DOB) {
@@ -131,7 +132,7 @@ function handleLogin() {
                             /*Login attempts in db is one more than noAttempts variable we set with data obtained from 
                             our earlier db call as we have just incremented it in the db. There is no need to do an additional db 
                             call here. If number of attempts is greater than or equal to 2 (3+ in db), lock their account*/
-                            if(noAttempts >= '2'){
+                            if (noAttempts >= '2') {
                                 lockAccount(id);
                             }
                             //Add error message to div
@@ -140,7 +141,7 @@ function handleLogin() {
                             $('#errorMessage').attr('role', 'alert');
                             $('#errorMessage').text(errorMessage2 + ' Your account will be locked after 3 incorrect attempts.');
                         }
-                    }else{
+                    } else {
                         //Add error message to div
                         $('#signInDiv').before('<div id=errorMessage></div>');
                         $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
@@ -151,11 +152,14 @@ function handleLogin() {
                     //If customer id is not in the database, add error message to div
                     errorMessage2 = 'You are not a registered customer.';
                     $('#signInDiv').before('<div id=errorMessage></div>');
-                        $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
-                        $('#errorMessage').attr('role', 'alert');
-                        $('#errorMessage').text(errorMessage2);
+                    $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
+                    $('#errorMessage').attr('role', 'alert');
+                    $('#errorMessage').text(errorMessage2);
                 }
-        }) //close getCustomerDetails db call
+            })
+            .fail(function () {
+                console.log('didnt work');
+            }) //close getCustomerDetails db call
     } //close getCustomerDetails
 } //close handleLogin
 
