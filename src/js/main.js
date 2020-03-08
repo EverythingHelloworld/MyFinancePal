@@ -2,6 +2,7 @@ $("document").ready(() => {
    // If a customer is not logged in <- if the customerID cookie exists
    // hide page content and redirect to login page
    redirectToLoginIfCustomerCookieNotSet();
+   //else
    $.ajaxSetup({
       async: false
    });
@@ -37,7 +38,7 @@ getPageData = (customerID) => {
                appendQuickTransferForm();
                bindAccountsToQuickTransferForm(accountsAndTransactions);
                handleTransferForm(accountsAndTransactions, customerID);
-               handleAccountDeletion(customerID);
+               handleRequestButtonClick(customerID);
             })
             .fail(() => {
                console.log('database call failed for account transactions');
@@ -49,9 +50,25 @@ getPageData = (customerID) => {
       })
 }
 
-appendCustomerDetails = () => {
-   $('#customer-details-container').append(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table>`);
-   $('#customer-details-container').append(`<button class="btn border-primary btn-block" id="btnRequestAccountDeletion">Request Account Deletion</button>`);
+appendCustomerDetails = (session_customer_id) => {
+   $('#customer-details-container').append(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table><div id="request-button-container"></div>`);
+   appendRequestButton(session_customer_id);
+
+}
+
+appendRequestButton = (session_customer_id) => {
+   $.getJSON(`../php/getRequests.php?customerID=${session_customer_id}`)
+      .done((data) => {
+         if (data.Requests === undefined || data.Requests.length < 1) {
+            $('#request-button-container').append(`<button class="btn border-primary btn-block" id="btnRequestAccountDeletion">Request Account Deletion</button>`);
+         }
+         else {
+            $('#request-button-container').append(`<button class="btn border-primary btn-block" id="btnWithdrawAccountDeletion">Cancel Account Closure Request</button>`);
+         }
+      })
+      .fail(() => {
+         console.log('failed');
+      })
 }
 
 // Function builds a JSON object that associates each account
@@ -247,10 +264,14 @@ checkTransfer = (accountsAndTransactions, from_account_id, amount) => {
    return false;
 }
 
-handleAccountDeletion = (session_customer_id) => {
+handleRequestButtonClick = (session_customer_id) => {
    $('#btnRequestAccountDeletion').click(() => {
       console.log('request account deletion button clicked');
       requestAccountDeletion(session_customer_id);
+   })
+   $('#btnWithdrawAccountDeletion').click(() => {
+      console.log('request account deletion button clicked');
+      withdrawAccountDeletionRequest(session_customer_id);
    })
 }
 
@@ -262,11 +283,32 @@ requestAccountDeletion = (session_customer_id) => {
    })
       .done(() => {
          console.log('success');
+         window.location.href = "main.html";
+         $('#request-button-container').empty();
+         appendRequestButton();
       })
       .fail(() => {
          console.log('fail');
       })
 }
+
+withdrawAccountDeletionRequest = (session_customer_id) => {
+   $.post(`../php/deleteAccountClosureRequest.php`, {
+
+      'customerID': session_customer_id
+
+   })
+      .done(() => {
+         console.log('success');
+         window.location.href = "main.html";
+         $('#request-button-container').empty();
+         appendRequestButton();
+      })
+      .fail(() => {
+         console.log('fail');
+      })
+}
+
 
 // Submit the transfer to the database
 submitTransfer = (date, from_account_id, to_account_id, amount, isPayee) => {
