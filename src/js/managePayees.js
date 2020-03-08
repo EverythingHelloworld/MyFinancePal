@@ -27,21 +27,40 @@ function handleAddPayee() {
     console.log('IBAN: ', IBAN);
     console.log('BIC: ', BIC);
     console.log('customerID: ', customerID);
-    // if (validPayee(payeeName, IBAN, BIC)) {
+    if (isValidNewPayee(payeeName, IBAN, BIC)) {
+      console.log('isValidPayeeTestPassed:');
+      $.post("../php/addPayee.php",
+        {
+          'PayeeName': $('#payeeName').val(),
+          'IBAN': $('#IBAN').val(),
+          'BIC': $('#BIC').val(),
+          'customerID': customerID
+        },
+        function (data, status) {
+          // alert('Data: ', data, ', Status: ', status);
+        });
+    }
 
-    // }
-    $.post("../php/addPayee.php",
-      {
-        'PayeeName': $('#payeeName').val(),
-        'IBAN': $('#IBAN').val(),
-        'BIC': $('#BIC').val(),
-        'customerID': customerID
-      },
-      function (data, status) {
-        // alert('Data: ', data, ', Status: ', status);
-      });
-    window.location.href = 'managePayees.html';
+    //window.location.href = 'managePayees.html';
   });
+}
+
+function isValidNewPayee(payeeName, IBAN, BIC) {
+  validName = false;
+  validIBAN = false;
+  validBIC = false;
+  var namePattern = new RegExp("^[a-zA-Z_]+( [a-zA-Z_]+)*$");
+  var IBANPattern = new RegExp();
+  var BICPattern = new RegExp();
+  if (namePattern.test(payeeName)) {
+    console.log('namePattern Passed');
+    validName = true;
+  }
+
+  if (validName && validIBAN && validBIC)
+    return true;
+
+  return false;
 }
 
 /*Removes the default option from the remove payee dropdown 
