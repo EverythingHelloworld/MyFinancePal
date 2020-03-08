@@ -48,7 +48,7 @@ function addRequestsToTable() {
     '<th scope="col">Customer ID</th><th scope="col">Customer Name</th><th scope="col">Request</th></tr></thead><tbody id="tableBody"></tbody></table></div>');
     for (var i = 0; i < requestData.Requests.length; i++) {
         $('#tableBody').append(`<tr scope="row"><td class="align-middle">${requestData.Requests[i].requestID}</td><td class="align-middle">${requestData.Requests[i].CustomerID}</td><td class="align-middle">${requestData.Requests[i].Name}</td>` + 
-        `<td class="align-middle"> <button type="button" class="btn btn-success btn-block" id="btnApprove${i}" value=${requestData.Requests[i].requestID}>Approve</button></td></tr>`);
+        `<td class="align-middle"> <button type="button" class="btn btn-success btn-block" id="btnApprove${i}" value=${requestData.Requests[i].CustomerID}>Approve</button></td></tr>`);
     }
 }
 
@@ -67,7 +67,7 @@ function setButtonClicks(){
 //Changes the AccountActive field in the db to false to approve closure request
 handleApproveButtonClick = (btnID) => {
     //Request id is set as the button value. $(`#${btnID}`).val() gets this value to send it with the request.
-    $.post("../php/approveRequest.php", { 'requestID': $(`#${btnID}`).val() });
+    $.post("../php/approveRequest.php", { 'customerID': $(`#${btnID}`).val() });
     //Reload page
     location.reload();
 }
