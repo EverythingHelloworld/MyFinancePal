@@ -17,7 +17,7 @@ $("document").ready(() => {
 // Function that retrvieves all data that needs to be
 // displayed on the main page
 getPageData = (customerID) => {
-   appendCustomerDetails();
+   appendCustomerDetails(customerID);
    // Query the MyFinancePal database for the accounts associated with the customer
    // that is currently logged in
    $.getJSON(`../php/getCustomerAccounts.php?customerID=${customerID}`)
@@ -62,7 +62,7 @@ appendRequestButton = (session_customer_id) => {
    $.getJSON(`../php/checkCustomerRequest.php?customerID=${session_customer_id}`)
       .done((data) => {
          if (data.Request === undefined || data.Request.length < 1) {
-            $('#request-button-container').append(`<button class="btn border-primary btn-block" id="btnRequestAccountDeletion">Request Account Deletion</button>`);
+            $('#request-button-container').append(`<button class="btn border-primary btn-block" id="btnRequestAccountDeletion">Request Account Closure</button>`);
          }
          else {
             $('#request-button-container').append(`<button class="btn border-primary btn-block" id="btnWithdrawAccountDeletion">Cancel Account Closure Request</button>`);

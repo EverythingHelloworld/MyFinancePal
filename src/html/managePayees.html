@@ -49,26 +49,32 @@
           <div class="col-sm offset-4">
             <form id="frmLogin">
               <div class="form-group row">
-                <label for="inputPayeeNameLabel" class="col-sm-3 col-form-label" style="padding-left:0;padding-right:0;">Name: </label>
+                <label for="inputPayeeNameLabel" class="col-sm-3 col-form-label"
+                  style="padding-left:0;padding-right:0;">Name: </label>
                 <div class="col-sm-5">
                   <input type="text" class="form-control" id="payeeName" placeholder="Payee Name"
-                    oninput="this.value = this.value.replace(/[^A-Za-z]/g, '').replace(/(\..*)\./g, '$1');">
+                    oninput="this.value = this.value.replace(/[^A-Za-z ]/g, '').replace(/(\..*)\./g, '$1');">
                 </div>
               </div>
               <div class="form-group row">
-                <label for="inputIBANLabel" class="col-sm-3 col-form-label" style="padding-left:0;padding-right:0;">IBAN: </label>
+                <label for="inputIBANLabel" class="col-sm-3 col-form-label"
+                  style="padding-left:0;padding-right:0;">IBAN: </label>
                 <div class="col-sm-5">
-                  <input type="text" class="form-control" id="IBAN" maxlength="34" placeholder="IBAN">
+                  <input type="text" class="form-control" id="IBAN" maxlength="34" placeholder="IBAN"
+                    oninput="this.value=this.value.replace(/[^a-zA-Z0-9]/g, '').replace(/(\..*)\./g, '');">
                 </div>
               </div>
               <div class="form-group row">
-                <label for="inputBICLabel" class="col-sm-3 col-form-label" style="padding-left:0;padding-right:10;">BIC: </label>
+                <label for="inputBICLabel" class="col-sm-3 col-form-label" style="padding-left:0;padding-right:10;">BIC:
+                </label>
                 <div class="col-sm-5">
-                  <input type="text" class="form-control" id="BIC" maxlength="8" placeholder="BIC">
+                  <input type="text" class="form-control" id="BIC" maxlength="9" placeholder="BIC"
+                    oninput="this.value=this.value.replace(/[^a-zA-Z0-9]/g, '').replace(/(\..*)\./g, '');">
                 </div>
               </div>
               <div class="form-group row" id="payeeButtonDiv">
                 <div class="col-sm-5 offset-3">
+                  <div id="add-payee-error-alert" style="margin-bottom:10px;"></div>
                   <button type="button" class="btn btn-primary btn-block" id="btnAddPayee">Add Payee</button>
                 </div>
               </div>

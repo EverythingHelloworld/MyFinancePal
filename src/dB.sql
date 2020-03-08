@@ -80,7 +80,7 @@ CREATE TABLE Payee
     `PayeeID` int(10) NOT NULL AUTO_INCREMENT,
     `IBAN` varchar(50) NOT NULL,
     `BIC` varchar(20) NOT NULL,
-    `Name` varchar(100) NOT NULL,
+    `Name` varchar(25) NOT NULL,
     `CustomerID` int(10) NOT NULL,
     PRIMARY KEY (`PayeeID`),
     CONSTRAINT payee_customer_id_constraint
