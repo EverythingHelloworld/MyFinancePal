@@ -68,6 +68,7 @@ clearAdminCookie = () => {
   document.cookie = "adminID=''; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 }
 
+//Adds number of open requests to requests badge
 function setNoRequests() {
   $.getJSON(`../php/getRequests.php`)
     .done((data) => {

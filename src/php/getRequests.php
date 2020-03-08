@@ -2,7 +2,7 @@
     $connection = mysqli_connect("localhost","root","");
     mysqli_select_db($connection,"MyFinancePal");
 
-    $result = mysqli_query($connection, "select * from Request where AccountActive=true");
+    $result = mysqli_query($connection, "select requestID, r.CustomerID, Name from request r, customer c where AccountActive=true and r.CustomerID = c.CustomerID");
     
     $rs = array();
     $i=0;
