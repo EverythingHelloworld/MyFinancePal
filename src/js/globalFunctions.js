@@ -87,6 +87,16 @@ function todaysDate() {
     return today;
 }
 
+//Check to make sure admin cookie is set
+function checkAdminCookie() {
+    if (Cookies.get('adminID') === undefined) {
+      $("#jumbotron").attr('style', 'display:none');
+      $("#navbar").attr('style', 'display:none');
+      $("#btnDiv").attr('style', 'display:none');
+      window.location.href = 'login.html';
+    }
+  }
+
 function transactionDateAndTime() {
     let d = todaysDate(); let x;
     let dateTime = new Date();

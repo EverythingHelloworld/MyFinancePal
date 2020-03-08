@@ -1,72 +1,65 @@
 <html>
 
 <head>
-  <script type="text/javascript" src="../js/globalFunctions.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script type="text/javascript" src="../libraries/jquery-3.3.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
+  <script type="text/javascript" src="../js/globalFunctions.js"></script> 
   <script type="text/javascript" src="../libraries/underscore.js"></script>
-  <script type="text/javascript" src="../libraries/d3.min.js"></script>
   <script type="text/javascript" src="../js/admin.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
   <link rel="stylesheet" href="../css/header.css">
   <script type="text/javascript" src="../js/navbar.js"></script>
   <script type="text/javascript" src="../js/jumbotron.js"></script>
-  
 </head>
-<style>
-</style>
-
+<style></style>
 <body>
-    <div id='jumbotron'></div>
+  <div id='jumbotron'></div>
 
-    <div class="container">
-      
-      <div class="row justify-content-md-center">
-        <div class="col-sm-6">
-          Locked Accounts
-          <select class="custom-select" id = "accLockedList">
-            <option>Choose Customer ID... </option>
-          </select>
-        </div>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-sm-3">
+        <button type="button" class="btn btn-dark btn-block" id="btnAdminLogout">Log out</button>
       </div>
-      <br>
-      <div class="row justify-content-md-center">
-        <div class="col-sm-6">
-            <button type="button" class="btn btn-primary btn-block" id="btnUnlock">Unlock Account</button>
-        </div>
-    </div>
-    <br><br>
+      <div class="col-sm-3" id="btnBadgeDiv">
+        <button type="button" class="btn btn-dark btn-block" id="btnRequests">
+          Requests&nbsp;<span class="badge badge-light" id="requestNum"></span>
+        </button>
+      </div>
+    </div><br>
     <div class="row justify-content-md-center">
       <div class="col-sm-6">
-        Unlocked Accounts
+        <div style="font-size:30;">Locked Accounts</div><br>
+        <select class="custom-select" id = "accLockedList">
+          <option>Choose Customer ID... </option>
+        </select>
+      </div>
+    </div><br>
+    <div class="row justify-content-md-center">
+      <div class="col-sm-6">
+          <button type="button" class="btn btn-primary btn-block" id="btnUnlock">Unlock Account</button>
+      </div>
+    </div><br>
+    <div class="row justify-content-md-center">
+      <div class="col-sm-6">
+        <div style="font-size:30;">Unlocked Accounts</div><br>
         <select class="custom-select" id = "accUnlockedList">
           <option>Choose Customer ID... </option>
         </select>
       </div>
-    </div>
-    <br>
+    </div><br>
     <div class="row justify-content-md-center">
       <div class="col-sm-6">
           <button type="button" class="btn btn-primary btn-block" id="btnLock">Lock Account</button>
       </div>
-  </div>
-
-
     </div>
-    <br><br><br>
-    <div class="row justify-content-md-center" id = "btnDiv">
   </div>
 </body>
-
 </html>
-
 
 <!-- <select class="custom-select" id = "accListBox" multiple>
 
 </select>
-
-<div class="col-sm-12" id = "btnDiv"></div> -->

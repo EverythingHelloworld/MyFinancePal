@@ -154,7 +154,7 @@ INSERT INTO CustomerDetails (CustomerID, Password, LoginAttempts, Locked)
 VALUES ('2', '123456', 0, false);
 
 INSERT INTO CustomerDetails (CustomerID, Password, LoginAttempts, Locked)
-VALUES ('3', '123456', 0, false);
+VALUES ('3', '123456', 0, true);
 
 INSERT INTO AdminDetails (AdminID, Password)
 VALUES ('1234', 'admin');
