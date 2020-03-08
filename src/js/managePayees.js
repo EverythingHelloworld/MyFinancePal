@@ -27,21 +27,62 @@ function handleAddPayee() {
     console.log('IBAN: ', IBAN);
     console.log('BIC: ', BIC);
     console.log('customerID: ', customerID);
-    // if (validPayee(payeeName, IBAN, BIC)) {
+    if (isValidNewPayee(payeeName, IBAN, BIC)) {
+      console.log('isValidPayeeTestPassed:');
+      $.post("../php/addPayee.php",
+        {
+          'PayeeName': $('#payeeName').val(),
+          'IBAN': $('#IBAN').val(),
+          'BIC': $('#BIC').val(),
+          'customerID': customerID
+        },
+        function (data, status) {
+          // alert('Data: ', data, ', Status: ', status);
+        });
+      window.location.href = 'managePayees.html';
+    }
 
-    // }
-    $.post("../php/addPayee.php",
-      {
-        'PayeeName': $('#payeeName').val(),
-        'IBAN': $('#IBAN').val(),
-        'BIC': $('#BIC').val(),
-        'customerID': customerID
-      },
-      function (data, status) {
-        // alert('Data: ', data, ', Status: ', status);
-      });
-    window.location.href = 'managePayees.html';
   });
+}
+
+function isValidNewPayee(payeeName, IBAN, BIC) {
+  validName = false;
+  validIBAN = false;
+  validBIC = false;
+  var namePattern = new RegExp("^[a-zA-Z_]+( [a-zA-Z_]+)*$");
+  var IBANPattern = new RegExp("^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$");
+  var BICPattern = new RegExp("^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$");
+  if (payeeName !== undefined && payeeName.length > 0 && namePattern.test(payeeName)) {
+    validName = true;
+  }
+  if (IBAN !== undefined && IBAN.length > 0 && IBANPattern.test(IBAN)) {
+    if (IBAN.charAt(0).match("^[a-zA-Z]") && IBAN.charAt(1).match('^[a-zA-Z]')) {
+      validIBAN = true;
+    }
+  }
+  if (BIC !== undefined && BIC.length > 0 && BICPattern.test(BIC)) {
+    if (BIC.charAt(0).match("^[a-zA-Z]") && BIC.charAt(1).match('^[a-zA-Z]')) {
+      s = BIC.substr(0, 5);
+      validBIC = true;
+      for (i in s) {
+        if (!s.charAt(i).match("^[a-zA-Z]")) {
+          validBIC = false;
+        }
+      }
+    }
+    if (BIC.length < 9) {
+      validBIC = false;
+    }
+  }
+
+  if (validName && validIBAN && validBIC) {
+    $('#add-payee-error-alert-container').empty();
+    return true;
+  }
+  else
+    displayErrorMessage(validName, validIBAN, validBIC);
+
+  return false;
 }
 
 /*Removes the default option from the remove payee dropdown 
@@ -49,14 +90,15 @@ after the customer has selected another option*/
 function removeDefaultDropdownOptionOnChange() {
   $('#selectPayee').change(() => {
     $('#default').remove();
+    $('#removePayeeBtn').attr('disabled', false);
   });
 }
 
 //Removes the payee the customer has selected from the db and refreshes the page
 function handleRemovePayee() {
-  $('#removePayee').click(() => {
+  $('#removePayeeBtn').click(() => {
     $.post("../php/deletePayee.php", { 'payeeID': $('#selectPayee option:selected').val() });
-    window.location.href = 'managePayees.html#delete';
+    window.location.href = 'managePayees.html';
   });
 }
 
@@ -65,7 +107,7 @@ function addPayeesToDeleteDropdown(customerID) {
   //Creates dropdown and adds it to delete tab
   $('#delete').html('<br><div class="input-group"><select class="custom-select" id="selectPayee">' +
     '<option selected id="default">Remove a payee...</option></select><br><div class="input-group-append">' +
-    '<button class="btn btn-primary" type="button" id="removePayee">Remove</button></div></div>')
+    '<button class="btn btn-primary" type="button" id="removePayeeBtn" disabled>Remove</button></div></div>')
 
   //Gets customer's list of payees
   $.getJSON(`../php/getPayees.php?customerID=${customerID}`, function (data) {
@@ -82,6 +124,34 @@ function addPayeesToDeleteDropdown(customerID) {
     }
   })
 
+}
+
+function displayErrorMessage(validPayee, validIBAN, validBIC) {
+  var errorMessage;
+  if (!validPayee && !validIBAN && !validBIC) {
+    errorMessage = "Payee name, IBAN, and BIC are invalid";
+  }
+  else if (!validPayee && !validIBAN) {
+    errorMessage = "Payee name and IBAN are invalid";
+  }
+  else if (!validPayee && !validBIC) {
+    errorMessage = "Payee name BIC are invalid";
+  }
+  else if (!validIBAN && !validBIC) {
+    errorMessage = "IBAN and BIC are invalid";
+  }
+  else if (!validPayee) {
+    errorMessage = "Payee name is invaid";
+  }
+  else if (!validIBAN) {
+    errorMessage = "IBAN is invalid";
+  }
+  else if (!validBIC) {
+    errorMessage = "BIC is invalid";
+  }
+  $('#add-payee-error-alert').attr('class', 'alert alert-danger');
+  $('#add-payee-error-alert').attr('role', 'alert');
+  $('#add-payee-error-alert').text(errorMessage);
 }
 
 //Gets the customer ID cookie

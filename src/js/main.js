@@ -10,13 +10,14 @@ $("document").ready(() => {
    // Retrieve the customer id for the current session <- customer that is currently logged in
    const session_customer_id = Cookies.get('customerID');
    sessionStorage.setItem("CustomerID", session_customer_id);
+   console.log(session_customer_id);
    getPageData(session_customer_id); // -> pass session_customer_id to return and display all page data for customer
 });
 
 // Function that retrvieves all data that needs to be
 // displayed on the main page
 getPageData = (customerID) => {
-   appendCustomerDetails();
+   appendCustomerDetails(customerID);
    // Query the MyFinancePal database for the accounts associated with the customer
    // that is currently logged in
    $.getJSON(`../php/getCustomerAccounts.php?customerID=${customerID}`)
@@ -52,15 +53,16 @@ getPageData = (customerID) => {
 
 appendCustomerDetails = (session_customer_id) => {
    $('#customer-details-container').append(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table><div id="request-button-container"></div>`);
+   console.log(session_customer_id);
    appendRequestButton(session_customer_id);
 
 }
 
 appendRequestButton = (session_customer_id) => {
-   $.getJSON(`../php/getRequests.php?customerID=${session_customer_id}`)
+   $.getJSON(`../php/checkCustomerRequest.php?customerID=${session_customer_id}`)
       .done((data) => {
-         if (data.Requests === undefined || data.Requests.length < 1) {
-            $('#request-button-container').append(`<button class="btn border-primary btn-block" id="btnRequestAccountDeletion">Request Account Deletion</button>`);
+         if (data.Request === undefined || data.Request.length < 1) {
+            $('#request-button-container').append(`<button class="btn border-primary btn-block" id="btnRequestAccountDeletion">Request Account Closure</button>`);
          }
          else {
             $('#request-button-container').append(`<button class="btn border-primary btn-block" id="btnWithdrawAccountDeletion">Cancel Account Closure Request</button>`);
@@ -187,7 +189,7 @@ appendCustomerAccountsTransactions = (accounts) => {
 // Function that appends the quick transfer form
 // to the page
 appendQuickTransferForm = () => {
-   $('#my-bank-accounts-header').append(`<div><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Quick Transfer</h5></th><th></th><th></th></tr></thead><td colspan="2"><form id="transfer-form" style="border:black 1px;" class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><select id='account-to-dropdown' disabled class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><input type="text" id=transfer-amount class="form-control" placeholder="Amount" disabled style="margin-right:25px; margin-bottom:5px;"><button type="submit" id="submit-transfer-btn" class="btn btn-primary" style="margin-bottom:5px;"><span class="h6">Transfer</span><i style="margin-left:5px; margin-top:5px;" class="fas fa-arrow-circle-right"></i></button></div></form></td><td></td></table></div>`);
+   $('#my-bank-accounts-header').append(`<div><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Quick Transfer</h5></th><th></th><th></th></tr></thead><td colspan="2"><form id="transfer-form" style="border:black 1px;" class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><select id='account-to-dropdown' disabled class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><input type="text" id=transfer-amount class="form-control" oninput="this.value = this.value.replace(^\d+(?:\.\d{0,2})?$)" placeholder="Amount" disabled style="margin-right:25px; margin-bottom:5px;"><button type="submit" id="submit-transfer-btn" class="btn btn-primary" style="margin-bottom:5px;"><span class="h6">Transfer</span><i style="margin-left:5px; margin-top:5px;" class="fas fa-arrow-circle-right"></i></button></div></form></td><td></td></table></div>`);
    $('#account-from-dropdown').append(`<option value=From_account>From account...</option>`);
    $('#account-to-dropdown').append(`<option value=to_account>To account...</option>`);
 }
