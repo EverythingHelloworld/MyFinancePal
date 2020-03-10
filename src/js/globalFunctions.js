@@ -22,6 +22,7 @@ function redirectToLoginIfCustomerCookieNotSet() {
     if (Cookies.get('loggedIn') === undefined) {
         $('#jumbotron').attr('style', 'display:none');
         $('#navbar').attr('style', 'display:none');
+        $('body').attr('style', 'display:none');
         window.location.href = 'login.html';
     }
 }
@@ -90,12 +91,13 @@ function todaysDate() {
 //Check to make sure admin cookie is set
 function checkAdminCookie() {
     if (Cookies.get('adminID') === undefined) {
-      $("#jumbotron").attr('style', 'display:none');
-      $("#navbar").attr('style', 'display:none');
-      $("#btnDiv").attr('style', 'display:none');
-      window.location.href = 'login.html';
+        $("#jumbotron").attr('style', 'display:none');
+        $("#navbar").attr('style', 'display:none');
+        $("#btnDiv").attr('style', 'display:none');
+        $(".container").attr('style', 'display:none');
+        window.location.href = 'login.html';
     }
-  }
+}
 
 function transactionDateAndTime() {
     let d = todaysDate(); let x;
