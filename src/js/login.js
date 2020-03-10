@@ -77,7 +77,7 @@ function handleLogin() {
 
             //Insert error message div with specified error message
             $('#signInDiv').before('<div id=errorMessage></div>');
-            $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
+            $('#errorMessage').attr('class', 'col-sm-5 offset-3 alert alert-danger text-center');
             $('#errorMessage').attr('role', 'alert');
             $('#errorMessage').text(errorMessage);
         }
@@ -137,14 +137,14 @@ function handleLogin() {
                             }
                             //Add error message to div
                             $('#signInDiv').before('<div id=errorMessage></div>');
-                            $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
+                            $('#errorMessage').attr('class', 'col-sm-5 offset-3 alert alert-danger text-center');
                             $('#errorMessage').attr('role', 'alert');
                             $('#errorMessage').text(errorMessage2 + ' Your account will be locked after 3 incorrect attempts.');
                         }
                     } else {
                         //Add error message to div
                         $('#signInDiv').before('<div id=errorMessage></div>');
-                        $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
+                        $('#errorMessage').attr('class', 'col-sm-5 offset-3 alert alert-danger text-center');
                         $('#errorMessage').attr('role', 'alert');
                         $('#errorMessage').text('Your account is locked. Please contact a member of staff in branch or over the phone.');
                     }
