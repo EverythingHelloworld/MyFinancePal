@@ -10,6 +10,7 @@ $("document").ready(function () {
     getPageData(session_customer_id); // -> pass session_customer_id to return and display all page data for customer
 })
 
+// Function displays all data on page
 getPageData = (session_customer_id) => {
     appendAccountDetails(session_customer_id);
 }
@@ -34,6 +35,9 @@ appendAccountDetails = (session_customer_id) => {
                         else {
                             transactions = data.accountTransactions;
                             console.log('account transactions', transactions);
+                            accountsAndTransactions = combineAccountsAndTransactions(accounts, transactions);
+                            console.log(accountsAndTransactions);
+                            displayAccounts(accountsAndTransactions);
                         }
                     })
                     .fail(() => {
@@ -47,3 +51,61 @@ appendAccountDetails = (session_customer_id) => {
         });
 }
 
+combineAccountsAndTransactions = (accounts, transactions) => {
+    let dataToReturn = [];
+    for (i in accounts) {
+        dataToReturn.push({
+            "AccountID": accounts[i].AccountID,
+            "AccountType": accounts[i].AccountType,
+            "IBAN": accounts[i].IBAN,
+            "BIC": accounts[i].BIC,
+            "OpeningDate": accounts[i].OpeningDate,
+            "OpeningBalance": accounts[i].OpeningBalance,
+            "CurrentBalance": accounts[i].CurrentBalance,
+            "Transactions": []
+        })
+    }
+    for (i in dataToReturn) {
+        for (j in transactions) {
+            if (dataToReturn[i].AccountID == transactions[j].AccountID) {
+                dataToReturn[i].Transactions.push({
+                    "TransactionID": transactions[j].TransactionID,
+                    "Date": transactions[j].TransDate,
+                    "Type": transactions[j].Type,
+                    "Description": transactions[j].Description,
+                    "Amount": transactions[j].Amount,
+                    "Category": transactions[j].Category,
+                    "ClosingBalance": null
+                });
+            }
+
+        }
+    }
+    dataToReturn = sortAccountsAndTransactions(dataToReturn);
+    return dataToReturn;
+}
+
+sortAccountsAndTransactions = (accountsAndTransactions) => {
+    let dataToReturn = accountsAndTransactions;
+    let currentBalance = 0;
+    for (i in dataToReturn) {
+        currentBalance = parseFloat(dataToReturn[i].OpeningBalance);
+        for (j in dataToReturn[i].Transactions) {
+            if (dataToReturn[i].Transactions[j].Type == "Credit") {
+                dataToReturn[i].Transactions[j].ClosingBalance = currentBalance + parseFloat(dataToReturn[i].Transactions[j].Amount);
+                currentBalance += parseFloat(dataToReturn[i].Transactions[j].Amount);
+            }
+            if (dataToReturn[i].Transactions[j].Type == "Debit") {
+                dataToReturn[i].Transactions[j].ClosingBalance = currentBalance - parseFloat(dataToReturn[i].Transactions[j].Amount);
+                currentBalance -= parseFloat(dataToReturn[i].Transactions[j].Amount);
+            }
+        }
+    }
+    return dataToReturn;
+}
+
+displayAccounts = (accountTransactions) => {
+    for (i in accountTransactions) {
+        $('#customer-accounts-list-group').append(`<a class="list-group-item list-group-item-action" id="account${i}-list-item" data-toggle="list" href="#" role="tab" aria-controls="home"><h3 class="h3">${accountTransactions[i].AccountType} Account ~${accountTransactions[i].IBAN.substr(16)} Balance: &euro;${accountTransactions[i].CurrentBalance} </h3></a>`)
+    }
+}

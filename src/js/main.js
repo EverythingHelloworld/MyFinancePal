@@ -55,20 +55,20 @@ getPageData = (customerID) => {
 appendCustomerDetails = (session_customer_id) => {
 
    $.getJSON(`../php/getAllCustomerLoginDetails.php?customerID=${session_customer_id}`, function (data) {
-     for (var i = 0; i < data.CustomerDetails.length; i++) {
-       $("#cusDetails").append(` <tr><td>Customer ID:    </td><td>${data.CustomerDetails[i].CustomerID}</td></tr>
+      for (var i = 0; i < data.CustomerDetails.length; i++) {
+         $("#cusDetails").append(` <tr><td>Customer ID:    </td><td>${data.CustomerDetails[i].CustomerID}</td></tr>
                                    <tr><td>Name:    </td><td>${data.CustomerDetails[i].Name}</td></tr>
                                    <tr><td>D.O.B:  </td><td>${data.CustomerDetails[i].DOB}</td></tr>
                                    <tr><td>Email:  </td><td>${data.CustomerDetails[i].Email}</td></tr>
                                    <tr><td>Mobile:  </td><td>${data.CustomerDetails[i].PhoneNumber}</td></tr>`);
-     }
+      }
    })
- 
+
    $('#customer-details-container').before(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table>`);
    $('#customer-details-container').append(`<div id="request-button-container"></div>`);
    console.log(session_customer_id);
    appendRequestButton(session_customer_id);
- }
+}
 
 appendRequestButton = (session_customer_id) => {
    $.getJSON(`../php/checkCustomerRequest.php?customerID=${session_customer_id}`)
