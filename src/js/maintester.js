@@ -46,10 +46,22 @@ getPageData = (customerID) => {
 }
 
 appendCustomerDetails = (session_customer_id) => {
-  $('#customer-details-container').append(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table><div id="request-button-container"></div>`);
+
+  $.getJSON(`../php/getAllCustomerLoginDetails.php?customerID=${session_customer_id}`, function (data) 
+    {
+      for (var i = 0; i < data.CustomerDetails.length; i++) 
+      {
+        $("#cusDetails").append(` <tr><td>Customer ID:    </td><td>${data.CustomerDetails[i].CustomerID}</td></tr>
+                                  <tr><td>Name:    </td><td>${data.CustomerDetails[i].Name}</td></tr>
+                                  <tr><td>D.O.B:  </td><td>${data.CustomerDetails[i].DOB}</td></tr>
+                                  <tr><td>Email:  </td><td>${data.CustomerDetails[i].Email}</td></tr>
+                                  <tr><td>Mobile:  </td><td>${data.CustomerDetails[i].PhoneNumber}</td></tr>`);
+      }
+    })
+
+  $('#customer-details-container').before(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table><div id="request-button-container"></div>`);
   console.log(session_customer_id);
   appendRequestButton(session_customer_id);
-
 }
 
 appendRequestButton = (session_customer_id) => {
@@ -183,7 +195,7 @@ appendCustomerAccountsTransactions = (accounts) => {
 // Function that appends the quick transfer form
 // to the page
 appendQuickTransferForm = () => {
-  $('#my-bank-accounts-header').append(`<div><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Quick Transfer</h5></th><th></th><th></th></tr></thead><td colspan="2"><form id="transfer-form" style="border:black 1px;" class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><select id='account-to-dropdown' disabled class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><input type="text" id=transfer-amount class="form-control" oninput="this.value = this.value.replace(^\d+(?:\.\d{0,2})?$)" placeholder="Amount" disabled style="margin-right:25px; margin-bottom:5px;"><button type="submit" id="submit-transfer-btn" class="btn btn-primary" style="margin-bottom:5px;"><span class="h6">Transfer</span><i style="margin-left:5px; margin-top:5px;" class="fas fa-arrow-circle-right"></i></button></div></form></td><td></td></table></div>`);
+  $('#my-bank-accounts-header').append(`<br><div><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Quick Transfer</h5></th><th></th><th></th></tr></thead><td colspan="2"><form id="transfer-form" style="border:black 1px;" class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><select id='account-to-dropdown' disabled class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><input type="text" id=transfer-amount class="form-control" oninput="this.value = this.value.replace(^\d+(?:\.\d{0,2})?$)" placeholder="Amount" disabled style="margin-right:25px; margin-bottom:5px;"><button type="submit" id="submit-transfer-btn" class="btn btn-primary" style="margin-bottom:5px;"><span class="h6">Transfer</span><i style="margin-left:5px; margin-top:5px;" class="fas fa-arrow-circle-right"></i></button></div></form></td><td></td></table></div>`);
   $('#account-from-dropdown').append(`<option value=From_account>From account...</option>`);
   $('#account-to-dropdown').append(`<option value=to_account>To account...</option>`);
 }
