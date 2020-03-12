@@ -191,10 +191,9 @@ appendCustomerAccountsTransactions = (accounts) => {
       </div></div><br>`: ``)}`);
       for (j in accounts[i].Transactions) {
          if (j < 25 && accounts[i].Transactions.length > 0) { //number of recent transactions to show
-            $('#table' + i + "-body").append(`<tr scope="row"><td>${formatDate(accounts[i].Transactions[j].Date)}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(accounts[i].Transactions[j].Amount).toFixed(2) : parseFloat(accounts[i].Transactions[j].Amount).toFixed(2)}</td ><td>${accounts[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr > `);
+            $('#table' + i + "-body").append(`<tr scope="row"><td>${formatDate(accounts[i].Transactions[j].Date)}</td><td>${accounts[i].Transactions[j].Description}</td><td>${accounts[i].Transactions[j].Type == "Debit" ? `<span style="color:red">-` + parseFloat(accounts[i].Transactions[j].Amount).toFixed(2) + `</span>` : `<span style="color:#00ff00">` + parseFloat(accounts[i].Transactions[j].Amount).toFixed(2)}</span></td ><td>${accounts[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr > `);
          }
       }
-
    }
    bindCustomerAccountButtonFunctions(accounts);
 }
