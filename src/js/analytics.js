@@ -108,4 +108,22 @@ displayAccounts = (accountTransactions) => {
     for (i in accountTransactions) {
         $('#customer-accounts-list-group').append(`<a class="list-group-item list-group-item-action" id="account${i}-list-item" data-toggle="list" href="#" role="tab" aria-controls="home"><h3 class="h3">${accountTransactions[i].AccountType} Account ~${accountTransactions[i].IBAN.substr(16)} Balance: &euro;${accountTransactions[i].CurrentBalance} </h3></a>`)
     }
+    bindAccountSelectFunctionality(accountTransactions);
+}
+
+bindAccountSelectFunctionality = (account) => {
+    let account_buttons = $('#customer-accounts-list-group a');
+    console.log(account_buttons);
+    for (let i = 0; i < account_buttons.length; i++) {
+        let button = account_buttons[i];
+        let account_id = account[i].AccountID
+        button.onclick = () => {
+            handleAccountSelect(account_id);
+        };
+    }
+}
+
+
+handleAccountSelect = (account_id) => {
+    console.log(account_id);
 }
