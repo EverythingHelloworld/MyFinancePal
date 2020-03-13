@@ -5,10 +5,28 @@ var phoneNum;
 var numberPattern = new RegExp("^[0-9]*$");
 
 $("document").ready(function () {
-    insertRandomField();
-    handleLogin();
-    handleRegister();
+    verifyPageAccess();
 })
+
+function verifyPageAccess(){
+        //If the customer is already logged in, show error message and redirect them to the main page in 5 seconds.
+       if(Cookies.get('loggedIn')){
+            $('#navbar').attr('style', 'display:none');
+            $('.container').html('<br><div id=errorMessage></div>');
+            $('#errorMessage').attr('class', 'col-sm-5 offset-3 alert alert-danger text-center');
+            $('#errorMessage').attr('role', 'alert');
+            $('#errorMessage').text('You are already logged in.');
+            setTimeout(redirectToMainPage, 5000);
+       }else{
+           //If the customer returns to the login page, make them redo the first login step
+           if(Cookies.get('customerID'))
+                Cookies.remove('customerID');
+
+            insertRandomField();
+            handleLogin();
+            handleRegister();
+       }
+}
 
 function insertRandomField() {
     var randomNumber = Math.round(Math.random());
@@ -152,13 +170,17 @@ function handleLogin() {
                     //If customer id is not in the database, add error message to div
                     errorMessage2 = 'You are not a registered customer.';
                     $('#signInDiv').before('<div id=errorMessage></div>');
-                    $('#errorMessage').attr('class', 'col-sm-8 alert alert-danger text-center');
+                    $('#errorMessage').attr('class', 'col-sm-5 offset-3 alert alert-danger text-center');
                     $('#errorMessage').attr('role', 'alert');
                     $('#errorMessage').text(errorMessage2);
                 }
             })
             .fail(function () {
-                console.log('didnt work');
+                    //Show error message if the database call fails
+                    $('#signInDiv').before('<div id=errorMessage></div>');
+                    $('#errorMessage').attr('class', 'col-sm-5 offset-3 alert alert-danger text-center');
+                    $('#errorMessage').attr('role', 'alert');
+                    $('#errorMessage').text('Error connecting to the database.');
             }) //close getCustomerDetails db call
     } //close getCustomerDetails
 } //close handleLogin
@@ -168,4 +190,9 @@ function handleRegister() {
     $("#btnRegister").click(function () {
         window.location.href = 'registration.html';
     })
+}
+
+//Redirects customer to the main page
+function redirectToMainPage(){
+    window.location.href = "main.html";
 }

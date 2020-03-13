@@ -18,6 +18,7 @@ function setActiveNavLink() {
     //^If this function returns true for a link set that link to active
 }
 
+//Redirects to customer login page if the customer is not logged in
 function redirectToLoginIfCustomerCookieNotSet() {
     if (Cookies.get('loggedIn') === undefined) {
         $('#jumbotron').attr('style', 'display:none');
@@ -88,7 +89,7 @@ function todaysDate() {
     return today;
 }
 
-//Check to make sure admin cookie is set
+//Check to make sure admin cookie is set, if it isn't, redirect to the login page
 function checkAdminCookie() {
     if (Cookies.get('adminID') === undefined) {
         $("#jumbotron").attr('style', 'display:none');

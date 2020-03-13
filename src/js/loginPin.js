@@ -5,9 +5,26 @@ var customerID;
 var customer;
 
 $("document").ready(function () {
-    getCustomerIDCookie();
+    verifyPageAccess();
     handleContinueClick();
 })
+
+function verifyPageAccess(){
+    //If the customer is already logged in, hide page content and redirect to main page
+    if(Cookies.get('customerID') && Cookies.get('loggedIn')){
+        $('.container').attr('style', 'display:none');
+        $('#jumbotron').attr('style', 'display:none');
+        $('#navbar').attr('style', 'display:none');
+        redirectToMainPage();
+    }else{
+        //Get the customer's id from the cookie for the db call
+        getCustomerIDCookie();
+    }
+}
+
+function redirectToMainPage(){
+    window.location.href = "main.html";
+}
 
 //Check if customer has completed first login step
 function getCustomerIDCookie() {
@@ -16,6 +33,10 @@ function getCustomerIDCookie() {
     if (customerID != undefined) {
         getCustomerPassword(customerID);
     } else {
+        //Hide page content
+        $('.container').attr('style', 'display:none');
+        $('#navbar').attr('style', 'display:none');
+        $('#jumbotron').attr('style', 'display:none');
         //Redirect to login page if customer id not set  
         window.location.href = "login.html";
     }
@@ -24,62 +45,88 @@ function getCustomerIDCookie() {
 function getCustomerPassword(id) {
     //Get customer password from db
     $.getJSON(`../php/getCustomerDetails.php?customerID=${id}`, function (data) {
-        var errorMessage;
         var passwordDigits;
     
         //If data is returned from the database, match pin digits against db password
         if (data.CustomerDetails.length > 0) {
-            customer = data.CustomerDetails[0];
-            dbPassword = customer.Password;
+                if(data.CustomerDetails[0].Locked === "0"){
+                    customer = data.CustomerDetails[0];
+                    dbPassword = customer.Password;
 
-            //Function to get a set of random digits to check from the password in db
-            passwordDigits = getPasswordDigits(dbPassword);
+                    //Function to get a set of random digits to check from the password in db
+                    passwordDigits = getPasswordDigits(dbPassword);
 
-            //Copying to array so they can be sorted
-            digitsArray = Array.from(passwordDigits);
+                    //Copying to array so they can be sorted
+                    digitsArray = Array.from(passwordDigits);
+                
+                    //Sort array
+                    digitsArray.sort(function (a, b) {
+                        return a - b;
+                    });
+
+                    //Insert form fields, all are initially disabled with a * placeholder
+                    $('#pinHeader').after('<br><div class="form-row"><div class="col">' +
+                        '<label for="1stPasswordDigitFieldLabel">1st</label><input type="password" class="form-control" ' +
+                        'id="passwordDigitField0" placeholder="*" disabled></div><div class="col"><label ' +
+                        'for="2ndPasswordDigitFieldLabel">2nd</label><input type="password" class="form-control" ' +
+                        'id="passwordDigitField1" placeholder="*" disabled></div><div class="col"><label ' +
+                        'for="3rdPasswordDigitFieldLabel">3rd</label><input type="password" class="form-control" ' +
+                        'id="passwordDigitField2" placeholder="*" disabled></div><div class="col"><label ' +
+                        'for="4thPasswordDigitFieldLabel">4th</label><input type="password" class="form-control" ' +
+                        'id="passwordDigitField3" placeholder="*" disabled></div><div class="col"><label ' +
+                        'for="5thPasswordDigitFieldLabel">5th</label><input type="password" class="form-control" ' +
+                        'id="passwordDigitField4" placeholder="*" disabled></div><div class="col"><label ' +
+                        'for="6thPasswordDigitFieldLabel">6th</label><input type="password" class="form-control" ' +
+                        'id="passwordDigitField5" placeholder="*" disabled></div></div><br>');
+
+                    //For each random digit we are going to check
+                    for (var i = 0; i < digitsArray.length; i++) {
+                        //Set placeholders to empty and re-enable the field
+                        $('#passwordDigitField' + digitsArray[i]).attr('placeholder', '');
+                        $('#passwordDigitField' + digitsArray[i]).removeAttr('disabled');
+                        //Add pattern matching to input, only allow one number
+                        $('#passwordDigitField' + digitsArray[i]).attr('oninput', 'this.value = this.value.replace(/[^0-9]/g, \'\'\).replace(/(\..*)\./g, \'\$1\'\);');
+                    }
+                } else{
+                    //If the customer's account is locked, remove the customer id cookie and redirect them back to login page
+                    Cookies.remove('customerID');
+                    $('.container').empty();
+                    $('#navbar').empty();
+                    $('#jumbotron').empty();
+                    redirectToLoginPage();
+                }
             
-            //Sort array
-            digitsArray.sort(function (a, b) {
-                return a - b;
-            });
-
-            //Insert form fields, all are initially disabled with a * placeholder
-            $('#pinHeader').after('<br><div class="form-row"><div class="col">' +
-                '<label for="1stPasswordDigitFieldLabel">1st</label><input type="password" class="form-control" ' +
-                'id="passwordDigitField0" placeholder="*" disabled></div><div class="col"><label ' +
-                'for="2ndPasswordDigitFieldLabel">2nd</label><input type="password" class="form-control" ' +
-                'id="passwordDigitField1" placeholder="*" disabled></div><div class="col"><label ' +
-                'for="3rdPasswordDigitFieldLabel">3rd</label><input type="password" class="form-control" ' +
-                'id="passwordDigitField2" placeholder="*" disabled></div><div class="col"><label ' +
-                'for="4thPasswordDigitFieldLabel">4th</label><input type="password" class="form-control" ' +
-                'id="passwordDigitField3" placeholder="*" disabled></div><div class="col"><label ' +
-                'for="5thPasswordDigitFieldLabel">5th</label><input type="password" class="form-control" ' +
-                'id="passwordDigitField4" placeholder="*" disabled></div><div class="col"><label ' +
-                'for="6thPasswordDigitFieldLabel">6th</label><input type="password" class="form-control" ' +
-                'id="passwordDigitField5" placeholder="*" disabled></div></div><br>');
-
-            //For each random digit we are going to check
-            for (var i = 0; i < digitsArray.length; i++) {
-                //Set placeholders to empty and enable inputs for digits we want to check
-                $('#passwordDigitField' + digitsArray[i]).attr('placeholder', '');
-                $('#passwordDigitField' + digitsArray[i]).removeAttr('disabled');
-                //Add pattern matching to input, only allow one number
-                $('#passwordDigitField' + digitsArray[i]).attr('oninput', 'this.value = this.value.replace(/[^0-9]/g, \'\'\).replace(/(\..*)\./g, \'\$1\'\);');
-            }
         } else {
             /*Adds error message alert if the password can't be retrieved from the db*/
-            errorMessage = 'Error getting customer details from database.';
             $('#continueBtnDiv').before('<div id=errorMessage></div>');
             $('#errorMessage').attr('class', 'alert alert-danger text-center');
             $('#errorMessage').attr('role', 'alert');
-            $('#errorMessage').text(errorMessage);
+            $('#errorMessage').text('Error getting customer details from database.');
         }
     })
+}
+
+function redirectToLoginPage(){
+    window.location.href = "login.html";
 }
 
 function handleContinueClick() {
     $('#continueBtn').click(() => {
         $.getJSON(`../php/getCustomerDetails.php?customerID=${customerID}`, function (data) {
+          var requiredFieldsFilled = true;
+          for(var i= 0; i < digitsArray.length; i++){
+            if($('#passwordDigitField' + digitsArray[i]).val() === ''){
+                requiredFieldsFilled = false;
+            }
+          }
+
+          //If some of the digits are left blank, show error message
+          if (requiredFieldsFilled === false){
+            $('#continueBtnDiv').before('<div id=errorMessage></div>');
+            $('#errorMessage').attr('class', 'alert alert-danger text-center');
+            $('#errorMessage').attr('role', 'alert');
+            $('#errorMessage').text('All selected digits are required.');
+          }else{
             customer = data.CustomerDetails[0];
             var locked = customer.Locked;
             var loginAttempts = customer.LoginAttempts;
@@ -94,13 +141,13 @@ function handleContinueClick() {
                     }else{
                         pinCorrect = false;
                         //Add error message here
-                        errorMessage = 'Incorrect digits.';
                         $('#continueBtnDiv').before('<div id=errorMessage></div>');
                         $('#errorMessage').attr('class', 'alert alert-danger text-center');
                         $('#errorMessage').attr('role', 'alert');
-                        $('#errorMessage').text(errorMessage + ' Your account will be locked after 3 incorrect attempts.');
+                        $('#errorMessage').text('Incorrect digits. Your account will be locked after 3 incorrect attempts.');
                     }
                 }
+
                 if(pinCorrect){
                     //Customer has logged in successfully, reset login attempts to 0
                     resetLoginAttempts(customerID);
@@ -122,12 +169,15 @@ function handleContinueClick() {
                         lockAccount(customerID);
                 }    
             }else{
-                //If account is locked, display error message
+                //If account is locked, display error message and redirect to the login page after 5 seconds
                 $('#continueBtnDiv').before('<div id=errorMessage></div>');
                 $('#errorMessage').attr('class', 'alert alert-danger text-center');
                 $('#errorMessage').attr('role', 'alert');
                 $('#errorMessage').text('Your account is locked. Please contact a member of staff in branch or over the phone.');
+                $('#continueBtn').attr('disabled', true);
+                setTimeout(redirectToLoginPage, 5000)
             } 
+          }  
         });       
     });
 }
