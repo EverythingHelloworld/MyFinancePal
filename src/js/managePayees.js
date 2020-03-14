@@ -35,14 +35,47 @@ function handleAddPayee() {
           'IBAN': $('#IBAN').val(),
           'BIC': $('#BIC').val(),
           'customerID': customerID
-        },
-        function (data, status) {
-          // alert('Data: ', data, ', Status: ', status);
-        });
-      window.location.href = 'managePayees.html';
+        }).done(() => {
+          $('#add').empty();
+          $('#add').html('<br><div id=successMessage></div>');
+          $('#successMessage').attr('class', 'alert alert-success text-center');
+          $('#successMessage').attr('role', 'alert');
+          $('#successMessage').text('Payee successfully added.');
+          setInterval(redirectToPayeesHome, 1000);
+        }).fail(() => {
+          $('#add').empty();
+          $('#add').html('<br><div id=errorMessage></div>');
+          $('#errorMessage').attr('class', 'alert alert-danger text-center');
+          $('#errorMessage').attr('role', 'alert');
+          $('#errorMessage').text('Error connecting to database.');
+          setInterval(redirectToPayeesHome, 2000);
+        }) ;   
     }
-
   });
+}
+
+// $.post("../php/deletePayee.php", 
+//     { 'payeeID': $('#selectPayee option:selected').val() }
+//     ).done(() => { 
+//       $('#delete').empty();
+//       $('#delete').html('<br><div id=successMessage></div>');
+//       $('#successMessage').attr('class', 'alert alert-success text-center');
+//       $('#successMessage').attr('role', 'alert');
+//       $('#successMessage').text('Payee successfully removed.');
+//       setInterval(redirectToPayeesHome, 1000);
+//     })
+//     .fail(() => {
+//       $('#delete').empty();
+//       $('#delete').html('<br><div id=errorMessage></div>');
+//       $('#errorMessage').attr('class', 'alert alert-danger text-center');
+//       $('#errorMessage').attr('role', 'alert');
+//       $('#errorMessage').text('Error connecting to database.');
+//       setInterval(redirectToPayeesHome, 2000);
+//    });
+//   })
+
+function redirectToPayeesHome(){
+    window.location.href = 'managePayees.html';
 }
 
 function isValidNewPayee(payeeName, IBAN, BIC) {
@@ -97,9 +130,25 @@ function removeDefaultDropdownOptionOnChange() {
 //Removes the payee the customer has selected from the db and refreshes the page
 function handleRemovePayee() {
   $('#removePayeeBtn').click(() => {
-    $.post("../php/deletePayee.php", { 'payeeID': $('#selectPayee option:selected').val() });
-    window.location.href = 'managePayees.html';
-  });
+    $.post("../php/deletePayee.php", 
+    { 'payeeID': $('#selectPayee option:selected').val() }
+    ).done(() => { 
+      $('#delete').empty();
+      $('#delete').html('<br><div id=successMessage></div>');
+      $('#successMessage').attr('class', 'alert alert-success text-center');
+      $('#successMessage').attr('role', 'alert');
+      $('#successMessage').text('Payee successfully removed.');
+      setInterval(redirectToPayeesHome, 1000);
+    })
+    .fail(() => {
+      $('#delete').empty();
+      $('#delete').html('<br><div id=errorMessage></div>');
+      $('#errorMessage').attr('class', 'alert alert-danger text-center');
+      $('#errorMessage').attr('role', 'alert');
+      $('#errorMessage').text('Error connecting to database.');
+      setInterval(redirectToPayeesHome, 2000);
+   });
+  })
 }
 
 //Gets the customer's payee list and adds their names to the remove payee dropdown
