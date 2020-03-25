@@ -34,7 +34,6 @@ appendAccountDetails = (session_customer_id) => {
                         }
                         else {
                             transactions = data.accountTransactions;
-                            console.log('account transactions', transactions);
                             accountsAndTransactions = combineAccountsAndTransactions(accounts, transactions);
                             console.log(accountsAndTransactions);
                             displayAccounts(accountsAndTransactions);
@@ -111,19 +110,20 @@ displayAccounts = (accountTransactions) => {
     bindAccountSelectFunctionality(accountTransactions);
 }
 
-bindAccountSelectFunctionality = (account) => {
+bindAccountSelectFunctionality = (accountTransactions) => {
     let account_buttons = $('#customer-accounts-list-group a');
     console.log(account_buttons);
     for (let i = 0; i < account_buttons.length; i++) {
         let button = account_buttons[i];
-        let account_id = account[i].AccountID
+        let account_id = accountTransactions[i].AccountID
+        let transactions = accountTransactions[i].Transactions;
         button.onclick = () => {
-            handleAccountSelect(account_id);
+            handleAccountSelect(account_id, transactions);
         };
     }
 }
 
 
-handleAccountSelect = (account_id) => {
-    console.log(account_id);
+handleAccountSelect = (account_id, transactions) => {
+    console.log(account_id, transactions);
 }
