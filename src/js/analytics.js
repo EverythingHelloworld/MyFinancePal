@@ -40,13 +40,13 @@ appendAccountDetails = (session_customer_id) => {
                         }
                     })
                     .fail(() => {
-
+                        console.log("failed database connection")
                     });
             }
 
         })
         .fail(() => {
-            console.log('failed database connection');
+            console.log("failed database connection");
         });
 }
 
@@ -112,18 +112,17 @@ displayAccounts = (accountTransactions) => {
 
 bindAccountSelectFunctionality = (accountTransactions) => {
     let account_buttons = $('#customer-accounts-list-group a');
-    console.log(account_buttons);
     for (let i = 0; i < account_buttons.length; i++) {
         let button = account_buttons[i];
-        let account_id = accountTransactions[i].AccountID
-        let transactions = accountTransactions[i].Transactions;
         button.onclick = () => {
-            handleAccountSelect(account_id, transactions);
+            handleAccountSelect(accountTransactions[i]);
         };
     }
 }
 
 
-handleAccountSelect = (account_id, transactions) => {
-    console.log(account_id, transactions);
+handleAccountSelect = (accountData) => {
+    console.log(accountData);
+    //displayAccountAnalytics(account_id, transactions)
 }
+
