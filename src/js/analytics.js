@@ -140,68 +140,115 @@ displayAccountAnalytics = (accountData) => {
     $("#graph-container").empty();
 
     //Calls handler for selected chart
-    if(selectedChart === "1"){
+    if (selectedChart === "1") {
         displayIncExpChart(accountData);
-    }else if (selectedChart === "2"){
+    } else if (selectedChart === "2") {
         //Show exp by category chart
-        //NOTE: Parse the transaction amounts to floats when doing calculations
-    }else if(selectedChart === "3"){
+        displayCategoryChart(accountData);
+    } else if (selectedChart === "3") {
         //Show exp by merchant chart
         //NOTE: Parse the transaction amounts to floats when doing calculations
     }
 }
 
 //Changes the chart when the dropdown is changed
-function handleChartDropdownChange(){
+function handleChartDropdownChange() {
     $("#chart-select").on('change', () => {
         selectedChart = $('#chart-select').val();
         displayAccountAnalytics(selectedAccountData);
-      })
+    })
 }
 
-function displayIncExpChart(accountData){
-
+function displayIncExpChart(accountData) {
+    let symbol = '\u20AC';
     //Calculate income and expenditure 
     calculateIncExp(accountData);
 
     //Sets chart options
     var options = {
-	title: {
-		text: "Income vs. Expenditure (in euro)"
-	},
-	data: [{
-			type: "pie",
-			startAngle: 45,
-			showInLegend: "true",
-			legendText: "{label}",
-			indexLabel: "{label} ({y})",
-			yValueFormatString:"#,##0.#"%"",
-			dataPoints: [
-				{ label: "Income: ", y: totalIncome },
-				{ label: "Expenditure: ", y: totalExpenditure},
-			]
-	}]
+        title: {
+            text: "Income vs. Expenditure (in euro)"
+        },
+        data: [{
+            type: "pie",
+            startAngle: 45,
+            showInLegend: "true",
+            legendText: "{label}",
+            indexLabel: "{label} ({y})",
+            yValueFormatString: `${symbol}#,###.##`,
+            dataPoints: [
+                { label: "Income ", y: totalIncome },
+                { label: "Expenditure ", y: totalExpenditure },
+            ]
+        }]
     };
     //Creates chart with those options
     $("#graph-container").CanvasJSChart(options);
-}     
+}
 
 //Calculates income and expenditure
-function calculateIncExp(accountData){
+function calculateIncExp(accountData) {
     totalExpenditure = 0;
     totalIncome = 0;
     totalIncome = parseFloat(accountData.OpeningBalance);
     totalExpenditure = 0;
     //Loop through transactions
-    for(var i = 0; i < accountData.Transactions.length; i++){
+    for (var i = 0; i < accountData.Transactions.length; i++) {
         //If credit add to income, if debit add to expenditure
-        if(accountData.Transactions[i].Type === "Credit"){
+        if (accountData.Transactions[i].Type === "Credit") {
             totalIncome = totalIncome + parseFloat(accountData.Transactions[i].Amount);
         }
-        else{
+        else {
             totalExpenditure = totalExpenditure + parseFloat(accountData.Transactions[i].Amount);
         }
     }
 }
 
 
+displayCategoryChart = (accountData) => {
+    let data = getCategoryData(accountData);
+    let symbol = '\u20AC';
+    let chartData = [];
+    for (i in data) {
+        chartData.push({ "y": data[i].amount, "label": data[i].category });
+    }
+    //Sets chart options
+    let options = {
+        title: {
+            text: "Categories",
+            fontFamily: "Impact",
+            fontWeight: "normal"
+        },
+        data: [{
+            showInLegend: "true",
+            legendText: "{label}",
+            yValueFormatString: `${symbol}#,###.##`,
+            type: "doughnut",
+            dataPoints: chartData
+        }]
+    };
+    //Creates chart with those options
+    $("#graph-container").CanvasJSChart(options);
+    console.log(options);
+}
+
+getCategoryData = (accountData) => {
+    let data = [];
+    let temp = [];
+    let amount;
+    for (i in accountData.Transactions) {
+        if (!(accountData.Transactions[i].Category === "Income"))
+            temp.push(accountData.Transactions[i].Category);
+    }
+    temp = _.uniq(temp);
+    for (i in temp) {
+        amount = 0;
+        for (j in accountData.Transactions) {
+            if (temp[i] === accountData.Transactions[j].Category) {
+                amount += parseFloat(accountData.Transactions[j].Amount);
+            }
+        }
+        data.push({ "category": temp[i], "amount": amount.toFixed(2) });
+    }
+    return data;
+}
