@@ -1,13 +1,17 @@
+var selectedChart = 1;
+var totalExpenditure;
+var totalIncome;
 $("document").ready(function () {
     // If a customer is not logged in <- if the customerID cookie exists
     // hide page content and redirect to login page
     redirectToLoginIfCustomerCookieNotSet();
     setActiveNavLink();
     handleLogout();
-
     //Analytics
     const session_customer_id = Cookies.get('customerID');
     getPageData(session_customer_id); // -> pass session_customer_id to return and display all page data for customer
+    handleChartDropdownChange();
+    // displayAccountAnalytics(accountData)
 })
 
 // Function displays all data on page
@@ -107,6 +111,7 @@ displayAccounts = (accountTransactions) => {
     for (i in accountTransactions) {
         $('#customer-accounts-list-group').append(`<a class="list-group-item list-group-item-action" id="account${i}-list-item" data-toggle="list" href="#" role="tab" aria-controls="home"><h3 class="h3">${accountTransactions[i].AccountType} Account ~${accountTransactions[i].IBAN.substr(16)} Balance: &euro;${accountTransactions[i].CurrentBalance} </h3></a>`)
     }
+    $('#account0-list-item').attr('class', 'list-group-item active list-group-item-action' )
     bindAccountSelectFunctionality(accountTransactions);
 }
 
@@ -122,15 +127,70 @@ bindAccountSelectFunctionality = (accountTransactions) => {
 
 
 handleAccountSelect = (accountData) => {
-    console.log(accountData);
+    console.log('Account: ', accountData);
     $('#analytics-title').text("My Analytics");
     displayAccountAnalytics(accountData)
 }
 
 
 displayAccountAnalytics = (accountData) => {
-    console.log('test');
+    $("#graph-container").empty();
+    console.log('selected is: ', selectedChart);
+    if(selectedChart === 1){
+        displayIncExpChart(accountData);
+    }else if (selectedChart === 2){
+        //Show exp by category chart
+    }else if(selectedChart === 3){
+        //Show exp by merchant chart
+    }
+}
 
+function handleChartDropdownChange(){
+    $("#chart-select").on('change', () => {
+        selectedChart = $('#chart-select').val();
+        console.log('called');
+      })
+}
+
+function displayIncExpChart(accountData){
+    console.log('selected is: ', selectedChart);
+    console.log('totalIncome is: ', totalIncome);
+    console.log('totalExpenditure is: ', totalExpenditure);
+    calculateIncExpPercentages(accountData);
+    var options = {
+	title: {
+		text: "Income vs. Expenditure (in euro)"
+	},
+	data: [{
+			type: "pie",
+			startAngle: 45,
+			showInLegend: "true",
+			legendText: "{label}",
+			indexLabel: "{label} ({y})",
+			yValueFormatString:"#,##0.#"%"",
+			dataPoints: [
+				{ label: "Income: ", y: totalIncome },
+				{ label: "Expenditure: ", y: totalExpenditure},
+			]
+	}]
+    };
+$("#graph-container").CanvasJSChart(options);
+}     
+
+function calculateIncExpPercentages(accountData){
+    totalExpenditure = 0;
+    totalIncome = 0;
+    totalIncome = parseFloat(accountData.OpeningBalance);
+    totalExpenditure = 0;
+    for(var i = 0; i < accountData.Transactions.length; i++){
+        if(accountData.Transactions[i].Type === "Credit"){
+            totalIncome = totalIncome + parseFloat(accountData.Transactions[i].Amount);
+        }
+        else{
+            totalExpenditure = totalExpenditure + parseFloat(accountData.Transactions[i].Amount);
+
+        }
+    }
 }
 
 
