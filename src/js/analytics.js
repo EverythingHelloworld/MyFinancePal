@@ -1,6 +1,7 @@
-var selectedChart = 1;
+var selectedChart = "1";
 var totalExpenditure;
 var totalIncome;
+var selectedAccountData;
 $("document").ready(function () {
     // If a customer is not logged in <- if the customerID cookie exists
     // hide page content and redirect to login page
@@ -11,7 +12,6 @@ $("document").ready(function () {
     const session_customer_id = Cookies.get('customerID');
     getPageData(session_customer_id); // -> pass session_customer_id to return and display all page data for customer
     handleChartDropdownChange();
-    // displayAccountAnalytics(accountData)
 })
 
 // Function displays all data on page
@@ -111,7 +111,6 @@ displayAccounts = (accountTransactions) => {
     for (i in accountTransactions) {
         $('#customer-accounts-list-group').append(`<a class="list-group-item list-group-item-action" id="account${i}-list-item" data-toggle="list" href="#" role="tab" aria-controls="home"><h3 class="h3">${accountTransactions[i].AccountType} Account ~${accountTransactions[i].IBAN.substr(16)} Balance: &euro;${accountTransactions[i].CurrentBalance} </h3></a>`)
     }
-    // $('#account0-list-item').attr('class', 'list-group-item active list-group-item-action' )
     bindAccountSelectFunctionality(accountTransactions);
 }
 
@@ -125,40 +124,47 @@ bindAccountSelectFunctionality = (accountTransactions) => {
     }
 }
 
-
+//Handler which is called when an account is selected
 handleAccountSelect = (accountData) => {
+    //Set global account data variable. Used for chart dropdown.
+    selectedAccountData = accountData;
+    //Make analytics title and chart dropdown visible
     $('#select-container').attr('style', 'display:block');
     $('#analytics-title').attr('style', 'display:block');
-
-    $('#analytics-title').text("My Analytics");
-    displayAccountAnalytics(accountData)
+    //Display selected chart
+    displayAccountAnalytics(accountData);
 }
 
-
 displayAccountAnalytics = (accountData) => {
+    //Clear the chart container if there is a chart on screen
     $("#graph-container").empty();
-    console.log('selected is: ', selectedChart);
-    if(selectedChart === 1){
+
+    //Calls handler for selected chart
+    if(selectedChart === "1"){
         displayIncExpChart(accountData);
-    }else if (selectedChart === 2){
+    }else if (selectedChart === "2"){
         //Show exp by category chart
-    }else if(selectedChart === 3){
+        //NOTE: Parse the transaction amounts to floats when doing calculations
+    }else if(selectedChart === "3"){
         //Show exp by merchant chart
+        //NOTE: Parse the transaction amounts to floats when doing calculations
     }
 }
 
+//Changes the chart when the dropdown is changed
 function handleChartDropdownChange(){
     $("#chart-select").on('change', () => {
         selectedChart = $('#chart-select').val();
-        console.log('called');
+        displayAccountAnalytics(selectedAccountData);
       })
 }
 
 function displayIncExpChart(accountData){
-    console.log('selected is: ', selectedChart);
-    console.log('totalIncome is: ', totalIncome);
-    console.log('totalExpenditure is: ', totalExpenditure);
-    calculateIncExpPercentages(accountData);
+
+    //Calculate income and expenditure 
+    calculateIncExp(accountData);
+
+    //Sets chart options
     var options = {
 	title: {
 		text: "Income vs. Expenditure (in euro)"
@@ -176,21 +182,24 @@ function displayIncExpChart(accountData){
 			]
 	}]
     };
-$("#graph-container").CanvasJSChart(options);
+    //Creates chart with those options
+    $("#graph-container").CanvasJSChart(options);
 }     
 
-function calculateIncExpPercentages(accountData){
+//Calculates income and expenditure
+function calculateIncExp(accountData){
     totalExpenditure = 0;
     totalIncome = 0;
     totalIncome = parseFloat(accountData.OpeningBalance);
     totalExpenditure = 0;
+    //Loop through transactions
     for(var i = 0; i < accountData.Transactions.length; i++){
+        //If credit add to income, if debit add to expenditure
         if(accountData.Transactions[i].Type === "Credit"){
             totalIncome = totalIncome + parseFloat(accountData.Transactions[i].Amount);
         }
         else{
             totalExpenditure = totalExpenditure + parseFloat(accountData.Transactions[i].Amount);
-
         }
     }
 }
