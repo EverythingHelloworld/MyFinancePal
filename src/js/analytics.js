@@ -111,7 +111,7 @@ displayAccounts = (accountTransactions) => {
     for (i in accountTransactions) {
         $('#customer-accounts-list-group').append(`<a class="list-group-item list-group-item-action" id="account${i}-list-item" data-toggle="list" href="#" role="tab" aria-controls="home"><h3 class="h3">${accountTransactions[i].AccountType} Account ~${accountTransactions[i].IBAN.substr(16)} Balance: &euro;${accountTransactions[i].CurrentBalance} </h3></a>`)
     }
-    $('#account0-list-item').attr('class', 'list-group-item active list-group-item-action' )
+    // $('#account0-list-item').attr('class', 'list-group-item active list-group-item-action' )
     bindAccountSelectFunctionality(accountTransactions);
 }
 
@@ -127,7 +127,9 @@ bindAccountSelectFunctionality = (accountTransactions) => {
 
 
 handleAccountSelect = (accountData) => {
-    console.log('Account: ', accountData);
+    $('#select-container').attr('style', 'display:block');
+    $('#analytics-title').attr('style', 'display:block');
+
     $('#analytics-title').text("My Analytics");
     displayAccountAnalytics(accountData)
 }
