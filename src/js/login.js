@@ -134,7 +134,7 @@ function handleLogin() {
                         /*If the customer correctly entered their details, set the customer id
                         cookie and take them to the loginPIN page. Cookie expires in 30 minutes.*/
                         if (correctLoginDetails) {
-                            var in1Hour = new Date(new Date().getTime() + 60 * 60 * 1000);
+                            var in1Hour = new Date(new Date().getTime() + 30 * 60 * 1000);
                             Cookies.set('customerID', id, {
                                 expires: in1Hour
                             });
