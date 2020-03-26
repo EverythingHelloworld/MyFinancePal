@@ -123,6 +123,14 @@ bindAccountSelectFunctionality = (accountTransactions) => {
 
 handleAccountSelect = (accountData) => {
     console.log(accountData);
-    //displayAccountAnalytics(account_id, transactions)
+    $('#analytics-title').text("My Analytics");
+    displayAccountAnalytics(accountData)
 }
+
+
+displayAccountAnalytics = (accountData) => {
+    console.log('test');
+
+}
+
 

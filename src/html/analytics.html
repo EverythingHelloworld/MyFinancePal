@@ -26,18 +26,60 @@
     <div class="row justify-content-between row no-gutters">
       <div class="col-5">
         <div id="accounts-details-container" style="width:80%;">
+          <table class="table table-borderless">
+            <thead class>
+              <tr scope="row">
+                <th>
+                  <h3 class="display-4">My Bank Accounts</h3>
+                </th>
+              </tr>
+            </thead>
+          </table>`
           <table class="table table-bordered">
-            <span class="Display-4">My Analytics</span>
-            <div id="account-header" style="margin-top: 50px;"><span class="h3">My Bank Accounts</span></div>
-            <div id="customer-accounts-list-group" class="list-group" style="width:80%; margin-top:25px">
+            <div id="customer-accounts-list-group" class="list-group" style="width:80%; margin-top:15px">
           </table>
         </div>
       </div>
-    </div>
-    <div class="col-7">
-      <div id="analytics-data-container" class="accordion container" style="width:100%; margin-right:20; float:right;">
+      <div id="analytics-container" class="col-7">
+        <div id="analytics-data-container" class="container fluid" style="width:100%; margin-right:20; float:right;">
+          <div class="container-fluid" width="100%">
+            <div>
+              <table class="table table-borderless">
+                <thead class>
+                  <tr scope="row">
+                    <th>
+                      <h3 id="analytics-title" class="display-4">Select an Account</h3>
+                    </th>
+                  </tr>
+                </thead>
+              </table>`
+            </div>
+            <div id="select-container">
+              <table id="select-table" class="table table-bordered">
+                <thead>
+                  <tr scope="row">
+                    <th colspan="1">
+                      <h5 class="h5">Select Something!</h5>
+                    </th>
+                    <th>
+                      <select id="chart-select">
+                        <option value="1">Maria</option>
+                        <option value="2">Aaryn</option>
+                        <option value="3">Caolan</option>
+                      </select>
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div id="graph-container">
+              <!-- add graphs here-->
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
   </div>
   </div>
   <div id="footer"></div>

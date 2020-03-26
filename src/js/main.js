@@ -143,7 +143,7 @@ sortAccountsAndTransactions = (accountsAndTransactions) => {
 // Function appends tucstomer account collapse elements
 // to main page
 appendCustomerAccounts = (accounts) => {
-   $('#accounts-collapse-container').append(`<div class="table-responsive"><table id="my-bank-accounts-header" class="table table-borderless"><thead class><tr scope="row"><th><span class="display-4">My Bank Accounts</span></th></tr></thead></table></div><div id="accordion"></div>`);
+   $('#accounts-collapse-container').append(`<div class="table-responsive"><table id="my-bank-accounts-header" class="table table-borderless"><thead><tr scope="row"><th><span class="display-4">My Bank Accounts</span></th></tr></thead></table></div><div id="accordion"></div>`);
    for (i in accounts) {
       $('#accounts-collapse-container').append(`
       <div class="card">
