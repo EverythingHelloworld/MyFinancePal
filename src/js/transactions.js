@@ -82,7 +82,8 @@ appendAccountTransactions = (account) => {
     $("#account-transactions-container").append(`<Button id='back-button' class="btn btn-secondary" style="float:left; margin-bottom:10"><i class="fas fa-arrow-circle-left"></i><span class="h6"> My Bank Accounts<span></Button>`);
     $("#account-transactions-container").append(`<table class="table table-striped table-bordered" margin: 0 auto width=80% id="table${i}" padding=1><thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Category</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table${i}-body"></tbody></table>`);
     for (j in account[i].Transactions) {
-      $(`#table${i}-body`).append(`<tr scope="row"><td>${formatDate(account[i].Transactions[j].Date)}</td><td>${account[i].Transactions[j].Description}</td><td>${account[i].Transactions[j].Category}</td><td>${account[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(account[i].Transactions[j].Amount).toFixed(2) : parseFloat(account[i].Transactions[j].Amount).toFixed(2)}</td ><td>${account[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr> `);
+      $(`#table${i}-body`).append(`<tr scope="row"><td>${formatDate(account[i].Transactions[j].Date)}</td><td>${account[i].Transactions[j].Description}</td><td>${account[i].Transactions[j].Category}</td><td id="transAmount${j}">${account[i].Transactions[j].Type == "Debit" ? "-" + parseFloat(account[i].Transactions[j].Amount).toFixed(2) : parseFloat(account[i].Transactions[j].Amount).toFixed(2)}</td ><td>${account[i].Transactions[j].ClosingBalance.toFixed(2)}</td></tr> `);
+      account[i].Transactions[j].Type == "Debit" ? $(`#transAmount${j}`).attr('style', 'color:#ed2939; font-weight:bold;') : $(`#transAmount${j}`).attr('style', 'color:#50c878; font-weight:bold;');
     }
     $('#back-button').click(() => {
       window.location.href = "main.html";
