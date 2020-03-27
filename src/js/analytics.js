@@ -168,7 +168,7 @@ function displayIncExpChart(accountData) {
     //Sets chart options
     var options = {
         title: {
-            text: "Income vs. Expenditure (in euro)"
+            text: "Income vs. Expenditure"
         },
         data: [{
             type: "pie",
