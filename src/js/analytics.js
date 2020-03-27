@@ -147,6 +147,7 @@ displayAccountAnalytics = (accountData) => {
         displayCategoryChart(accountData);
     } else if (selectedChart === "3") {
         //Show exp by merchant chart
+        displayMerchantChart(accountData);
         //NOTE: Parse the transaction amounts to floats when doing calculations
     }
 }
@@ -249,6 +250,56 @@ getCategoryData = (accountData) => {
             }
         }
         data.push({ "category": temp[i], "amount": amount.toFixed(2) });
+    }
+    return data;
+}
+
+displayMerchantChart = (accountData) => {
+    let data = getMerchantData(accountData);
+    console.log(data);
+    let symbol = '\u20AC';
+    let chartData = [];
+    let count = 1;
+    for (i in data) 
+    {
+        chartData.push({"y": parseFloat(data[i].amount), "label": data[i].merchant});
+    }
+    //Sets chart options
+    let options = {
+        title: {
+            text: "Merchants",
+            fontFamily: "Impact",
+            fontWeight: "normal"
+        },
+        data: [{
+            showInLegend: "true",
+            legendText: "{label}",
+            yValueFormatString: `${symbol}#,###.##`,
+            type: "pyramid",
+            dataPoints: chartData
+        }]
+    };
+    //Creates chart with those options
+    $("#graph-container").CanvasJSChart(options);
+}
+
+getMerchantData = (accountData) => {
+    let data = [];
+    let temp = [];
+    let amount;
+    for (i in accountData.Transactions) {
+        if (accountData.Transactions[i].Type === "Debit")
+            temp.push(accountData.Transactions[i].Description);
+    }
+    temp = _.uniq(temp);
+    for (i in temp) {
+        amount = 0;
+        for (j in accountData.Transactions) {
+            if (temp[i] === accountData.Transactions[j].Description) {
+                amount += parseFloat(accountData.Transactions[j].Amount);
+            }
+        }
+        data.push({ "merchant": temp[i], "amount": amount.toFixed(2) });
     }
     return data;
 }
