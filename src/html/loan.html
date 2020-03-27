@@ -26,6 +26,15 @@
   <div class="row justify-content-md-center">
     <div class="col-sm-6">
       <div style="font-size:30;">Personal Loan</div><br>
+      <div style="font-size:20;">Choose Account</div>
+      <select class="custom-select" id = "accountSelect">
+        <option id = 'FirstOption'>Choose an Account...</option>
+      </select>
+    </div>
+  </div><br>
+
+  <div class="row justify-content-md-center">
+    <div id = "purpose" class="col-sm-6" style="display:none">
       <div style="font-size:20;">Purpose of Loan</div>
       <select class="custom-select" id = "loanPurpose">
         <option id = 'firstOption'>Choose an Option...</option>
@@ -44,6 +53,7 @@
       </select>
     </div>
   </div>
+
   <div class="row justify-content-md-center">
     <div id = "loanAmount" class="col-sm-6" style="display:none">
       <br><div style="font-size:20;">Amount to Borrow</div>
