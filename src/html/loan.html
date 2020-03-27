@@ -22,6 +22,62 @@
 <body>
   <div id='jumbotron'></div>
   <div id='navbar'></div>
+
+  <div class="row justify-content-md-center">
+    <div class="col-sm-6">
+      <div style="font-size:30;">Personal Loan</div><br>
+      <div style="font-size:20;">Purpose of Loan</div>
+      <select class="custom-select" id = "loanPurpose">
+        <option id = 'firstOption'>Choose an Option...</option>
+        <option>Car Purchase</option>
+        <option>Home Improvements</option>
+        <option>Wedding</option>
+        <option>Educational Expenses</option>
+        <option>Graduate</option>
+        <option>Trip of a Lifetime</option>
+        <option>Event e.g New Baby, Medical Expenses, Funeral Expenses</option>
+        <option>Car Repair</option>
+        <option>Annual Holiday Costs</option>
+        <option>Annual Education Fees</option>
+        <option>Christmas</option>
+        <option>Car Insurance</option>
+      </select>
+    </div>
+  </div>
+  <div class="row justify-content-md-center">
+    <div id = "loanAmount" class="col-sm-6" style="display:none">
+      <br><div style="font-size:20;">Amount to Borrow</div>
+      <select class="custom-select" id = "amountToBorrow">
+        <option id = '1stOption'>Choose an Option...</option>
+        <option>5000</option>
+        <option>10000</option>
+        <option>15000</option>
+        <option>20000</option>
+        <option>25000</option>
+        <option>30000</option>
+        <option>35000</option>
+        <option>40000</option>
+        <option>45000</option>
+        <option>50000</option>
+        <option>55000</option>
+        <option>60000</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row justify-content-md-center">
+    <div id = "repayAmount" class="col-sm-6" style="display:none">
+      <br><div style="font-size:20;">Repayment Options</div>
+      <select class="custom-select" id = "repaySelect">
+      </select>
+    </div>
+  </div><br>
+
+  <div class="row justify-content-md-center">
+    <div id = "applyBtn" class="col-sm-6" style="display:none">
+        <button type="button" class="btn btn-primary btn-block" id="btnLock">Apply</button>
+    </div>
+  </div>
 </body>
 
 </html>
