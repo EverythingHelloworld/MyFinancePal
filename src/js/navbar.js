@@ -7,11 +7,7 @@ $("document").ready(function () {
                 "</li><li class='nav-item'><a class='nav-link' href='../html/analytics.html' class='external' style='color:rgba(255,255,255,.5);'>Analytics</a>" +
                 "</li><li class='nav-item'><a class='nav-link' href='../html/managePayees.html' class='external' style='color:rgba(255,255,255,.5);'>Payees</a>" +
                 "</li><li class='nav-item'><a class='nav-link' href='../html/loan.html' class='external' style='color:rgba(255,255,255,.5);'>Loan</a>" +
-                "</li></ul></div></nav><br/>");
-
-        if (Cookies.get('customerID') !== undefined) {
-                $('#list').append(`<li class='nav-item'><a class='nav-link' id='btnLogout' href='#' class='external' style='color:rgba(255,255,255,.5);'>Logout</a>`);
-        }
+                "</li><li class='nav-item'><a class='nav-link' id='btnLogout' href='#' class='external' style='color:rgba(255,255,255,.5);'>Logout</a></ul></div></nav><br/>");
 
         // handleLogout has to be binded to the onclick event here
         // don't change this
