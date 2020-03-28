@@ -73,6 +73,11 @@ $("document").ready(function () {
             $.getJSON(`../php/insertLoan.php?accountId=${selectedAccount}&amount=${selectedAmount}&repayAmount=${repayAmount}&purpose=${selectedPurpose}`, function (data) 
             {
             });
+            $("#loanModel").modal();
         }
     });
+
+    $('#loanModel').on('hidden.bs.modal', function () {
+        location.reload();
+    })
 })
