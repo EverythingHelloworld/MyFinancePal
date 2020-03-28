@@ -95,6 +95,8 @@ CREATE TABLE Loan
     `LoanID` int(10) NOT NULL AUTO_INCREMENT,
     `Amount` decimal(20,2) NOT NULL,
     `AccountID` int(10) NOT NULL,
+    `Purpose` varchar(100) NOT NULL,
+    `RepaymentOption` varchar(100) NOT NULL,
     PRIMARY KEY (`LoanID`),
     CONSTRAINT loan_account_id_constraint
     FOREIGN KEY (AccountID)
