@@ -201,7 +201,7 @@ appendCustomerAccountsTransactions = (accounts) => {
 // Function that appends the quick transfer form
 // to the page
 appendQuickTransferForm = () => {
-   $('#my-bank-accounts-header').append(`<br><div><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Quick Transfer</h5></th><th></th><th></th></tr></thead><td colspan="2"><form id="transfer-form" style="border:black 1px;" class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><select id='account-to-dropdown' disabled class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><input type="text" id=transfer-amount class="form-control" oninput="this.value = this.value.replace(^\d+(?:\.\d{0,2})?$)" placeholder="Amount" disabled style="margin-right:25px; margin-bottom:5px;"><button type="submit" id="submit-transfer-btn" class="btn btn-primary" style="margin-bottom:5px;" disabled><span class="h6">Transfer</span><i style="margin-left:5px; margin-top:5px;" class="fas fa-arrow-circle-right"></i></button></div></form></td><td></td></table></div>`);
+   $('#my-bank-accounts-header').append(`<br><div><table id="quick-transfer-table" class="table table-bordered"><thead><tr scope="row"><th><h5 class="h5">Quick Transfer</h5></th><th></th><th></th></tr></thead><td colspan="2"><form id="transfer-form" style="border:black 1px;" class="form-inline"><div class="form-group"><select id='account-from-dropdown' class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><select id='account-to-dropdown' disabled class="form-control" style="margin-right:25px; margin-bottom:5px;"></select></div><div class="form-group"><input type="text" id=transfer-amount class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" placeholder="Amount" disabled style="margin-right:25px; margin-bottom:5px;"><button type="submit" id="submit-transfer-btn" class="btn btn-primary" style="margin-bottom:5px;" disabled><span class="h6">Transfer</span><i style="margin-left:5px; margin-top:5px;" class="fas fa-arrow-circle-right"></i></button></div></form></td><td></td></table></div>`);
    $('#account-from-dropdown').append(`<option value=default>From account...</option>`);
    $('#account-to-dropdown').append(`<option value=default>To account...</option>`);
 }
@@ -217,7 +217,7 @@ handleTransferForm = (accountsAndTransactions, session_customer_id) => {
          .find('option')
          .remove()
          .end()
-         .append('<option>To Account...</option>')
+         .append('<option value="default">To Account...</option>')
          .val('To account....');
       ;
       $('#transfer-amount').attr('disabled', true);
@@ -234,20 +234,26 @@ handleTransferForm = (accountsAndTransactions, session_customer_id) => {
       });
       $('#account-to-dropdown').attr('disabled', false);
       $('#account-to-dropdown').change(() => {
-         $('#transfer-amount').attr('disabled', false);
-         if ($('#account-to-dropdown').val() === "default" || $('#account-from-dropdown').val() === "default") {
-            $('#submit-transfer-btn').attr('disabled', true);
+         if ($('#account-to-dropdown').val() === "default") {
+            $('#transfer-amount').attr('disabled', true);
+            $('#transfer-amount').val("");
          }
          else {
+            $('#transfer-amount').attr('disabled', false);
+            if ($('#account-to-dropdown').val() === "default" || $('#account-from-dropdown').val() === "default") {
+               $('#submit-transfer-btn').attr('disabled', true);
+            }
+            else {
+               $('#submit-transfer-btn').attr('disabled', false);
+            }
             $('#submit-transfer-btn').attr('disabled', false);
-         }
-         $('#submit-transfer-btn').attr('disabled', false);
-         to_account_id = $('#account-to-dropdown').val();
-         if (to_account_id.val() === "true") {
-            isPayee = true;
-         }
-         else {
-            isPayee = false;
+            to_account_id = $('#account-to-dropdown').val();
+            if (to_account_id.val() === "true") {
+               isPayee = true;
+            }
+            else {
+               isPayee = false;
+            }
          }
       })
 
@@ -273,6 +279,8 @@ handleTransferForm = (accountsAndTransactions, session_customer_id) => {
 
 // Validate the transfer
 checkTransfer = (accountsAndTransactions, from_account_id, amount) => {
+   if (parseFloat(amount) < 0.01)
+      return false;
    console.log(from_account_id, amount)
    for (i in accountsAndTransactions) {
       if (accountsAndTransactions[i].AccountID === from_account_id) {
