@@ -89,7 +89,6 @@ appendAccountTransactions = (yr, mnth, account) => {
       temp.push(account[i].Transactions[j]);
     }
   }
-  console.log("temp", temp);
   if (year === '0' && month === '0') {
     dataToDisplay = temp;
   }
@@ -102,19 +101,22 @@ appendAccountTransactions = (yr, mnth, account) => {
   else {
     dataToDisplay = _.filter(temp, (t) => { return t.Date.substr(0, 4) === year && t.Date.substr(5, 2) === month });
   }
-  console.log(dataToDisplay);
   $('#account-transactions-container').empty();
-  $("#account-transactions-container").append(`<table class="table table-striped table-bordered" style="float:left;" width=100% id="table" padding=1><thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Category</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table-body"></tbody></table>`);
-
-
-  for (let i = 0; i < dataToDisplay.length; i++) {
-    $(`#table`).append(`<tr scope="row"><td>${formatDate(dataToDisplay[i].Date)}</td><td>${dataToDisplay[i].Description}</td><td>${dataToDisplay[i].Category}</td><td id="transAmount${i}">${dataToDisplay[i].Type == "Debit" ? "-" + parseFloat(dataToDisplay[i].Amount).toFixed(2) : parseFloat(dataToDisplay[i].Amount).toFixed(2)}</td ><td>${dataToDisplay[i].ClosingBalance.toFixed(2)}</td></tr> `);
-    dataToDisplay[i].Type == "Debit" ? $(`#transAmount${i}`).attr('style', 'color:#ed2939; font-weight:bold;') : $(`#transAmount${i}`).attr('style', 'color:#50c878; font-weight:bold;');
+  if (dataToDisplay === undefined || dataToDisplay.length == 0) {
+    $("#account-transactions-container").append(`<div class="alert alert-info" role="alert">There doesn't appear to be any transactions for the selected period</div>`);
+  }
+  else {
+    dataToDisplay.reverse();
+    $("#account-transactions-container").append(`<table class="table table-striped table-bordered" style="float:left;" width=100% id="table" padding=1><thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col">Category</th><th scope="col">Amount</th><th scope="col">Balance</th><tr></thead><tbody id="table-body"></tbody></table>`);
+    for (let i = 0; i < dataToDisplay.length; i++) {
+      $(`#table`).append(`<tr scope="row"><td>${formatDate(dataToDisplay[i].Date)}</td><td>${dataToDisplay[i].Description}</td><td>${dataToDisplay[i].Category}</td><td id="transAmount${i}">${dataToDisplay[i].Type == "Debit" ? "-" + parseFloat(dataToDisplay[i].Amount).toFixed(2) : parseFloat(dataToDisplay[i].Amount).toFixed(2)}</td ><td>${dataToDisplay[i].ClosingBalance.toFixed(2)}</td></tr> `);
+      dataToDisplay[i].Type == "Debit" ? $(`#transAmount${i}`).attr('style', 'color:#ed2939; font-weight:bold;') : $(`#transAmount${i}`).attr('style', 'color:#50c878; font-weight:bold;');
+    }
   }
 
 
-}
 
+}
 
 
 handleSubmitButton = (accountTransactions) => {

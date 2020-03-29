@@ -126,18 +126,27 @@ bindAccountSelectFunctionality = (accountTransactions) => {
 
 //Handler which is called when an account is selected
 handleAccountSelect = (accountData) => {
+    $('#error-message').empty();
+    $("#graph-container").empty();
+    console.log(accountData);
     //Set global account data variable. Used for chart dropdown.
     selectedAccountData = accountData;
-    //Make analytics title and chart dropdown visible
-    $('#select-container').attr('style', 'display:block');
-    $('#analytics-title').attr('style', 'display:block');
-    //Display selected chart
-    displayAccountAnalytics(accountData);
+    if (accountData.Transactions.length === 0) {
+        $('#select-container').attr('style', 'display:none');
+        $('#analytics-title').attr('style', 'display:none');
+        $('#error-message').append(`<div class="alert alert-info" role="alert">There doesn't appear to be any transactions for this account yet</div>`);
+    }
+    else {
+        //Make analytics title and chart dropdown visible
+        $('#select-container').attr('style', 'display:block');
+        $('#analytics-title').attr('style', 'display:block');
+        //Display selected chart
+        displayAccountAnalytics(accountData);
+    }
 }
 
 displayAccountAnalytics = (accountData) => {
     //Clear the chart container if there is a chart on screen
-    $("#graph-container").empty();
 
     //Calls handler for selected chart
     if (selectedChart === "1") {
@@ -260,9 +269,8 @@ displayMerchantChart = (accountData) => {
     let symbol = '\u20AC';
     let chartData = [];
     let count = 1;
-    for (i in data) 
-    {
-        chartData.push({"y": parseFloat(data[i].amount), "label": data[i].merchant});
+    for (i in data) {
+        chartData.push({ "y": parseFloat(data[i].amount), "label": data[i].merchant });
     }
     //Sets chart options
     let options = {
