@@ -238,6 +238,34 @@ VALUES ('2000-03-04 15:03:16', 'Debit', 'KFC', '30.00', 'Restaurants', '100000')
 INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
 VALUES ('2000-03-06 12:00:10', 'Debit', 'PC World', '53.44', 'Miscellaneous', '100000');
 
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2003-03-06 12:00:10', 'Debit', 'PC World', '53.44', 'Miscellaneous', '100000');
+
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2003-05-06 12:00:10', 'Debit', 'PC World', '53.44', 'Miscellaneous', '100000');
+
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2003-05-06 12:00:10', 'Debit', 'PC World', '53.44', 'Miscellaneous', '100000');
+
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2003-05-06 12:00:10', 'Debit', 'PC World', '53.44', 'Miscellaneous', '100000');
+
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2003-08-06 12:00:10', 'Debit', 'PC World', '53.44', 'Miscellaneous', '100000');
+
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2003-08-06 12:00:10', 'Debit', 'PC World', '53.44', 'Miscellaneous', '100000');
+
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2003-08-06 12:00:10', 'Debit', 'PC World', '53.44', 'Miscellaneous', '100000');
+
+
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2007-11-18 12:00:10', 'Debit', 'PC World', '53.44', 'Miscellaneous', '100000');
+
+INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
+VALUES ('2007-04-06 12:00:10', 'Debit', 'PC World', '53.44', 'Miscellaneous', '100000');
+
 -- Account 100001
 
 INSERT INTO Transaction (TransDate, Type, Description, Amount, Category, AccountID)
