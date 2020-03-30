@@ -1,0 +1,112 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <script type="text/javascript" src="../libraries/jquery-3.3.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="../libraries/underscore.js"></script>
+  <script type="text/javascript" src="../libraries/d3.min.js"></script>
+  <script type="text/javascript" src="../js/statements.js"></script>
+  <script type="text/javascript" src="../js/globalFunctions.js"></script>
+  <script type="text/javascript" src="../js/jumbotron.js"></script>
+  <script type="text/javascript" src="../js/navbar.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"
+    integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+<style>
+</style>
+
+<body>
+  <div id='jumbotron'>
+  </div>
+  <div id='navbar'></div>
+  <!--END OF HEADER STYLES-->
+
+  <div id="page-header-container" class="container-fluid" style="width:70%">
+    <div class="row" id="page-header"><span class="display-4">My Statements</span></div>
+    <div class="row" id="account-number-container"></div>
+    <div class="row" id="back-button-container"></div>
+    <table class="table table-bordered">
+      <tr>
+        <td>
+          <div class="container-fluid">
+            <table class="table table borderless">
+              <form class="form-inline">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <span class="h5">Year</span>
+                      <select class="form-control" id="year-select">
+                        <option value="0" selected>All</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <span class="h5">From</span>
+                      <select class="form-control" id="from-month-select" disabled>
+                        <option value="0" selected>All</option>
+                        <option value="01">January</option>
+                        <option value="02">February</option>
+                        <option value="03">March</option>
+                        <option value="04">April</option>
+                        <option value="05">May</option>
+                        <option value="06">June</option>
+                        <option value="07">July</option>
+                        <option value="08">August</option>
+                        <option value="09">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div id="to-month-select" class="form-group" style="display: none;">
+                      <span class="h5">To</span>
+                      <select class="form-control" id="to-month-select">
+                        <option value="0" selected>All</option>
+                        <option value="01">January</option>
+                        <option value="02">February</option>
+                        <option value="03">March</option>
+                        <option value="04">April</option>
+                        <option value="05">May</option>
+                        <option value="06">June</option>
+                        <option value="07">July</option>
+                        <option value="08">August</option>
+                        <option value="09">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-5" style="align-items:right;">
+                    <div class="form-group">
+                      <input type="submit" id="submitBtn" class="btn btn-primary" />
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
+</body>
+
+</html>

@@ -381,6 +381,8 @@ appendRedirectInstructions = (button_id, accounts) => {
    for (i in accounts) {
       if (button_id === accounts[i].AccountID + "-statements-btn") {
          console.log(accounts[i].AccountID + " statements");
+         sessionStorage.setItem("AccountID", accounts[i].AccountID);
+         window.location.href = 'statements.html';
       }
       if (button_id === accounts[i].AccountID + "-transactions-btn") {
          console.log(accounts[i].AccountID + " transactions");
