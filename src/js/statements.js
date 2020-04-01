@@ -76,7 +76,7 @@ sortAccountTransactions = (accountTransactions) => {
 handleSelectChanges = () => {
   $('#year-select').change(() => {
     $('#from-month-select').attr('disabled', false);
-    year = $('#year-select').val();
+    year = parseInt($('#year-select').val());
     console.log("year ", year, "from ", from_month, "to ", to_month);
 
     if (year == 0) {
@@ -94,7 +94,7 @@ handleSelectChanges = () => {
 
 
   $('#from-month-select').change(() => {
-    from_month = $('#from-month-select').val();
+    from_month = parseInt($('#from-month-select').val());
     if (from_month != 0) {
       $('#to-month-select-container').attr("style", "display: block");
       appendToSelect(from_month);
@@ -106,8 +106,8 @@ handleSelectChanges = () => {
   });
 
   $('#to-month-select').change(() => {
-    to_month = $('#to-month-select').val();
-    console.log("year ", year, "from ", from_month, "to ", to_month);
+    to_month = parseInt($('#to-month-select').val());
+    console.log("year: ", year, "from: ", from_month, "to", to_month);
   });
 
 
@@ -116,8 +116,7 @@ handleSelectChanges = () => {
 
 handleSubmit = (accountTransactions) => {
   $('#submitBtn').on('click', () => {
-    console.log("year: ", year, "from: ", from_month, "to", to_month);
-    let data = filterTransactionData(accountTransactions, year, from_month, to_month);
+    let data = filterTransactionData(accountTransactions);
     generateStatement(data);
   });
 }
@@ -148,12 +147,22 @@ populateSelectYears = (data, account_id) => {
 
 generateStatement = (data) => {
   if (data[0].Transactions.length > 0) {
+    data[0].Transactions.reverse();
     let statement = new jsPDF();
-    statement.setFontSize(14);
-    statement.text(10, 10, "Your MyFinancePal Bank Account Statement")
-    statement.text(10, 20, "Account: ")
-    statement.text(10, 30, "Transactions From: All-Time")
-    statement.setFontSize(14);
+    let pageHeight = statement.internal.pageSize.height;
+    statement.setFontSize(12);
+    statement.text(10, 10, "Your MyFinancePal Bank Account Statement");
+    statement.text(10, 20, "Account: ");
+    if (year != 0 && from_month === 0) {
+      statement.text(10, 30, "Transactions From: " + year);
+    }
+    else if (year != 0 && from_month != 0) {
+      statement.text(10, 30, "Transactions From: " + getMonth(from_month) + " - " + getMonth(to_month) + ", " + year);
+    }
+    else {
+      statement.text(10, 30, "Transactions From: All-Time");
+    }
+    statement.setFontSize(12);
     for (i in data) {
       statement.text(30, 20, data[i].IBAN.toString());
       statement.setFontSize(10);
@@ -163,20 +172,38 @@ generateStatement = (data) => {
       statement.text(130, 40, "Amount");
       statement.text(170, 40, "Closing Balance");
     }
+    let y = 50
     for (j in data[i].Transactions) {
       let ClosingBalance = parseFloat(data[i].Transactions[j].ClosingBalance).toFixed(2).toString();
-      statement.text(10, (parseFloat(j * 10) + 50), formatDate(data[i].Transactions[j].Date));
-      statement.text(50, (parseFloat(j * 10) + 50), data[i].Transactions[j].Description);
-      statement.text(90, (parseFloat(j * 10) + 50), data[i].Transactions[j].Type);
-      statement.text(130, (parseFloat(j * 10) + 50), data[i].Transactions[j].Amount);
-      statement.text(170, (parseFloat(j * 10) + 50), ClosingBalance);
+      statement.text(10, y, formatDate(data[i].Transactions[j].Date));
+      statement.text(50, y, data[i].Transactions[j].Description);
+      statement.text(90, y, data[i].Transactions[j].Type);
+      statement.text(130, y, data[i].Transactions[j].Amount);
+      statement.text(170, y, ClosingBalance);
+      y += 10;
+      if (y > pageHeight) {
+        statement.addPage();
+        statement.setFontSize(14);
+        statement.text(10, 10, "Your MyFinancePal Bank Account Statement")
+        statement.text(10, 20, "Account: ")
+        statement.text(10, 30, "Transactions From: All-Time")
+        statement.setFontSize(14);
+        statement.text(30, 20, data[i].IBAN.toString());
+        statement.setFontSize(10);
+        statement.text(10, 40, "Date");
+        statement.text(50, 40, "Description");
+        statement.text(90, 40, "Type");
+        statement.text(130, 40, "Amount");
+        statement.text(170, 40, "Closing Balance");
+        y = 50;
+      }
     }
     statement.save('statement.pdf');
   }
 }
 
 
-filterTransactionData = (accountTransactions, from, to) => {
+filterTransactionData = (accountTransactions) => {
   dataToReturn = [];
   for (i in accountTransactions) {
     dataToReturn.push({
@@ -186,9 +213,9 @@ filterTransactionData = (accountTransactions, from, to) => {
     })
   }
 
-  for (i in dataToReturn) {
-    for (j in accountTransactions[i].Transactions) {
-      if (accountTransactions[i].Transactions[j].Date.substr(0, 4) === year) {
+  if (year === 0)
+    for (i in dataToReturn) {
+      for (j in accountTransactions[i].Transactions) {
         dataToReturn[i].Transactions.push({
           "Date": accountTransactions[i].Transactions[j].Date,
           "Description": accountTransactions[i].Transactions[j].Description,
@@ -198,7 +225,49 @@ filterTransactionData = (accountTransactions, from, to) => {
         })
       }
     }
+  else if (year != 0 && from_month === 0) {
+    console.log('test');
+    for (i in dataToReturn) {
+      for (j in accountTransactions[i].Transactions) {
+        y = parseInt(accountTransactions[i].Transactions[j].Date.substr(0, 4));
+        if (y === year) {
+          console.log('test');
+          dataToReturn[i].Transactions.push({
+            "Date": accountTransactions[i].Transactions[j].Date,
+            "Description": accountTransactions[i].Transactions[j].Description,
+            "Type": accountTransactions[i].Transactions[j].Type,
+            "Amount": accountTransactions[i].Transactions[j].Amount,
+            "ClosingBalance": accountTransactions[i].Transactions[j].ClosingBalance
+          })
+        }
+      }
+    }
   }
-  console.log(dataToReturn[0].Transactions.length);
+  else if (year != 0 && from_month != 0) {
+    console.log('test');
+    for (i in dataToReturn) {
+      for (j in accountTransactions[i].Transactions) {
+        y = parseInt(accountTransactions[i].Transactions[j].Date.substr(0, 4));
+        f = parseInt(accountTransactions[i].Transactions[j].Date.substr(5, 2));
+        t = parseInt(accountTransactions[i].Transactions[j].Date.substr(5, 2));
+        if (y === year && (f >= from_month & t <= to_month)) {
+          console.log('test');
+          dataToReturn[i].Transactions.push({
+            "Date": accountTransactions[i].Transactions[j].Date,
+            "Description": accountTransactions[i].Transactions[j].Description,
+            "Type": accountTransactions[i].Transactions[j].Type,
+            "Amount": accountTransactions[i].Transactions[j].Amount,
+            "ClosingBalance": accountTransactions[i].Transactions[j].ClosingBalance
+          })
+        }
+      }
+    }
+  }
   return dataToReturn;
+}
+
+getMonth = (num) => {
+  let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  return months[num - 1];
 }
