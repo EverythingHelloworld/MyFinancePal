@@ -64,7 +64,7 @@ appendCustomerDetails = (session_customer_id) => {
       }
    })
 
-   $('#customer-details-container').before(`<table class="table table-borderless"><thead class><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table>`);
+   $('#customer-details-container').before(`<table class="table table-borderless"><thead><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table>`);
    $('#customer-details-container').append(`<div id="request-button-container"></div>`);
    console.log(session_customer_id);
    appendRequestButton(session_customer_id);

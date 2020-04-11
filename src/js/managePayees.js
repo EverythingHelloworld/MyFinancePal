@@ -29,53 +29,44 @@ function handleAddPayee() {
     console.log('customerID: ', customerID);
     if (isValidNewPayee(payeeName, IBAN, BIC)) {
       console.log('isValidPayeeTestPassed:');
-      $.post("../php/addPayee.php",
-        {
-          'PayeeName': $('#payeeName').val(),
-          'IBAN': $('#IBAN').val(),
-          'BIC': $('#BIC').val(),
-          'customerID': customerID
-        }).done(() => {
-          $('#add').empty();
-          $('#add').html('<br><div id=successMessage></div>');
-          $('#successMessage').attr('class', 'alert alert-success text-center');
-          $('#successMessage').attr('role', 'alert');
-          $('#successMessage').text('Payee successfully added.');
-          setInterval(redirectToPayeesHome, 1000);
-        }).fail(() => {
-          $('#add').empty();
-          $('#add').html('<br><div id=errorMessage></div>');
-          $('#errorMessage').attr('class', 'alert alert-danger text-center');
-          $('#errorMessage').attr('role', 'alert');
-          $('#errorMessage').text('Error connecting to database.');
-          setInterval(redirectToPayeesHome, 2000);
-        }) ;   
+      if (payeeNotInDatabase(IBAN)) {
+        $.post("../php/addPayee.php",
+          {
+            'PayeeName': $('#payeeName').val(),
+            'IBAN': $('#IBAN').val(),
+            'BIC': $('#BIC').val(),
+            'customerID': customerID
+          }).done(() => {
+            $('#add').empty();
+            $('#add').html('<br><div id=successMessage></div>');
+            $('#successMessage').attr('class', 'alert alert-success text-center');
+            $('#successMessage').attr('role', 'alert');
+            $('#successMessage').text('Payee successfully added.');
+            setInterval(redirectToPayeesHome, 1000);
+          }).fail(() => {
+            $('#add').empty();
+            $('#add').html('<br><div id=errorMessage></div>');
+            $('#errorMessage').attr('class', 'alert alert-danger text-center');
+            $('#errorMessage').attr('role', 'alert');
+            $('#errorMessage').text('Error connecting to database.');
+            setInterval(redirectToPayeesHome, 2000);
+          });
+      }
+      else {
+        $('#add').empty();
+        $('#add').html('<br><div id=errorMessage></div>');
+        $('#errorMessage').attr('class', 'alert alert-danger text-center');
+        $('#errorMessage').attr('role', 'alert');
+        $('#errorMessage').text('There is already a payee with this bank account in your payees.');
+
+      }
     }
   });
 }
 
-// $.post("../php/deletePayee.php", 
-//     { 'payeeID': $('#selectPayee option:selected').val() }
-//     ).done(() => { 
-//       $('#delete').empty();
-//       $('#delete').html('<br><div id=successMessage></div>');
-//       $('#successMessage').attr('class', 'alert alert-success text-center');
-//       $('#successMessage').attr('role', 'alert');
-//       $('#successMessage').text('Payee successfully removed.');
-//       setInterval(redirectToPayeesHome, 1000);
-//     })
-//     .fail(() => {
-//       $('#delete').empty();
-//       $('#delete').html('<br><div id=errorMessage></div>');
-//       $('#errorMessage').attr('class', 'alert alert-danger text-center');
-//       $('#errorMessage').attr('role', 'alert');
-//       $('#errorMessage').text('Error connecting to database.');
-//       setInterval(redirectToPayeesHome, 2000);
-//    });
-//   })
 
-function redirectToPayeesHome(){
-    window.location.href = 'managePayees.html';
+function redirectToPayeesHome() {
+  window.location.href = 'managePayees.html';
 }
 
 function isValidNewPayee(payeeName, IBAN, BIC) {
@@ -118,6 +109,21 @@ function isValidNewPayee(payeeName, IBAN, BIC) {
   return false;
 }
 
+
+function payeeNotInDatabase(IBAN) {
+  $.getJSON(`../php/getPayees.php?customerID=${customerID}`, (data) => {
+    for (i in data.Payees) {
+      alert(data.Payees[i].IBAN);
+      if (data.Payees[i].IBAN == IBAN) {
+        return false;
+      }
+      else {
+        return true;
+      }
+    }
+  });
+}
+
 /*Removes the default option from the remove payee dropdown 
 after the customer has selected another option*/
 function removeDefaultDropdownOptionOnChange() {
@@ -130,9 +136,9 @@ function removeDefaultDropdownOptionOnChange() {
 //Removes the payee the customer has selected from the db and refreshes the page
 function handleRemovePayee() {
   $('#removePayeeBtn').click(() => {
-    $.post("../php/deletePayee.php", 
-    { 'payeeID': $('#selectPayee option:selected').val() }
-    ).done(() => { 
+    $.post("../php/deletePayee.php",
+      { 'payeeID': $('#selectPayee option:selected').val() }
+    ).done(() => {
       $('#delete').empty();
       $('#delete').html('<br><div id=successMessage></div>');
       $('#successMessage').attr('class', 'alert alert-success text-center');
@@ -140,14 +146,14 @@ function handleRemovePayee() {
       $('#successMessage').text('Payee successfully removed.');
       setInterval(redirectToPayeesHome, 1000);
     })
-    .fail(() => {
-      $('#delete').empty();
-      $('#delete').html('<br><div id=errorMessage></div>');
-      $('#errorMessage').attr('class', 'alert alert-danger text-center');
-      $('#errorMessage').attr('role', 'alert');
-      $('#errorMessage').text('Error connecting to database.');
-      setInterval(redirectToPayeesHome, 2000);
-   });
+      .fail(() => {
+        $('#delete').empty();
+        $('#delete').html('<br><div id=errorMessage></div>');
+        $('#errorMessage').attr('class', 'alert alert-danger text-center');
+        $('#errorMessage').attr('role', 'alert');
+        $('#errorMessage').text('Error connecting to database.');
+        setInterval(redirectToPayeesHome, 2000);
+      });
   })
 }
 
