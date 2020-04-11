@@ -33,7 +33,7 @@ appendAccountDetails = (session_customer_id) => {
                 console.log("customer accounts ", accounts);
                 $.getJSON(`../php/getAccountsTransactions.php?customerID=${session_customer_id}`)
                     .done((data) => {
-                        if (data.accountTransactions === undefined || data.accountTransactions.length < 1) {
+                        if (data.accountTransactions === undefined) {
                             console.log("There are no transactions for these accounts")
                         }
                         else {
