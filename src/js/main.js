@@ -10,7 +10,6 @@ $("document").ready(() => {
    // Retrieve the customer id for the current session <- customer that is currently logged in
    const session_customer_id = Cookies.get('customerID');
    sessionStorage.setItem("CustomerID", session_customer_id);
-   console.log(session_customer_id);
    getPageData(session_customer_id); // -> pass session_customer_id to return and display all page data for customer
 });
 
@@ -42,12 +41,12 @@ getPageData = (customerID) => {
                handleRequestButtonClick(customerID);
             })
             .fail(() => {
-               console.log('database call failed for account transactions');
+               //error
             })
 
       })
       .fail(() => {
-         console.log('database call failed for customer account');
+         //error
       })
 }
 
@@ -66,7 +65,6 @@ appendCustomerDetails = (session_customer_id) => {
 
    $('#customer-details-container').before(`<table class="table table-borderless"><thead><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table>`);
    $('#customer-details-container').append(`<div id="request-button-container"></div>`);
-   console.log(session_customer_id);
    appendRequestButton(session_customer_id);
 }
 
@@ -81,7 +79,7 @@ appendRequestButton = (session_customer_id) => {
          }
       })
       .fail(() => {
-         console.log('failed');
+         //error
       })
 }
 
@@ -269,7 +267,7 @@ handleTransferForm = (accountsAndTransactions, session_customer_id) => {
             submitTransfer(date, from_account_id, to_account_id, amount, isPayee);
          }
          else {
-            console.log('insufficient funds');
+            //error
          }
       }
 
@@ -311,13 +309,12 @@ requestAccountDeletion = (session_customer_id) => {
 
    })
       .done(() => {
-         console.log('success');
          window.location.href = "main.html";
          $('#request-button-container').empty();
          appendRequestButton();
       })
       .fail(() => {
-         console.log('fail');
+         //error
       })
 }
 
@@ -328,13 +325,12 @@ withdrawAccountDeletionRequest = (session_customer_id) => {
 
    })
       .done(() => {
-         console.log('success');
          window.location.href = "main.html";
          $('#request-button-container').empty();
          appendRequestButton();
       })
       .fail(() => {
-         console.log('fail');
+         //error
       })
 }
 
@@ -343,10 +339,10 @@ withdrawAccountDeletionRequest = (session_customer_id) => {
 submitTransfer = (date, from_account_id, to_account_id, amount, isPayee) => {
    $.getJSON(`../php/handleTransfer.php?date=${date}&from_account=${from_account_id}&to_account=${to_account_id}&amount=${amount}&isPayee=${isPayee}`)
       .done((data, status) => {
-         console.log(status);
+
       })
       .fail(() => {
-         console.log('failed to transfer');
+         //error
       })
 }
 
@@ -380,12 +376,10 @@ bindCustomerAccountButtonFunctions = (accounts) => {
 appendRedirectInstructions = (button_id, accounts) => {
    for (i in accounts) {
       if (button_id === accounts[i].AccountID + "-statements-btn") {
-         console.log(accounts[i].AccountID + " statements");
          sessionStorage.setItem("AccountID", accounts[i].AccountID);
          window.location.href = 'statements.html';
       }
       if (button_id === accounts[i].AccountID + "-transactions-btn") {
-         console.log(accounts[i].AccountID + " transactions");
          sessionStorage.setItem("AccountID", accounts[i].AccountID);
          window.location.href = 'transactions.html';
       }
