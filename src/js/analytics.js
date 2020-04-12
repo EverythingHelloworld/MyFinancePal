@@ -26,31 +26,26 @@ appendAccountDetails = (session_customer_id) => {
             let transactions = [];
             let accountsAndTransactions = [];
             if (data.CustomerAccounts === undefined || data.CustomerAccounts.length < 1) {
-                console.log("There are no accounts for this customer");
+                
             }
             else {
                 accounts = data.CustomerAccounts;
-                console.log("customer accounts ", accounts);
                 $.getJSON(`../php/getAccountsTransactions.php?customerID=${session_customer_id}`)
                     .done((data) => {
                         if (data.accountTransactions === undefined) {
-                            console.log("There are no transactions for these accounts")
                         }
                         else {
                             transactions = data.accountTransactions;
                             accountsAndTransactions = combineAccountsAndTransactions(accounts, transactions);
-                            console.log(accountsAndTransactions);
                             displayAccounts(accountsAndTransactions);
                         }
                     })
                     .fail(() => {
-                        console.log("failed database connection")
                     });
             }
 
         })
         .fail(() => {
-            console.log("failed database connection");
         });
 }
 
@@ -128,7 +123,6 @@ bindAccountSelectFunctionality = (accountTransactions) => {
 handleAccountSelect = (accountData) => {
     $('#error-message').empty();
     $("#graph-container").empty();
-    console.log(accountData);
     //Set global account data variable. Used for chart dropdown.
     selectedAccountData = accountData;
     if (accountData.Transactions.length === 0) {
@@ -239,7 +233,6 @@ displayCategoryChart = (accountData) => {
     };
     //Creates chart with those options
     $("#graph-container").CanvasJSChart(options);
-    console.log(options);
 }
 
 getCategoryData = (accountData) => {
@@ -265,7 +258,6 @@ getCategoryData = (accountData) => {
 
 displayMerchantChart = (accountData) => {
     let data = getMerchantData(accountData);
-    console.log(data);
     let symbol = '\u20AC';
     let chartData = [];
     let count = 1;
@@ -295,19 +287,39 @@ getMerchantData = (accountData) => {
     let data = [];
     let temp = [];
     let amount;
-    for (i in accountData.Transactions) {
+    _.sortBy(accountData.Tran, function(num){ return num; });
+
+    for (i in accountData.Transactions) 
+    {
         if (accountData.Transactions[i].Type === "Debit")
             temp.push(accountData.Transactions[i].Description);
     }
     temp = _.uniq(temp);
-    for (i in temp) {
+    for (i in temp) 
+    {
         amount = 0;
-        for (j in accountData.Transactions) {
+        for (j in accountData.Transactions) 
+        {
             if (temp[i] === accountData.Transactions[j].Description) {
                 amount += parseFloat(accountData.Transactions[j].Amount);
             }
         }
         data.push({ "merchant": temp[i], "amount": amount.toFixed(2) });
     }
+    data.sort(function(a, b){
+        return b.amount - a.amount;
+    });
+
+    if(data.length > 10)
+    {
+        var topTen = [];
+        for(var i =0; i<10; i++)
+        {
+            topTen.push(data[i]);
+        }
+        return topTen;
+
+    }
+    else
     return data;
 }
