@@ -1,3 +1,3 @@
 $("document").ready(() => {
-  $('#footer').append(``);
+  $('#footer').append(`Hello`);
 });
