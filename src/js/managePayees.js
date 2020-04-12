@@ -1,4 +1,8 @@
 var customerID;
+var payeeInDatabase = false;
+$.ajaxSetup({
+  async: false
+});
 
 $("document").ready(function () {
   // If a customer is not logged in <- if the customerID cookie exists
@@ -23,13 +27,8 @@ function handleAddPayee() {
     payeeName = $('#payeeName').val();
     IBAN = $('#IBAN').val();
     BIC = $('#BIC').val();
-    console.log('Name: ', payeeName);
-    console.log('IBAN: ', IBAN);
-    console.log('BIC: ', BIC);
-    console.log('customerID: ', customerID);
     if (isValidNewPayee(payeeName, IBAN, BIC)) {
-      console.log('isValidPayeeTestPassed:');
-      if (payeeNotInDatabase(IBAN)) {
+      if (inDatabase(IBAN) === false) {
         $.post("../php/addPayee.php",
           {
             'PayeeName': $('#payeeName').val(),
@@ -42,14 +41,14 @@ function handleAddPayee() {
             $('#successMessage').attr('class', 'alert alert-success text-center');
             $('#successMessage').attr('role', 'alert');
             $('#successMessage').text('Payee successfully added.');
-            setInterval(redirectToPayeesHome, 1000);
+            setInterval(redirectToPayeesHome, 3000);
           }).fail(() => {
             $('#add').empty();
             $('#add').html('<br><div id=errorMessage></div>');
             $('#errorMessage').attr('class', 'alert alert-danger text-center');
             $('#errorMessage').attr('role', 'alert');
             $('#errorMessage').text('Error connecting to database.');
-            setInterval(redirectToPayeesHome, 2000);
+            setInterval(redirectToPayeesHome, 3000);
           });
       }
       else {
@@ -58,6 +57,7 @@ function handleAddPayee() {
         $('#errorMessage').attr('class', 'alert alert-danger text-center');
         $('#errorMessage').attr('role', 'alert');
         $('#errorMessage').text('There is already a payee with this bank account in your payees.');
+        setTimeout(window.location.href = 'managePayees.html', 3000);
 
       }
     }
@@ -110,18 +110,16 @@ function isValidNewPayee(payeeName, IBAN, BIC) {
 }
 
 
-function payeeNotInDatabase(IBAN) {
+function inDatabase(IBAN) {
   $.getJSON(`../php/getPayees.php?customerID=${customerID}`, (data) => {
     for (i in data.Payees) {
-      alert(data.Payees[i].IBAN);
-      if (data.Payees[i].IBAN == IBAN) {
-        return false;
-      }
-      else {
-        return true;
+      if (data.Payees[i].IBAN === IBAN && data.Payees[i].CustomerID === customerID) {
+        console.log('is in database');
+        payeeInDatabase = true;
       }
     }
   });
+  return payeeInDatabase;
 }
 
 /*Removes the default option from the remove payee dropdown 

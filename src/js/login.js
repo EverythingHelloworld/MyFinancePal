@@ -13,7 +13,7 @@ function verifyPageAccess(){
        if(Cookies.get('loggedIn')){
             $('#navbar').attr('style', 'display:none');
             $('.container').html('<br><div id=errorMessage></div>');
-            $('#errorMessage').attr('class', 'col-sm-5 offset-3 alert alert-danger text-center');
+            $('#errorMessage').attr('class', 'col-xs-8 col-sm-8 col-md-5 col-lg-5 offset-md-3 offset-lg-3 alert alert-danger text-center');
             $('#errorMessage').attr('role', 'alert');
             $('#errorMessage').text('You are already logged in.');
             setTimeout(redirectToMainPage, 5000);
@@ -155,14 +155,14 @@ function handleLogin() {
                             }
                             //Add error message to div
                             $('#signInDiv').before('<div id=errorMessage></div>');
-                            $('#errorMessage').attr('class', 'col-sm-5 offset-3 alert alert-danger text-center');
+                            $('#errorMessage').attr('class', 'col-xs-8 col-sm-8 col-md-5 col-lg-5 offset-md-3 offset-lg-3 alert alert-danger text-center');
                             $('#errorMessage').attr('role', 'alert');
                             $('#errorMessage').text(errorMessage2 + ' Your account will be locked after 3 incorrect attempts.');
                         }
                     } else {
                         //Add error message to div
                         $('#signInDiv').before('<div id=errorMessage></div>');
-                        $('#errorMessage').attr('class', 'col-sm-5 offset-3 alert alert-danger text-center');
+                        $('#errorMessage').attr('class', 'col-xs-8 col-sm-8 col-md-5 col-lg-5 offset-md-3 offset-lg-3 alert alert-danger text-center');
                         $('#errorMessage').attr('role', 'alert');
                         $('#errorMessage').text('Your account is locked. Please contact a member of staff in branch or over the phone.');
                     }
@@ -170,7 +170,7 @@ function handleLogin() {
                     //If customer id is not in the database, add error message to div
                     errorMessage2 = 'You are not a registered customer.';
                     $('#signInDiv').before('<div id=errorMessage></div>');
-                    $('#errorMessage').attr('class', 'col-sm-5 offset-3 alert alert-danger text-center');
+                    $('#errorMessage').attr('class', 'col-xs-8 col-sm-8 col-md-5 col-lg-5 offset-md-3 offset-lg-3 alert alert-danger text-center');
                     $('#errorMessage').attr('role', 'alert');
                     $('#errorMessage').text(errorMessage2);
                 }
@@ -178,7 +178,7 @@ function handleLogin() {
             .fail(function () {
                     //Show error message if the database call fails
                     $('#signInDiv').before('<div id=errorMessage></div>');
-                    $('#errorMessage').attr('class', 'col-sm-5 offset-3 alert alert-danger text-center');
+                    $('#errorMessage').attr('class', 'col-xs-8 col-sm-8 col-md-5 col-lg-5 offset-md-3 offset-lg-3 alert alert-danger text-center');
                     $('#errorMessage').attr('role', 'alert');
                     $('#errorMessage').text('Error connecting to the database.');
             }) //close getCustomerDetails db call

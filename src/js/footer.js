@@ -32,11 +32,6 @@ $("document").ready(() => {
   
       <div class="row">
   
-  
-        <hr class="clearfix w-100 d-md-none">
-  
-        <hr class="clearfix w-100 d-md-none">
-  
         <div class="col-md-4 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1 " style='color:rgba(255,255,255,.5);'>
   
           <h5 class="font-weight-bold text-uppercase mb-4">Address</h5>
