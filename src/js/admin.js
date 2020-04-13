@@ -15,27 +15,28 @@ function loadListBoxValues() {
   $.getJSON(`../php/getAccounts.php`)
     .done((data) => {
 
-      for(var i=0;i<data.account.length;i++){
-        if(data.account[i].Locked == 1)
+      for (var i = 0; i < data.account.length; i++) {
+        if (data.account[i].Locked == 1)
           lockedList.append(`<option>${data.account[i].ID}</option>`);
         else
           unlockedList.append(`<option>${data.account[i].ID}</option>`);
       }
-     
+
     })
     .fail(() => {
-      console.log("failed");    
+      alert("Error: Failed to connect to database");
+      window.location.href = "login.html";
+      Cookies.remove('adminID');
+      sessionStorage.clear();
     })
 }
 
 function handleLockAccountClick() {
-  $("#btnLock").click(function() {
-    if($("#accUnlockedList option:selected").index() === 0)
-    {
+  $("#btnLock").click(function () {
+    if ($("#accUnlockedList option:selected").index() === 0) {
       console.log("Cant use first option");
     }
-    else
-    {
+    else {
       lockAccount($("#accUnlockedList").val());
       location.reload();
     }
@@ -43,13 +44,11 @@ function handleLockAccountClick() {
 }
 
 function handleUnlockAccountClick() {
-  $("#btnUnlock").click(function() {
-    if($("#accLockedList option:selected").index() === 0)
-    {
+  $("#btnUnlock").click(function () {
+    if ($("#accLockedList option:selected").index() === 0) {
       console.log("Cant use first option");
     }
-    else
-    {
+    else {
       resetLoginAttempts($("#accLockedList").val());
       unlockAccount($("#accLockedList").val());
       location.reload();
@@ -72,15 +71,18 @@ clearAdminCookie = () => {
 function setNoRequests() {
   $.getJSON(`../php/getRequests.php`)
     .done((data) => {
-     $('#requestNum').text(data.Requests.length);
+      $('#requestNum').text(data.Requests.length);
     })
     .fail(() => {
-      console.log("failed");    
+      alert("Error: Failed to connect to database");
+      window.location.href = "login.html";
+      Cookies.remove('adminID');
+      sessionStorage.clear();
     })
 }
 
 function handleRequestsClick() {
-  $("#btnRequests").click(function() {
+  $("#btnRequests").click(function () {
     window.location.href = "../html/requests.html";
   });
 }

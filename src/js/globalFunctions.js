@@ -14,7 +14,7 @@ function setActiveNavLink() {
         /*href is in format http://localhost.. substring removes http://localhost... 
         from the link so it starts at /MyFinancePal.. and matches the pathname*/
         return this.href.substring(16) === pathname;
-    }).addClass('active');
+    }).addClass('active bg-primary');
     //^If this function returns true for a link set that link to active
 }
 

@@ -18,13 +18,21 @@ $("document").ready(() => {
 
 
 getAccountTransactionData = (customer_id, account_id) => {
-  $.getJSON(`../php/getAccountsTransactions.php?customerID=${customer_id}`, (data) => {
-    accountTransactions = getAccountTransactions(data, account_id);
-    sortAccountTransactions(accountTransactions);
-    populateSelectYears(data, account_id);
-    appendAccountTransactions('0', '0', accountTransactions);
-    handleSubmitButton(accountTransactions);
-  });
+  $.getJSON(`../php/getAccountsTransactions.php?customerID=${customer_id}`)
+    .done((data) => {
+      accountTransactions = getAccountTransactions(data, account_id);
+      sortAccountTransactions(accountTransactions);
+      populateSelectYears(data, account_id);
+      appendAccountTransactions('0', '0', accountTransactions);
+      handleSubmitButton(accountTransactions);
+    })
+    .fail(() => {
+      alert("Error: Failed to connect to database");
+      window.location.href = "login.html";
+      Cookies.remove('customerID');
+      Cookies.remove('loggedIn');
+      sessionStorage.clear();
+    })
 }
 
 //Extract all customer bank accounts
@@ -41,7 +49,6 @@ getAccountTransactions = (data, account_id) => {
 
   account = _.uniq(account, (x) => { return parseInt(x.AccountID) });
   for (i in account) {
-    //console.log(accounts[i]);
     for (j in data.accountTransactions) {
       if (account[i].AccountID == data.accountTransactions[j].AccountID) {
         account[i].Transactions.push({
@@ -81,7 +88,6 @@ sortAccountTransactions = (accountTransactions) => {
 appendAccountTransactions = (yr, mnth, account) => {
   let year = yr;
   let month = mnth;
-  console.log(year, month);
   let temp = [];
   let dataToDisplay = [];
   for (i in account) {
@@ -121,7 +127,6 @@ appendAccountTransactions = (yr, mnth, account) => {
 
 handleSubmitButton = (accountTransactions) => {
   $('#submitBtn').on('click', () => {
-    console.log('test');
     year = $('#year-select').val();
     month = $('#month-select').val();
     appendAccountTransactions(year, month, accountTransactions);

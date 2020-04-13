@@ -114,7 +114,6 @@ function inDatabase(IBAN) {
   $.getJSON(`../php/getPayees.php?customerID=${customerID}`, (data) => {
     for (i in data.Payees) {
       if (data.Payees[i].IBAN === IBAN && data.Payees[i].CustomerID === customerID) {
-        console.log('is in database');
         payeeInDatabase = true;
       }
     }

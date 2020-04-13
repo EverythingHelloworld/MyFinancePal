@@ -10,7 +10,6 @@ $("document").ready(() => {
    // Retrieve the customer id for the current session <- customer that is currently logged in
    const session_customer_id = Cookies.get('customerID');
    sessionStorage.setItem("CustomerID", session_customer_id);
-   console.log(session_customer_id);
    getPageData(session_customer_id); // -> pass session_customer_id to return and display all page data for customer
 });
 
@@ -42,12 +41,20 @@ getPageData = (customerID) => {
                handleRequestButtonClick(customerID);
             })
             .fail(() => {
-               console.log('database call failed for account transactions');
+               alert("Error: Failed to connect to database");
+               window.location.href = "login.html";
+               Cookies.remove('customerID');
+               Cookies.remove('loggedIn');
+               sessionStorage.clear();
             })
 
       })
       .fail(() => {
-         console.log('database call failed for customer account');
+         alert("Error: Failed to connect to database");
+         window.location.href = "login.html";
+         Cookies.remove('customerID');
+         Cookies.remove('loggedIn');
+         sessionStorage.clear();
       })
 }
 
@@ -66,7 +73,6 @@ appendCustomerDetails = (session_customer_id) => {
 
    $('#customer-details-container').before(`<table class="table table-borderless"><thead><tr scope="row"><th><h3 class="display-4">My Info</h3></th></tr></thead></table>`);
    $('#customer-details-container').append(`<div id="request-button-container"></div>`);
-   console.log(session_customer_id);
    appendRequestButton(session_customer_id);
 }
 
@@ -81,7 +87,11 @@ appendRequestButton = (session_customer_id) => {
          }
       })
       .fail(() => {
-         console.log('failed');
+         alert("Error: Failed to connect to database");
+         window.location.href = "login.html";
+         Cookies.remove('customerID');
+         Cookies.remove('loggedIn');
+         sessionStorage.clear();
       })
 }
 
@@ -269,7 +279,7 @@ handleTransferForm = (accountsAndTransactions, session_customer_id) => {
             submitTransfer(date, from_account_id, to_account_id, amount, isPayee);
          }
          else {
-            console.log('insufficient funds');
+            //error
          }
       }
 
@@ -281,7 +291,6 @@ handleTransferForm = (accountsAndTransactions, session_customer_id) => {
 checkTransfer = (accountsAndTransactions, from_account_id, amount) => {
    if (parseFloat(amount) < 0.01)
       return false;
-   console.log(from_account_id, amount)
    for (i in accountsAndTransactions) {
       if (accountsAndTransactions[i].AccountID === from_account_id) {
          if (parseFloat(accountsAndTransactions[i].CurrentBalance) >= parseFloat(amount)) {
@@ -295,11 +304,9 @@ checkTransfer = (accountsAndTransactions, from_account_id, amount) => {
 
 handleRequestButtonClick = (session_customer_id) => {
    $('#btnRequestAccountDeletion').click(() => {
-      console.log('request account deletion button clicked');
       requestAccountDeletion(session_customer_id);
    })
    $('#btnWithdrawAccountDeletion').click(() => {
-      console.log('request account deletion button clicked');
       withdrawAccountDeletionRequest(session_customer_id);
    })
 }
@@ -311,13 +318,16 @@ requestAccountDeletion = (session_customer_id) => {
 
    })
       .done(() => {
-         console.log('success');
          window.location.href = "main.html";
          $('#request-button-container').empty();
          appendRequestButton();
       })
       .fail(() => {
-         console.log('fail');
+         alert("Error: Failed to connect to database");
+         window.location.href = "login.html";
+         Cookies.remove('customerID');
+         Cookies.remove('loggedIn');
+         sessionStorage.clear();
       })
 }
 
@@ -328,13 +338,16 @@ withdrawAccountDeletionRequest = (session_customer_id) => {
 
    })
       .done(() => {
-         console.log('success');
          window.location.href = "main.html";
          $('#request-button-container').empty();
          appendRequestButton();
       })
       .fail(() => {
-         console.log('fail');
+         alert("Error: Failed to connect to database");
+         window.location.href = "login.html";
+         Cookies.remove('customerID');
+         Cookies.remove('loggedIn');
+         sessionStorage.clear();
       })
 }
 
@@ -343,10 +356,14 @@ withdrawAccountDeletionRequest = (session_customer_id) => {
 submitTransfer = (date, from_account_id, to_account_id, amount, isPayee) => {
    $.getJSON(`../php/handleTransfer.php?date=${date}&from_account=${from_account_id}&to_account=${to_account_id}&amount=${amount}&isPayee=${isPayee}`)
       .done((data, status) => {
-         console.log(status);
+
       })
       .fail(() => {
-         console.log('failed to transfer');
+         alert("Error: Failed to connect to database");
+         window.location.href = "login.html";
+         Cookies.remove('customerID');
+         Cookies.remove('loggedIn');
+         sessionStorage.clear();
       })
 }
 
@@ -380,12 +397,10 @@ bindCustomerAccountButtonFunctions = (accounts) => {
 appendRedirectInstructions = (button_id, accounts) => {
    for (i in accounts) {
       if (button_id === accounts[i].AccountID + "-statements-btn") {
-         console.log(accounts[i].AccountID + " statements");
          sessionStorage.setItem("AccountID", accounts[i].AccountID);
          window.location.href = 'statements.html';
       }
       if (button_id === accounts[i].AccountID + "-transactions-btn") {
-         console.log(accounts[i].AccountID + " transactions");
          sessionStorage.setItem("AccountID", accounts[i].AccountID);
          window.location.href = 'transactions.html';
       }

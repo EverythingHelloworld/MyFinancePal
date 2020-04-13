@@ -26,7 +26,7 @@ appendAccountDetails = (session_customer_id) => {
             let transactions = [];
             let accountsAndTransactions = [];
             if (data.CustomerAccounts === undefined || data.CustomerAccounts.length < 1) {
-                
+
             }
             else {
                 accounts = data.CustomerAccounts;
@@ -41,11 +41,21 @@ appendAccountDetails = (session_customer_id) => {
                         }
                     })
                     .fail(() => {
+                        alert("Error: Failed to connect to database\nYou will be logged out");
+                        window.location.href = "login.html";
+                        Cookies.remove('customerID');
+                        Cookies.remove('loggedIn');
+                        sessionStorage.clear();
                     });
             }
 
         })
         .fail(() => {
+            alert("Error: Failed to connect to database\nYou Will be logged out");
+            window.location.href = "login.html";
+            Cookies.remove('customerID');
+            Cookies.remove('loggedIn');
+            sessionStorage.clear();
         });
 }
 
@@ -287,38 +297,33 @@ getMerchantData = (accountData) => {
     let data = [];
     let temp = [];
     let amount;
-    _.sortBy(accountData.Tran, function(num){ return num; });
+    _.sortBy(accountData.Tran, function (num) { return num; });
 
-    for (i in accountData.Transactions) 
-    {
+    for (i in accountData.Transactions) {
         if (accountData.Transactions[i].Type === "Debit")
             temp.push(accountData.Transactions[i].Description);
     }
     temp = _.uniq(temp);
-    for (i in temp) 
-    {
+    for (i in temp) {
         amount = 0;
-        for (j in accountData.Transactions) 
-        {
+        for (j in accountData.Transactions) {
             if (temp[i] === accountData.Transactions[j].Description) {
                 amount += parseFloat(accountData.Transactions[j].Amount);
             }
         }
         data.push({ "merchant": temp[i], "amount": amount.toFixed(2) });
     }
-    data.sort(function(a, b){
+    data.sort(function (a, b) {
         return b.amount - a.amount;
     });
 
-    if(data.length > 10)
-    {
+    if (data.length > 10) {
         var topTen = [];
-        for(var i =0; i<10; i++)
-        {
+        for (var i = 0; i < 10; i++) {
             topTen.push(data[i]);
         }
         return topTen;
     }
     else
-    return data;
+        return data;
 }
