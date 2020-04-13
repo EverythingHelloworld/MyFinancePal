@@ -18,13 +18,21 @@ $("document").ready(() => {
 
 
 getAccountTransactionData = (customer_id, account_id) => {
-  $.getJSON(`../php/getAccountsTransactions.php?customerID=${customer_id}`, (data) => {
-    accountTransactions = getAccountTransactions(data, account_id);
-    sortAccountTransactions(accountTransactions);
-    populateSelectYears(data, account_id);
-    appendAccountTransactions('0', '0', accountTransactions);
-    handleSubmitButton(accountTransactions);
-  });
+  $.getJSON(`../php/getAccountsTransactions.php?customerID=${customer_id}`)
+    .done((data) => {
+      accountTransactions = getAccountTransactions(data, account_id);
+      sortAccountTransactions(accountTransactions);
+      populateSelectYears(data, account_id);
+      appendAccountTransactions('0', '0', accountTransactions);
+      handleSubmitButton(accountTransactions);
+    })
+    .fail(() => {
+      alert("Error: Failed to connect to database");
+      window.location.href = "login.html";
+      Cookies.remove('customerID');
+      Cookies.remove('loggedIn');
+      sessionStorage.clear();
+    })
 }
 
 //Extract all customer bank accounts
