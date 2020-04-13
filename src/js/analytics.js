@@ -318,7 +318,6 @@ getMerchantData = (accountData) => {
             topTen.push(data[i]);
         }
         return topTen;
-
     }
     else
     return data;
