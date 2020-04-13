@@ -5,13 +5,22 @@ $('document').ready(() => {
   const account_id = sessionStorage.getItem('AccountID');
 
   addBackButton();
-  $.getJSON(`../php/getAccountsTransactions.php?customerID=${customer_id}`, (data) => {
-    populateSelectYears(data, account_id)
-    accountTransactions = getAccountTransactions(data, account_id);
-    sortAccountTransactions(accountTransactions);
-    handleSelectChanges();
-    handleSubmit(accountTransactions);
-  });
+  $.getJSON(`../php/getAccountsTransactions.php?customerID=${customer_id}`)
+    .done((data) => {
+      populateSelectYears(data, account_id)
+      accountTransactions = getAccountTransactions(data, account_id);
+      sortAccountTransactions(accountTransactions);
+      console.log(accountTransactions);
+      handleSelectChanges();
+      handleSubmit(accountTransactions);
+    })
+    .fail(() => {
+      alert("Error: Failed to connect to database");
+      window.location.href = "login.html";
+      Cookies.remove('customerID');
+      Cookies.remove('loggedIn');
+      sessionStorage.clear();
+    });
 
 });
 
