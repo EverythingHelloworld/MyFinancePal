@@ -41,12 +41,20 @@ getPageData = (customerID) => {
                handleRequestButtonClick(customerID);
             })
             .fail(() => {
-               //error
+               alert("Error: Failed to connect to database");
+               window.location.href = "login.html";
+               Cookies.remove('customerID');
+               Cookies.remove('loggedIn');
+               sessionStorage.clear();
             })
 
       })
       .fail(() => {
-         //error
+         alert("Error: Failed to connect to database");
+         window.location.href = "login.html";
+         Cookies.remove('customerID');
+         Cookies.remove('loggedIn');
+         sessionStorage.clear();
       })
 }
 
@@ -79,7 +87,11 @@ appendRequestButton = (session_customer_id) => {
          }
       })
       .fail(() => {
-         //error
+         alert("Error: Failed to connect to database");
+         window.location.href = "login.html";
+         Cookies.remove('customerID');
+         Cookies.remove('loggedIn');
+         sessionStorage.clear();
       })
 }
 
@@ -314,7 +326,11 @@ requestAccountDeletion = (session_customer_id) => {
          appendRequestButton();
       })
       .fail(() => {
-         //error
+         alert("Error: Failed to connect to database");
+         window.location.href = "login.html";
+         Cookies.remove('customerID');
+         Cookies.remove('loggedIn');
+         sessionStorage.clear();
       })
 }
 
@@ -330,7 +346,11 @@ withdrawAccountDeletionRequest = (session_customer_id) => {
          appendRequestButton();
       })
       .fail(() => {
-         //error
+         alert("Error: Failed to connect to database");
+         window.location.href = "login.html";
+         Cookies.remove('customerID');
+         Cookies.remove('loggedIn');
+         sessionStorage.clear();
       })
 }
 
@@ -342,7 +362,11 @@ submitTransfer = (date, from_account_id, to_account_id, amount, isPayee) => {
 
       })
       .fail(() => {
-         //error
+         alert("Error: Failed to connect to database");
+         window.location.href = "login.html";
+         Cookies.remove('customerID');
+         Cookies.remove('loggedIn');
+         sessionStorage.clear();
       })
 }
 
