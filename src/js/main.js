@@ -291,7 +291,6 @@ handleTransferForm = (accountsAndTransactions, session_customer_id) => {
 checkTransfer = (accountsAndTransactions, from_account_id, amount) => {
    if (parseFloat(amount) < 0.01)
       return false;
-   console.log(from_account_id, amount)
    for (i in accountsAndTransactions) {
       if (accountsAndTransactions[i].AccountID === from_account_id) {
          if (parseFloat(accountsAndTransactions[i].CurrentBalance) >= parseFloat(amount)) {
@@ -305,11 +304,9 @@ checkTransfer = (accountsAndTransactions, from_account_id, amount) => {
 
 handleRequestButtonClick = (session_customer_id) => {
    $('#btnRequestAccountDeletion').click(() => {
-      console.log('request account deletion button clicked');
       requestAccountDeletion(session_customer_id);
    })
    $('#btnWithdrawAccountDeletion').click(() => {
-      console.log('request account deletion button clicked');
       withdrawAccountDeletionRequest(session_customer_id);
    })
 }

@@ -9,7 +9,6 @@ $('document').ready(() => {
     populateSelectYears(data, account_id)
     accountTransactions = getAccountTransactions(data, account_id);
     sortAccountTransactions(accountTransactions);
-    console.log(accountTransactions);
     handleSelectChanges();
     handleSubmit(accountTransactions);
   });
@@ -37,7 +36,6 @@ getAccountTransactions = (data, account_id) => {
 
   account = _.uniq(account, (x) => { return parseInt(x.AccountID) });
   for (i in account) {
-    //console.log(accounts[i]);
     for (j in data.accountTransactions) {
       if (account[i].AccountID == data.accountTransactions[j].AccountID) {
         account[i].Transactions.push({
@@ -77,7 +75,6 @@ handleSelectChanges = () => {
   $('#year-select').change(() => {
     $('#from-month-select').attr('disabled', false);
     year = parseInt($('#year-select').val());
-    console.log("year ", year, "from ", from_month, "to ", to_month);
 
     if (year == 0) {
       $('#from-month-select-container').attr("style", "display: none");
@@ -98,7 +95,6 @@ handleSelectChanges = () => {
     if (from_month != 0) {
       $('#to-month-select-container').attr("style", "display: block");
       appendToSelect(from_month);
-      console.log("year ", year, "from ", from_month, "to ", to_month);
     }
     else {
       $('#to-month-select-container').attr("style", "display: none");
@@ -107,7 +103,6 @@ handleSelectChanges = () => {
 
   $('#to-month-select').change(() => {
     to_month = parseInt($('#to-month-select').val());
-    console.log("year: ", year, "from: ", from_month, "to", to_month);
   });
 
 
@@ -226,12 +221,10 @@ filterTransactionData = (accountTransactions) => {
       }
     }
   else if (year != 0 && from_month === 0) {
-    console.log('test');
     for (i in dataToReturn) {
       for (j in accountTransactions[i].Transactions) {
         y = parseInt(accountTransactions[i].Transactions[j].Date.substr(0, 4));
         if (y === year) {
-          console.log('test');
           dataToReturn[i].Transactions.push({
             "Date": accountTransactions[i].Transactions[j].Date,
             "Description": accountTransactions[i].Transactions[j].Description,
@@ -244,14 +237,12 @@ filterTransactionData = (accountTransactions) => {
     }
   }
   else if (year != 0 && from_month != 0) {
-    console.log('test');
     for (i in dataToReturn) {
       for (j in accountTransactions[i].Transactions) {
         y = parseInt(accountTransactions[i].Transactions[j].Date.substr(0, 4));
         f = parseInt(accountTransactions[i].Transactions[j].Date.substr(5, 2));
         t = parseInt(accountTransactions[i].Transactions[j].Date.substr(5, 2));
         if (y === year && (f >= from_month & t <= to_month)) {
-          console.log('test');
           dataToReturn[i].Transactions.push({
             "Date": accountTransactions[i].Transactions[j].Date,
             "Description": accountTransactions[i].Transactions[j].Description,

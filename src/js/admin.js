@@ -75,7 +75,7 @@ function setNoRequests() {
      $('#requestNum').text(data.Requests.length);
     })
     .fail(() => {
-      console.log("failed");    
+      console.log("Failed to connect to database.");    
     })
 }
 
