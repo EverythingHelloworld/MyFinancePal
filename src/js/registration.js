@@ -21,9 +21,11 @@ window.onload = function () {
         var iBan;
 
         //Check if mobile number is already registered
-        $.getJSON(`../php/getCustomerEmail.php`, function (data) {
-            for (var i = 0; i < data.customer.length; i++) {
-                if (data.customer[i].Email === email) {
+        $.getJSON(`../php/getCustomerEmail.php`,).done((data) =>{
+            for (var i = 0; i < data.customer.length; i++) 
+            {
+                if (data.customer[i].Email === email) 
+                {
                     sameEmail = true;
                 }
             }
@@ -105,7 +107,8 @@ window.onload = function () {
                 });
 
                 //Retrieve Customer ID & Display modal with account details
-                $.getJSON(`../php/getCustomerID.php?email=${email}`, function (data) {
+                $.getJSON(`../php/getCustomerID.php?email=${email}`, function (data) 
+                {
 
                     for (var i = 0; i < data.customer.length; i++) {
                         var id = data.customer[i].CustomerID;
@@ -149,7 +152,13 @@ window.onload = function () {
                     $("#regModal").modal();
                 });
             }
-        });
+        }).fail(() => {
+                $('#registerDiv').before('<div id=errorMessage></div>');
+                $('#errorMessage').attr('class', 'alert alert-danger text-center');
+                $('#errorMessage').attr('role', 'alert');
+                $('#errorMessage').text("Failed to connect to database.");
+         });
+
     });
 
     $("#btnCancel").click(function () {
