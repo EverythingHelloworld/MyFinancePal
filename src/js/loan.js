@@ -9,13 +9,18 @@ $("document").ready(function () {
     setActiveNavLink();
     const session_customer_id = Cookies.get('customerID');
 
-    $.getJSON(`../php/getAccountInfo.php?id=${session_customer_id}`, function (data) 
-    {
+    $.getJSON(`../php/getAccountInfo.php?id=${session_customer_id}`).done((data) => {
+    
         for (var i = 0; i < data.customer.length; i++) 
         {
             $("#accountSelect").append(`<option value = "${data.customer[i].AccountID}">Account Ending in ${data.customer[i].IBAN.substr(data.customer[i].IBAN.length - 4)}</option>`);
         }
-    });
+    }).fail(() => {
+            $('#error').append('<div id=errorMessage></div>');
+            $('#errorMessage').attr('class', 'alert alert-danger text-center');
+            $('#errorMessage').attr('role', 'alert');
+            $('#errorMessage').text("Failed to connect to database.");
+     });
 
     $("#accountSelect").change(function() 
     {   selectedAccount = $("#accountSelect").val(); 
@@ -65,7 +70,7 @@ $("document").ready(function () {
             $('#applyBtn').append('<br><div id=errorMessage></div>');
             $('#errorMessage').attr('class', 'alert alert-danger text-center');
             $('#errorMessage').attr('role', 'alert');
-            $('#errorMessage').text("Please select a County.");
+            $('#errorMessage').text("Please select a Payment Plan.");
         }
         else
         {
