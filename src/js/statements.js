@@ -15,11 +15,7 @@ $('document').ready(() => {
       handleSubmit(accountTransactions);
     })
     .fail(() => {
-      alert("Error: Failed to connect to database");
-      window.location.href = "login.html";
-      Cookies.remove('customerID');
-      Cookies.remove('loggedIn');
-      sessionStorage.clear();
+
     });
 
 });

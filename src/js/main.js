@@ -41,20 +41,12 @@ getPageData = (customerID) => {
                handleRequestButtonClick(customerID);
             })
             .fail(() => {
-               alert("Error: Failed to connect to database");
-               window.location.href = "login.html";
-               Cookies.remove('customerID');
-               Cookies.remove('loggedIn');
-               sessionStorage.clear();
+
             })
 
       })
       .fail(() => {
-         alert("Error: Failed to connect to database");
-         window.location.href = "login.html";
-         Cookies.remove('customerID');
-         Cookies.remove('loggedIn');
-         sessionStorage.clear();
+
       })
 }
 
@@ -87,11 +79,7 @@ appendRequestButton = (session_customer_id) => {
          }
       })
       .fail(() => {
-         alert("Error: Failed to connect to database");
-         window.location.href = "login.html";
-         Cookies.remove('customerID');
-         Cookies.remove('loggedIn');
-         sessionStorage.clear();
+
       })
 }
 
@@ -323,11 +311,7 @@ requestAccountDeletion = (session_customer_id) => {
          appendRequestButton();
       })
       .fail(() => {
-         alert("Error: Failed to connect to database");
-         window.location.href = "login.html";
-         Cookies.remove('customerID');
-         Cookies.remove('loggedIn');
-         sessionStorage.clear();
+
       })
 }
 
@@ -343,11 +327,7 @@ withdrawAccountDeletionRequest = (session_customer_id) => {
          appendRequestButton();
       })
       .fail(() => {
-         alert("Error: Failed to connect to database");
-         window.location.href = "login.html";
-         Cookies.remove('customerID');
-         Cookies.remove('loggedIn');
-         sessionStorage.clear();
+
       })
 }
 
@@ -359,11 +339,7 @@ submitTransfer = (date, from_account_id, to_account_id, amount, isPayee) => {
 
       })
       .fail(() => {
-         alert("Error: Failed to connect to database");
-         window.location.href = "login.html";
-         Cookies.remove('customerID');
-         Cookies.remove('loggedIn');
-         sessionStorage.clear();
+
       })
 }
 

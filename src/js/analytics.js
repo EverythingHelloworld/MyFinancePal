@@ -41,21 +41,13 @@ appendAccountDetails = (session_customer_id) => {
                         }
                     })
                     .fail(() => {
-                        alert("Error: Failed to connect to database\nYou will be logged out");
-                        window.location.href = "login.html";
-                        Cookies.remove('customerID');
-                        Cookies.remove('loggedIn');
-                        sessionStorage.clear();
+
                     });
             }
 
         })
         .fail(() => {
-            alert("Error: Failed to connect to database\nYou Will be logged out");
-            window.location.href = "login.html";
-            Cookies.remove('customerID');
-            Cookies.remove('loggedIn');
-            sessionStorage.clear();
+
         });
 }
 

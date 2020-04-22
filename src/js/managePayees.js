@@ -193,7 +193,7 @@ function displayErrorMessage(validPayee, validIBAN, validBIC) {
     errorMessage = "IBAN and BIC are invalid";
   }
   else if (!validPayee) {
-    errorMessage = "Payee name is invaid";
+    errorMessage = "Payee name is invalid";
   }
   else if (!validIBAN) {
     errorMessage = "IBAN is invalid";
