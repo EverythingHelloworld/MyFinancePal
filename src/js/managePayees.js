@@ -57,7 +57,7 @@ function handleAddPayee() {
         $('#errorMessage').attr('class', 'alert alert-danger text-center');
         $('#errorMessage').attr('role', 'alert');
         $('#errorMessage').text('There is already a payee with this bank account in your payees.');
-        setTimeout(window.location.href = 'managePayees.html', 2500);
+        setInterval(window.location.href = 'managePayees.html', 2500);
 
       }
     }
