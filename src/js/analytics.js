@@ -166,10 +166,10 @@ function handleChartDropdownChange() {
 }
 
 function displayIncExpChart(accountData) {
+    $('#error-message').empty();
     let symbol = '\u20AC';
     //Calculate income and expenditure 
     calculateIncExp(accountData);
-
     //Sets chart options
     var options = {
         title: {
@@ -212,29 +212,37 @@ function calculateIncExp(accountData) {
 
 
 displayCategoryChart = (accountData) => {
+    $('#error-message').empty();
     let data = getCategoryData(accountData);
     let symbol = '\u20AC';
     let chartData = [];
-    for (i in data) {
-        chartData.push({ "y": data[i].amount, "label": data[i].category });
+    if (data.length > 0) {
+        for (i in data) {
+            chartData.push({ "y": data[i].amount, "label": data[i].category });
+        }
+        //Sets chart options
+        let options = {
+            title: {
+                text: "Categories",
+                fontFamily: "Impact",
+                fontWeight: "normal"
+            },
+            data: [{
+                showInLegend: "true",
+                legendText: "{label}",
+                yValueFormatString: `${symbol}#,###.##`,
+                type: "doughnut",
+                dataPoints: chartData
+            }]
+        };
+        //Creates chart with those options
+        $("#graph-container").CanvasJSChart(options);
     }
-    //Sets chart options
-    let options = {
-        title: {
-            text: "Categories",
-            fontFamily: "Impact",
-            fontWeight: "normal"
-        },
-        data: [{
-            showInLegend: "true",
-            legendText: "{label}",
-            yValueFormatString: `${symbol}#,###.##`,
-            type: "doughnut",
-            dataPoints: chartData
-        }]
-    };
-    //Creates chart with those options
-    $("#graph-container").CanvasJSChart(options);
+    else {
+        $('#graph-container').empty();
+        $('#error-message').append(`<div class="alert alert-info" role="alert">There doesn't appear to be any transactions in this category</div>`);
+
+    }
 }
 
 getCategoryData = (accountData) => {
@@ -259,30 +267,37 @@ getCategoryData = (accountData) => {
 }
 
 displayMerchantChart = (accountData) => {
+    $('#error-message').empty();
     let data = getMerchantData(accountData);
     let symbol = '\u20AC';
     let chartData = [];
     let count = 1;
-    for (i in data) {
-        chartData.push({ "y": parseFloat(data[i].amount), "label": data[i].merchant });
+    if (data.length > 0) {
+        for (i in data) {
+            chartData.push({ "y": parseFloat(data[i].amount), "label": data[i].merchant });
+        }
+        //Sets chart options
+        let options = {
+            title: {
+                text: "Merchants",
+                fontFamily: "Impact",
+                fontWeight: "normal"
+            },
+            data: [{
+                showInLegend: "true",
+                legendText: "{label}",
+                yValueFormatString: `${symbol}#,###.##`,
+                type: "pyramid",
+                dataPoints: chartData
+            }]
+        };
+        //Creates chart with those options
+        $("#graph-container").CanvasJSChart(options);
     }
-    //Sets chart options
-    let options = {
-        title: {
-            text: "Merchants",
-            fontFamily: "Impact",
-            fontWeight: "normal"
-        },
-        data: [{
-            showInLegend: "true",
-            legendText: "{label}",
-            yValueFormatString: `${symbol}#,###.##`,
-            type: "pyramid",
-            dataPoints: chartData
-        }]
-    };
-    //Creates chart with those options
-    $("#graph-container").CanvasJSChart(options);
+    else {
+        $('#graph-container').empty();
+        $('#error-message').append(`<div class="alert alert-info" role="alert">There doesn't appear to be any transactions in this category</div>`);
+    }
 }
 
 getMerchantData = (accountData) => {

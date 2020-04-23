@@ -41,14 +41,14 @@ function handleAddPayee() {
             $('#successMessage').attr('class', 'alert alert-success text-center');
             $('#successMessage').attr('role', 'alert');
             $('#successMessage').text('Payee successfully added.');
-            setInterval(redirectToPayeesHome, 3000);
+            setInterval(redirectToPayeesHome, 2500);
           }).fail(() => {
             $('#add').empty();
             $('#add').html('<br><div id=errorMessage></div>');
             $('#errorMessage').attr('class', 'alert alert-danger text-center');
             $('#errorMessage').attr('role', 'alert');
             $('#errorMessage').text('Error connecting to database.');
-            setInterval(redirectToPayeesHome, 3000);
+            setInterval(redirectToPayeesHome, 2500);
           });
       }
       else {
@@ -57,7 +57,7 @@ function handleAddPayee() {
         $('#errorMessage').attr('class', 'alert alert-danger text-center');
         $('#errorMessage').attr('role', 'alert');
         $('#errorMessage').text('There is already a payee with this bank account in your payees.');
-        setTimeout(window.location.href = 'managePayees.html', 3000);
+        setTimeout(window.location.href = 'managePayees.html', 2500);
 
       }
     }
@@ -141,7 +141,7 @@ function handleRemovePayee() {
       $('#successMessage').attr('class', 'alert alert-success text-center');
       $('#successMessage').attr('role', 'alert');
       $('#successMessage').text('Payee successfully removed.');
-      setInterval(redirectToPayeesHome, 1000);
+      setInterval(redirectToPayeesHome, 2500);
     })
       .fail(() => {
         $('#delete').empty();
@@ -149,7 +149,7 @@ function handleRemovePayee() {
         $('#errorMessage').attr('class', 'alert alert-danger text-center');
         $('#errorMessage').attr('role', 'alert');
         $('#errorMessage').text('Error connecting to database.');
-        setInterval(redirectToPayeesHome, 2000);
+        setInterval(redirectToPayeesHome, 2500);
       });
   })
 }
